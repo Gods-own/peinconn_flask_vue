@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+country-list = "*"
+flask-wtf = "*"
+email-validator = "*"
+python-dotenv = "*"
+flask-migrate = "*"
+flask-restful = "*"
+flask-paginate = "*"
+flask-seeder = "*"
+pyjwt = "==1.4.2"
+flask-socketio = "*"
+eventlet = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

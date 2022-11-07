@@ -1,0 +1,14 @@
+# .env
+backend/peinconn/.env
+# peinconn.db
+backend/peinconn/peinconn.db
+# peinconn\static\images\uploads
+backend/peinconn/peinconn/static/images/uploads
+frontend/node_modules
+
+.DS_Store
+frontend/dist
+
+
+# local env files
+frontend/.env
