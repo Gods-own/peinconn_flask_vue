@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from .extensions import db, ma, migrate, api, seeder, socketio
+from .extensions import db, ma, migrate, api, seeder, socketio, cors
 from .views.web import web
 from .views.api import api_bp
 from peinconn import config
@@ -15,6 +15,7 @@ def create_app():
     ma.init_app(app)
     seeder.init_app(app, db)
     migrate.init_app(app, db)
+    cors.init_app(app)
 
     app.register_blueprint(web) 
 

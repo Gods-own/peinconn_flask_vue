@@ -29,6 +29,8 @@ class Config(object):
 
     MAX_CONTENT_LENGTH = 16 * 1000 * 1000
 
+    CORS_HEADERS = 'Content-Type'
+
 class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "peinconn.db")
 
