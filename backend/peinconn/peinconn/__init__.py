@@ -15,7 +15,7 @@ def create_app():
     ma.init_app(app)
     seeder.init_app(app, db)
     migrate.init_app(app, db)
-    cors.init_app(app)
+    cors.init_app(app, resources={r'/*': {'origins':'*'}})
 
     app.register_blueprint(web) 
 

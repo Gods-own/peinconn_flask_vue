@@ -19,6 +19,7 @@ flask-seeder = "*"
 pyjwt = "==1.4.2"
 flask-socketio = "*"
 eventlet = "*"
+flask-cors = "*"
 
 [dev-packages]
 
