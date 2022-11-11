@@ -1,17 +1,22 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <RegistrationForm v-if="isAuthenticatedRoute">
+    <router-view/>
+  </RegistrationForm>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import RegistrationForm from './views/RegisterForm';
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    RegistrationForm,
+  },
+  data() {
+    return {
+      isAuthenticatedRoute: this.$route.meta.requiresAuth
+    }
   }
-}
+};
 </script>
 
 <style>

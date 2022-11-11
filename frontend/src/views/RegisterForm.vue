@@ -57,7 +57,7 @@
 <script>
 import AuthForm from "@/components/AuthForm.vue";
 export default {
-  name: "RegisterForm",
+  name: "RegistrationForm",
   components: { AuthForm },
 };
 </script>
