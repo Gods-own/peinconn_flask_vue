@@ -1,4 +1,4 @@
-import { post, del, get, put, patch } from "./axios_setup";
+import { post, get, put } from "./axios_setup";
 import * as url from "./peinconn_api_url";
 
 //AUTH
@@ -16,3 +16,9 @@ export const getUserActivities = () => get(url.GET_USER_ACTIVITIES);
 //LIKE
 
 //USER
+
+//COUNTRY
+export const getAllCountries = () => get(url.GET_COUNTRIES);
+
+//INTEREST
+export const getAllInterests = () => get(url.GET_INTERESTS);

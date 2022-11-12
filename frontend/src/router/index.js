@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import RegistrationForm from '../views/RegistrationForm';
+import RegistrationForm from '../views/RegisterForm';
 
 const routes = [
     {

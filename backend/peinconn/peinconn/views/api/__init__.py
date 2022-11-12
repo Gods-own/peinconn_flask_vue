@@ -1,6 +1,8 @@
 from flask import Blueprint
 from flask_restful import Api, Resource, url_for
 from peinconn.peinconn.views.api.resources.activity import ActivityList, Activity, UserActivities
+from peinconn.peinconn.views.api.resources.country import CountryList
+from peinconn.peinconn.views.api.resources.hobby import InterestList
 from peinconn.peinconn.views.api.resources.activity_like import LikeActivity
 from peinconn.peinconn.views.api.resources.user import User, AllUserDetails
 from peinconn.peinconn.views.api.resources.auth import Login, Register
@@ -19,4 +21,6 @@ api.add_resource(RegisterInterest, '/interest_registration')
 api.add_resource(Activity, '/activities/<activity_id>')
 api.add_resource(ActivityList, '/activities')
 api.add_resource(LikeActivity, '/activity_like/<activity_id>')
+api.add_resource(CountryList, '/countries')
+api.add_resource(InterestList, '/interests')
 

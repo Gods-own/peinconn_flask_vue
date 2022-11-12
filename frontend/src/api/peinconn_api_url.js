@@ -18,3 +18,9 @@ export const GET_USER_DETAILS = `all_user_details`;
 //LIKE
 export const TOGGLE_LIKE = `activity_like`;
 export const LIKE_STATUS = `activity_like`;
+
+//COUNTRY
+export const GET_COUNTRIES = `countries`;
+
+//INTEREST
+export const GET_INTERESTS = `interests`;

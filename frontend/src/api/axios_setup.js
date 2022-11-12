@@ -1,11 +1,11 @@
 import axios from "axios";
-import accessToken from "./jwt-token-access";
+import accessToken from "./jwt-access-token";
 
 //pass new generated access token here
 const token = accessToken;
 
 //apply base url for axios
-const API_URL = process.env.VUE_PEINCONN_APP_APIURL;
+const API_URL = process.env.VUE_APP_PEINCONN_APIURL;
 
 const axiosApi = axios.create({
   baseURL: API_URL,

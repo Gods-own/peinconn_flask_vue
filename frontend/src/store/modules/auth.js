@@ -13,7 +13,7 @@ const getters = {
 };
 
 const actions = {
-  registerUser({ commit }, registration_payload) {
+  addUser({ commit }, registration_payload) {
     let isRegFormLoading = true;
     commit("formLoding", isRegFormLoading);
 
@@ -24,7 +24,7 @@ const actions = {
     };
 
     callRegisterUser()
-      .then((data) => {
+      .then(() => {
         let isRegFormLoading = false;
         commit("formLoading", isRegFormLoading);
       })
