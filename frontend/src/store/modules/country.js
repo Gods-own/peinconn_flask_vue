@@ -17,7 +17,7 @@ const getters = {
 const actions = {
   fetchCountries({ commit }) {
     let isCountryRequestLoading = true;
-    commit("countryRequestLoding", isCountryRequestLoading);
+    commit("countryRequestLoading", isCountryRequestLoading);
 
     const callGetCountries = async () => {
       const response = await getAllCountries();
@@ -28,11 +28,11 @@ const actions = {
     callGetCountries()
       .then(() => {
         let isCountryRequestLoading = false;
-        commit("countryRequestLoding", isCountryRequestLoading);
+        commit("countryRequestLoading", isCountryRequestLoading);
       })
       .catch((err) => {
         let isCountryRequestLoading = false;
-        commit("countryRequestLoding", isCountryRequestLoading);
+        commit("countryRequestLoading", isCountryRequestLoading);
         commit("countryRequestError", err);
       });
     // try {
@@ -48,7 +48,7 @@ const mutations = {
   countryRequestError: (state, error) => {
     state.error = error;
   },
-  countryRequestLoding: (state, loading) => {
+  countryRequestLoading: (state, loading) => {
     state.loading = loading;
   },
 };

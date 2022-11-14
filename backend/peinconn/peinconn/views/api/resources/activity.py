@@ -62,9 +62,9 @@ class ActivityList(Resource):
 
         try:
 
-            activities = UserActivity.query.order_by(UserActivity.id.asc())
+            activities = UserActivity.query.order_by(UserActivity.id.desc())
 
-            page = request.args.get('per_page')
+            page = request.args.get('page')
 
             per_page = request.args.get('per_page')
 
@@ -76,7 +76,7 @@ class ActivityList(Resource):
             if per_page is None:
                 per_page = 10
             else:
-                if per_page > max_per_page:
+                if int(per_page) > max_per_page:
                     per_page = 10   
                 else:
                     per_page = int(per_page)     
@@ -89,7 +89,7 @@ class ActivityList(Resource):
 
             return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': activityTransformer, 'links': links}) 
         except Exception as e:
-            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500) 
+            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later'}), 500) 
 
     @token_required
     def post(self):
@@ -105,6 +105,7 @@ class ActivityList(Resource):
 
                 activity = request.form.get('activity')
                 raw_picture = request.files['picture']
+                print(raw_picture)
                 interest_id = request.form.get('interest_id')
 
                 interest = db.session.query(Interest).filter_by(id = interest_id).one()
@@ -125,7 +126,7 @@ class ActivityList(Resource):
                 return activity_values_validation     
         except Exception as e:
             print(e)
-            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)    
+            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later {e}'}), 500)    
         
 
 class UserActivities(Resource):

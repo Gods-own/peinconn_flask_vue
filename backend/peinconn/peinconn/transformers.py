@@ -32,6 +32,7 @@ class UserSchema(ma.Schema):
 
     def get_file_url(self, obj):
         url_tupple = (current_app.config['APP_URL'], 'static', obj.userImage )
+        print(url_tupple)
 
         file_url = "/".join(url_tupple)
 

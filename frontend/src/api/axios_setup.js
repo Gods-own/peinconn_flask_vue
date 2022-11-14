@@ -9,9 +9,11 @@ const API_URL = process.env.VUE_APP_PEINCONN_APIURL;
 
 const axiosApi = axios.create({
   baseURL: API_URL,
+  headers: { "content-type": "application/x-www-form-urlencoded" },
 });
 
 axiosApi.defaults.headers.common["Authorization"] = "Bearer " + token;
+// axiosApi.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
 axiosApi.interceptors.response.use(
   (response) => response,

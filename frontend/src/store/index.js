@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 
 import auth from "./modules/auth";
 import country from "./modules/country";
+import activity from "./modules/activity";
 
 export default createStore({
   modules: {
@@ -12,6 +13,10 @@ export default createStore({
     country: {
       namespaced: true,
       ...country,
+    },
+    activity: {
+      namespaced: true,
+      ...activity,
     },
   },
 });

@@ -1,7 +1,9 @@
 <template>
   <AuthForm>
-    <form class="login-register-form" method="post">
+    <form class="login-register-form" @submit="onSubmit">
+      <LoadingCover v-show="loading" />
       <div class="form-header">
+        <ErrorMessage v-show="error" />
         <div>
           <h2>REGISTRATION</h2>
           <p>Fill the form to register</p>
@@ -40,7 +42,7 @@
         <label for="country">Country</label>
         <select class="form-control" id="country" v-model="country">
           <option value="Select">Select</option>
-          <option v-for="country in countries" :key="country.id" value="country.id">{{ country.country }}</option>
+          <option v-for="singleCountry in countries" :key="singleCountry.id" :value="singleCountry.id">{{ singleCountry.country }}</option>
         </select>
       </div>
       <div class="form-group">
@@ -61,9 +63,11 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import AuthForm from "@/components/AuthForm.vue";
+import LoadingCover from "@/components/LoadingCover.vue";
+import ErrorMessage from "@/components/requestResponse/ErrorMessage.vue";
 export default {
   name: "RegistrationForm",
-  components: { AuthForm },
+  components: { AuthForm, LoadingCover, ErrorMessage },
   data() {
     return {
       name: "",
@@ -77,6 +81,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("auth", ["loading", "error", "success"]),
     ...mapGetters("country", ["countries"]),
   },
   methods: {
@@ -95,6 +100,15 @@ export default {
       };
       if (this.password == this.confirmation) {
         this.addUser(payload);
+
+        this.name = "";
+        this.username = "";
+        this.email = "";
+        this.date_of_birth = "";
+        this.country = "";
+        this.gender = "";
+        this.password = "";
+        this.confirmation = "";
       }
     },
   },
@@ -105,5 +119,5 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/css/authForm.css";
+@import "../../assets/css/authForm.css";
 </style>

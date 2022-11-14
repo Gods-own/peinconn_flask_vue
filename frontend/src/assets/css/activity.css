@@ -1,0 +1,71 @@
+.activity-section {
+  margin-top: 20px;
+  columns: 4 200px;
+  column-gap: 1.2rem;
+  column-fill: balance;
+}
+
+.card {
+  position: relative;
+  display: inline-block;
+  break-inside: avoid;
+  border-radius: 15px;
+  background-color: transparent;
+  transition: transform 1s;
+  margin-bottom: 1rem;
+}
+
+.card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+
+.info-container,
+.profile-info-container {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  bottom: 0;
+  border-radius: 0 0 15px 15px;
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  color: #fff;
+  margin-top: 0.3rem;
+}
+
+.info-container-item-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-category {
+  margin-top: 0.2rem;
+  text-align: right;
+}
+
+.info-category,
+.profile-category {
+  word-spacing: 0.3rem;
+  font-size: 0.9rem;
+}
+.info-category span {
+  font-weight: bold;
+}
+.info-container-item {
+  display: flex;
+  align-items: center;
+}
+
+.info-container-item img {
+  width: 35px;
+  height: 35px;
+  margin-right: 0.8rem;
+  border-radius: 100%;
+}
+
+.info-container-item small,
+.profile-info-container-item small {
+  margin-right: 0.4rem;
+}

@@ -16,9 +16,10 @@ class Login(Resource):
             login_values_validation = login_request()
             if login_values_validation == True:
                 user_model = User.query.filter_by(username=request.form['username']).first()
-
+                if user_model is None:
+                    return make_response(jsonify({'success': False, 'code': 400, 'message': 'User does not exists'}), 400) 
                 if not check_password_hash(user_model.password, request.form['password']):
-                    return make_response(jsonify({'success': False, 'code': 400, 'message': 'password incorrect'}), 400) 
+                    return make_response(jsonify({'success': False, 'code': 400, 'message': 'Password incorrect'}), 400) 
                 else:
                     userTransformer = user_schema.dump(user_model)
                     secret = current_app.config["SECRET_KEY"]
@@ -35,7 +36,7 @@ class Login(Resource):
             else:
                 return login_values_validation     
         except Exception as e:
-            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)         
+            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later {e}'}), 500)         
 
 class Register(Resource):
     def post(self):

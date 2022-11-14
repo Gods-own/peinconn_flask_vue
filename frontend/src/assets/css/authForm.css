@@ -47,6 +47,7 @@
 }
 
 .login-register-form {
+  position: relative;
   padding: 0.6em 2em;
 }
 

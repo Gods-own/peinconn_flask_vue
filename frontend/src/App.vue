@@ -1,29 +1,41 @@
 <template>
-<div>
-<div v-if="isAuthenticatedRoute">
-  <router-view/>
-</div>
-  <RegistrationForm v-else>
-    <router-view/>
-  </RegistrationForm>
+  <div>
+    <AuthLayout v-if="route.meta.requiresAuth">
+      <main class="body-padding">
+        <router-view />
+      </main>
+    </AuthLayout>
+    <NonAuthLayout v-else>
+      <router-view />
+    </NonAuthLayout>
   </div>
 </template>
 
 <script>
-import RegistrationForm from './views/RegisterForm';
+import { useRoute, useRouter } from "vue-router";
+import { onMounted } from "vue";
+import AuthLayout from "@/components/layout/AuthLayout.vue";
+import NonAuthLayout from "@/components/layout/NonAuthLayout.vue";
 export default {
   name: "App",
-  components: {
-    RegistrationForm,
-  },
+  components: { AuthLayout, NonAuthLayout },
   data() {
     return {
-      isAuthenticatedRoute: this.$route.meta.requiresAuth
-    }
-  }
+      isAuthenticatedRoute: false,
+    };
+  },
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+
+    onMounted(async () => {
+      await router.isReady();
+    });
+    return { route };
+  },
 };
 </script>
 
 <style>
-
+@import "./assets/css/commonStyle.css";
 </style>

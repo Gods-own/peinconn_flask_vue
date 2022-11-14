@@ -1,4 +1,4 @@
-import { registerUser } from "@/api/backend_helper";
+import { registerUser, loginUser } from "@/api/backend_helper";
 
 const state = {
   loading: false,
@@ -13,25 +13,95 @@ const getters = {
 };
 
 const actions = {
+  // addUser({ commit }, registration_payload) {
+  //   let isRegFormLoading = true;
+  //   commit("formLoading", isRegFormLoading);
+  //   console.log(registration_payload);
+
+  //   const callRegisterUser = async () => {
+  //     console.log(registration_payload);
+  //     const response = await registerUser(registration_payload);
+  //     console.log(response);
+  //     commit("setAuthUser", response.data);
+  //     console.log(response);
+  //     return response;
+  //   };
+
+  //   callRegisterUser()
+  //     .then(() => {
+  //       let isRegFormLoading = false;
+  //       commit("formLoading", isRegFormLoading);
+  //       commit("registrationSuccess");
+  //     })
+  //     .catch((err) => {
+  //       let isRegFormLoading = false;
+  //       console.log(err);
+  //       commit("formLoading", isRegFormLoading);
+  //       commit("registrationError", err);
+  //     });
+  //   // try {
+  //   //   commit("setAuthUser", response.data);
+  //   // } catch (error) {
+  //   //   commit("registrationError", error);
+  //   // }
+  // },
   addUser({ commit }, registration_payload) {
-    let isRegFormLoading = true;
-    commit("formLoding", isRegFormLoading);
+    let isFormLoading = true;
+    commit("formLoading", isFormLoading);
+    console.log(registration_payload);
 
     const callRegisterUser = async () => {
+      console.log(registration_payload);
       const response = await registerUser(registration_payload);
+      console.log(response);
       commit("setAuthUser", response.data);
+      console.log(response);
       return response;
     };
 
     callRegisterUser()
       .then(() => {
-        let isRegFormLoading = false;
-        commit("formLoading", isRegFormLoading);
+        let isFormLoading = false;
+        commit("formLoading", isFormLoading);
+        commit("authSuccess");
       })
       .catch((err) => {
-        let isRegFormLoading = false;
-        commit("formLoading", isRegFormLoading);
-        commit("registrationError", err);
+        let isFormLoading = false;
+        console.log(err);
+        commit("formLoading", isFormLoading);
+        commit("authError", err);
+      });
+    // try {
+    //   commit("setAuthUser", response.data);
+    // } catch (error) {
+    //   commit("registrationError", error);
+    // }
+  },
+  authenticateUser({ commit }, login_payload) {
+    let isFormLoading = true;
+    commit("formLoading", isFormLoading);
+    console.log(login_payload);
+
+    const callLoginUser = async () => {
+      console.log(login_payload);
+      const response = await loginUser(login_payload);
+      console.log(response);
+      commit("setAuthUser", response.data);
+      console.log(response);
+      return response;
+    };
+
+    callLoginUser()
+      .then(() => {
+        let isFormLoading = false;
+        commit("formLoading", isFormLoading);
+        commit("authSuccess");
+      })
+      .catch((err) => {
+        let isFormLoading = false;
+        console.log(err);
+        commit("formLoading", isFormLoading);
+        commit("authError", err);
       });
     // try {
     //   commit("setAuthUser", response.data);
@@ -44,10 +114,18 @@ const actions = {
 const mutations = {
   setAuthUser: (state, user) => {
     const parsed = JSON.stringify(user);
+    if (localStorage.getItem("authenticatedUser")) {
+      localStorage.removeItem("authenticatedUser");
+    }
     localStorage.setItem("authenticatedUser", parsed);
   },
-  registrationError: (state, error) => {
+  authError: (state, error) => {
     state.error = error;
+    state.success = false;
+  },
+  authSuccess: (state) => {
+    state.error = null;
+    state.success = true;
   },
   formLoading: (state, loading) => {
     state.loading = loading;
