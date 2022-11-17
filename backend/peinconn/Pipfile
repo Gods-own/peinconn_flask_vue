@@ -20,6 +20,7 @@ pyjwt = "==1.4.2"
 flask-socketio = "*"
 eventlet = "*"
 flask-cors = "*"
+essential-generators = "*"
 
 [dev-packages]
 

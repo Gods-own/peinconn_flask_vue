@@ -1,12 +1,15 @@
 <template>
   <div class="response-container error">
-    <p>{{ eeMessage }}</p>
+    <p>{{ errorMessage }}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: "ErrorMessage",
+  props: {
+    errorMessage: String,
+  },
 };
 </script>
 

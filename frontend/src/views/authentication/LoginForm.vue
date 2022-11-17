@@ -3,7 +3,7 @@
     <form class="login-register-form" @submit="onSubmit">
       <LoadingCover v-show="loading" />
       <div class="form-header">
-        <ErrorMessage v-show="error" />
+        <ErrorMessage v-show="error" errorMessage="bad" />
         <div>
           <h2>LOGIN</h2>
           <p>Fill the form to login</p>

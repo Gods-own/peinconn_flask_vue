@@ -171,5 +171,51 @@ class UserActivities(Resource):
             return jsonify({'success': True, 'code': 200, 'message': 'Activity retrieved Successfully', 'data': activityTransformer, 'links': links})
   
         except Exception as e:
-            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)    
+            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)   
+
+class ActivityListForUserInterests(Resource):
+
+    @token_required
+    def get(self):
+
+        try:
+            auth_user = get_current_user()
+
+            user_model = User.query.filter(User.interests.any(User.id==auth_user['id'])).all()
+
+            user_interests = user_model[0].interests
+
+            user_interests_id = []
+
+            for user_interest in user_interests:
+                user_interests_id.append(user_interest.id)
+
+            activities = UserActivity.query.filter(UserActivity.user_id==auth_user['id'], UserActivity.interest_id.in_(user_interests_id)).order_by(UserActivity.id.desc())
+
+            page = request.args.get('page')
+
+            per_page = request.args.get('per_page')
+
+            max_per_page =  12
+
+            if page is not None:
+                page = int(page)
+
+            if per_page is None:
+                per_page = 10
+            else:
+                if int(per_page) > max_per_page:
+                    per_page = 10   
+                else:
+                    per_page = int(per_page)     
+
+            activities = activities.paginate(page=page, per_page=per_page, max_per_page=max_per_page)
+
+            activityTransformer = activities_schema.dump(activities)
+
+            links = get_pagination('api.activitylist', activities)
+
+            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': activityTransformer, 'links': links}) 
+        except Exception as e:
+            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later'}), 500)               
                

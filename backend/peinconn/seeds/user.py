@@ -7,26 +7,11 @@ import hashlib
 from werkzeug.utils import secure_filename
 
 class UserSeeder(Seeder):
-    # def run(self):
-    #     fakers = []
-    #     for key, value in countries.items():
-    #         faker = Faker(
-    #             cls=Country,
-    #             init={
-    #                 "country_abbrev": key,
-    #                 "country": value.lower()
-    #             }
-    #         )
-    #         fakers.append(faker)
-
-    #     for faker in fakers:
-    #         for country in faker.create(1):  
-    #             self.db.session.add(country) 
 
     def run(self):
     # Create a new Faker and tell it how to create User objects
         countries_id = [233,220,237,201,160,155]
-        gender = ['male', 'female']
+        genders = ['male', 'female']
         password = generate_password_hash('good')
 
         path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/fake_profile_pic'
@@ -49,16 +34,20 @@ class UserSeeder(Seeder):
             init={
                 "name": generator.Name(),
                 # "age": generator.Integer(start=20, end=100),
-                "date_of_birth": datetime.date(random.randint(1959, 2005), random.randint(1, 12), random.randint(10, 28)),
-                "country_id": random.choice(countries_id),
+                "date_of_birth": None,
+                "country_id": None,
                 "username": generator.Name(),
-                "gender": random.choice(gender),
+                "gender": None,
                 "email": generator.Email(),
                 "password": password,
-                "userImage": random.choice(new_dir_path)
+                "userImage": None
             }
         )
 
-        for x in range(0, 5):
-            for singleUser in faker.create(1):  
+        for x in dir_path:
+            for singleUser in faker.create(1): 
+                singleUser.date_of_birth = datetime.date(random.randint(1959, 2005), random.randint(1, 12), random.randint(10, 28))
+                singleUser.country_id = random.choice(countries_id)
+                singleUser.gender = random.choice(genders)
+                singleUser.userImage = random.choice(new_dir_path)
                 self.db.session.add(singleUser)          
