@@ -5,7 +5,7 @@ export const REGISTER_INTEREST = `interest_registration`;
 
 //ACTIVITY
 export const CREATE_ACTIVITY = `activities`;
-export const GET_ACTIVITIES = `activities`;
+export const GET_ACTIVITIES = `user_interests_activities`;
 export const GET_SINGLE_ACTIVITY = `activities`;
 export const UPDATE_SINGLE_ACTIVITY = `activities`;
 export const GET_USER_ACTIVITIES = `user_activities`;

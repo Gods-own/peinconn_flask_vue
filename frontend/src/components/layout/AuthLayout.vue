@@ -13,7 +13,7 @@
               <a href="index.html">Home</a>
             </li>
             <li class="nav-list addPost">
-              <a href="createActivity.html">Create Post</a>
+              <a @click="showAddModal">Create Post</a>
             </li>
             <!-- <li class="nav-list search-icon">
               <a href="search.html"
@@ -94,6 +94,12 @@ export default {
       authUser: currUser,
     };
   },
+  methods: {
+    showAddModal() {
+      this.$emit("showAddModalFunc");
+    },
+  },
+  emits: ["showAddModalFunc"],
 };
 </script>
 

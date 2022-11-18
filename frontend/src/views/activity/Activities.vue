@@ -1,5 +1,6 @@
 <template>
   <div>
+    <CreateActivity v-show="showCreateModal" @hide-modal-func="$emit('hideModalFunc')" />
     <section class="main-section">
       <div class="activity-section">
         <article v-for="singleActivity in allActivities" :key="singleActivity.id" class="card">
@@ -30,14 +31,26 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import CreateActivity from "@/components/CreateActivity.vue";
+
 export default {
   name: "ActivitiesPage",
+  components: { CreateActivity },
   computed: {
     ...mapGetters("activity", ["allActivities"]),
   },
   methods: {
     ...mapActions("activity", ["fetchActivities"]),
   },
+  data() {
+    return {
+      showAddModal: false,
+    };
+  },
+  props: {
+    showCreateModal: Boolean,
+  },
+  emits: ["hideModalFunc"],
   created() {
     this.fetchActivities();
   },

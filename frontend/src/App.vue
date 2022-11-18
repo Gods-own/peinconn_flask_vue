@@ -1,8 +1,8 @@
 <template>
   <div>
-    <AuthLayout v-if="route.meta.requiresAuth">
+    <AuthLayout v-if="route.meta.requiresAuth" @show-add-modal-func="toggleAddModal">
       <main class="body-padding">
-        <router-view />
+        <router-view :showCreateModal="showAddModal" @hide-modal-func="hideModal" />
       </main>
     </AuthLayout>
     <NonAuthLayout v-else>
@@ -22,7 +22,16 @@ export default {
   data() {
     return {
       isAuthenticatedRoute: false,
+      showAddModal: false,
     };
+  },
+  methods: {
+    toggleAddModal() {
+      this.showAddModal = true;
+    },
+    hideModal() {
+      this.showAddModal = false;
+    },
   },
   setup() {
     const route = useRoute();
