@@ -1,4 +1,4 @@
-import { getAllActivities } from "@/api/backend_helper";
+import { getAllActivities, createActivity } from "@/api/backend_helper";
 
 const state = {
   allActivities: [],
@@ -39,17 +39,44 @@ const actions = {
         commit("requestLoading", isRequestLoading);
         commit("requestError", err);
       });
-    // try {
-    //   commit("setAuthUser", response.data);
-    // } catch (error) {
-    //   commit("registrationError", error);
-    // }
+  },
+
+  addActivity({ commit }, activity_data) {
+    let isRequestLoading = true;
+    commit("requestLoading", isRequestLoading);
+    console.log([...activity_data]);
+
+    const callCreateActivity = async () => {
+      console.log(activity_data);
+      const response = await createActivity(activity_data);
+      console.log(response);
+      commit("newActivity", response.data);
+      console.log(response);
+      return response;
+    };
+
+    callCreateActivity()
+      .then(() => {
+        let isRequestLoading = false;
+        commit("requestLoading", isRequestLoading);
+        commit("requestSuccess");
+      })
+      .catch((err) => {
+        let isRequestLoading = false;
+        console.log(err);
+        commit("requestLoading", isRequestLoading);
+        commit("requestError", err);
+      });
   },
 };
 
 const mutations = {
   setActivities: (state, activities) => {
     state.allActivities = activities;
+  },
+  newActivity: (state, activity) => {
+    // photo.liked = false
+    state.allActivities.unshift(activity);
   },
   requestError: (state, error) => {
     state.error = error;

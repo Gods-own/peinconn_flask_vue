@@ -24,3 +24,4 @@ export const GET_COUNTRIES = `countries`;
 
 //INTEREST
 export const GET_INTERESTS = `interests`;
+export const GET_USER_INTERESTS = `user_interests`;

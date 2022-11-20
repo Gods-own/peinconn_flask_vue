@@ -49,7 +49,8 @@ export default {
         username: this.username,
         password: this.password,
       };
-      this.authenticateUser(payload);
+      const searchParams = new URLSearchParams(payload);
+      this.authenticateUser(searchParams);
 
       this.username = "";
       this.password = "";

@@ -3,6 +3,7 @@ from peinconn.peinconn.models import User, Interest, Activity
 from peinconn.peinconn.helpers.jwt_auth import get_current_user
 
 def activity_request():
+    print(request.form.to_dict())
     activity = request.form.get('activity')
     interest_id = request.form.get('interest_id')
     picture = request.files['picture']
@@ -10,8 +11,6 @@ def activity_request():
     user = get_current_user()
 
     user_model = User.query.filter(User.interests.any(User.id==user['id'])).all()
-
-    # hhh = User.query.filter(User.interests.any(id=session['user_id'])).all()
 
     if not activity:
         return make_response(jsonify({'success': False, 'code': 400, 'message': 'Activity is required'}), 400)

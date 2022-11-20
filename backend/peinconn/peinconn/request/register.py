@@ -3,6 +3,7 @@ from peinconn.peinconn.helpers.utils import uniqueColumn
 from peinconn.peinconn.models import User
 
 def registration_request():
+    print(request.form.to_dict())
     username = request.form.get('username')
     name = request.form.get('name')
     email = request.form.get('email')

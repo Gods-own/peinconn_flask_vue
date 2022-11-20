@@ -22,3 +22,4 @@ export const getAllCountries = () => get(url.GET_COUNTRIES);
 
 //INTEREST
 export const getAllInterests = () => get(url.GET_INTERESTS);
+export const getAllUserInterests = () => get(url.GET_USER_INTERESTS);

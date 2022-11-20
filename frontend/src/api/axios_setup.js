@@ -9,7 +9,7 @@ const API_URL = process.env.VUE_APP_PEINCONN_APIURL;
 
 const axiosApi = axios.create({
   baseURL: API_URL,
-  headers: { "content-type": "application/x-www-form-urlencoded" },
+  // headers: { "content-type": "application/x-www-form-urlencoded" },
 });
 
 axiosApi.defaults.headers.common["Authorization"] = "Bearer " + token;
@@ -25,7 +25,7 @@ export async function get(url, config = {}) {
 }
 
 export async function post(url, data, config = {}) {
-  return axiosApi.post(url, { ...data }, { ...config }).then((response) => response.data);
+  return axiosApi.post(url, { ...data }, { transformRequest: () => data, ...config }).then((response) => response.data);
 }
 
 export async function put(url, data, config = {}) {

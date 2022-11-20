@@ -183,6 +183,9 @@ class ActivityListForUserInterests(Resource):
 
             user_model = User.query.filter(User.interests.any(User.id==auth_user['id'])).all()
 
+            if len(user_model) == 0:
+                return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': []}) 
+
             user_interests = user_model[0].interests
 
             user_interests_id = []

@@ -28,7 +28,7 @@ class User(Resource):
     @token_required
     def put(self):
 
-        # try:
+        try:
             profile_values_validation = profile_update_request()
 
             if profile_values_validation == True:
@@ -62,12 +62,12 @@ class User(Resource):
                 return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Updated Successfully'}), 201)
             else:
                 return profile_values_validation     
-        # except Exception as e:
-        #     return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)
+        except Exception as e:
+            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)
 
 class AllUserDetails(Resource):
 
-    # @token_required
+    @token_required
     def get(self):
 
         try:

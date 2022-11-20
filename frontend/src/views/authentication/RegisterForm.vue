@@ -98,8 +98,9 @@ export default {
         gender: this.gender,
         password: this.password,
       };
+      const searchParams = new URLSearchParams(payload);
       if (this.password == this.confirmation) {
-        this.addUser(payload);
+        this.addUser(searchParams);
 
         this.name = "";
         this.username = "";
