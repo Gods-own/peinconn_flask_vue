@@ -131,13 +131,11 @@ class ActivityList(Resource):
 
 class UserActivities(Resource):
     @token_required
-    def get(self):
+    def get(self, user_id):
 
         try:
 
-            auth_user = get_current_user()
-
-            user_activities = UserActivity.query.filter_by(user_id=auth_user['id']).order_by(UserActivity.id.asc())
+            user_activities = UserActivity.query.filter_by(user_id=user_id).order_by(UserActivity.id.asc())
 
             page = request.args.get('per_page')
 
@@ -193,7 +191,7 @@ class ActivityListForUserInterests(Resource):
             for user_interest in user_interests:
                 user_interests_id.append(user_interest.id)
 
-            activities = UserActivity.query.filter(UserActivity.user_id==auth_user['id'], UserActivity.interest_id.in_(user_interests_id)).order_by(UserActivity.id.desc())
+            activities = UserActivity.query.filter(UserActivity.interest_id.in_(user_interests_id)).order_by(UserActivity.id.desc())
 
             page = request.args.get('page')
 

@@ -164,7 +164,7 @@
     </div>
 
     <div class="chat-form">
-      <form class="form-message" method="POST">
+      <form @submit="sendChat" class="form-message" method="POST">
         <input id="chat-message-input" type="text" />
         <button id="chat-message-submit" type="submit">
           <i class="fa fa-paper-plane"></i>
@@ -173,3 +173,16 @@
     </div>
   </div>
 </template>
+
+<script>
+import socketioService from "../services/socketio.service.js";
+export default {
+  name: "MessageView",
+  methods: {
+    sendChat(e) {
+      e.preventDefault();
+      socketioService.on("");
+    },
+  },
+};
+</script>

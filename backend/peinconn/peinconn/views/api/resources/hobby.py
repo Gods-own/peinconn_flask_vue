@@ -17,11 +17,10 @@ class InterestList(Resource):
 
 class UserInterestList(Resource):
     @token_required
-    def get(self):
+    def get(self, user_id):
         try:
-            user = get_current_user()
 
-            user_model = User.query.filter(User.interests.any(User.id==user['id'])).all()
+            user_model = User.query.filter(User.interests.any(User.id==user_id)).all()
 
             if len(user_model) == 0: 
                 return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Interests Successfully', 'data': []})

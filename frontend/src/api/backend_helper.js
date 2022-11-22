@@ -11,15 +11,16 @@ export const createActivity = (activity_data) => post(url.CREATE_ACTIVITY, activ
 export const getAllActivities = () => get(url.GET_ACTIVITIES);
 export const getSingleActivity = (activity_id) => get(`${url.GET_SINGLE_ACTIVITY}/${activity_id}`);
 export const updateSingleActivity = (activity_id) => put(`${url.UPDATE_SINGLE_ACTIVITY}/${activity_id}`);
-export const getUserActivities = () => get(url.GET_USER_ACTIVITIES);
+export const getUserActivities = (user_id) => get(`${url.GET_USER_ACTIVITIES}/${user_id}`);
 
 //LIKE
 
 //USER
+export const getUserProfile = (user_id) => get(`${url.GET_USER_PROFILE}/${user_id}`);
 
 //COUNTRY
 export const getAllCountries = () => get(url.GET_COUNTRIES);
 
 //INTEREST
 export const getAllInterests = () => get(url.GET_INTERESTS);
-export const getAllUserInterests = () => get(url.GET_USER_INTERESTS);
+export const getAllUserInterests = (user_id) => get(`${url.GET_USER_INTERESTS}/${user_id}`);

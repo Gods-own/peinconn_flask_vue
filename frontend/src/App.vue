@@ -13,7 +13,6 @@
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import SocketioService from "./services/socketio.service.js";
 import { onMounted } from "vue";
 import AuthLayout from "@/components/layout/AuthLayout.vue";
 import NonAuthLayout from "@/components/layout/NonAuthLayout.vue";
@@ -42,12 +41,6 @@ export default {
       await router.isReady();
     });
     return { route };
-  },
-  created() {
-    SocketioService.setupSocketConnection();
-  },
-  beforeUnmount() {
-    SocketioService.disconnect();
   },
 };
 </script>

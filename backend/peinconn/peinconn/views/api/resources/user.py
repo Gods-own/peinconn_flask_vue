@@ -11,13 +11,13 @@ from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
 class User(Resource):
 
     @token_required
-    def get(self):
+    def get(self, user_id):
 
         try:
 
-            auth_user = get_current_user()
+            user_model = AuthUser.query.filter_by(id=user_id).one()
 
-            user_model = AuthUser.query.filter_by(id=auth_user['id']).one()
+            print(user_model)
 
             userTransformer = user_schema.dump(user_model)
 
@@ -68,13 +68,11 @@ class User(Resource):
 class AllUserDetails(Resource):
 
     @token_required
-    def get(self):
+    def get(self, user_id):
 
         try:
 
-            auth_user = get_current_user()
-
-            user_model = AuthUser.query.filter_by(id=auth_user['id']).one()
+            user_model = AuthUser.query.filter_by(id=user_id).one()
 
             userTransformer = user_details_schema.dump(user_model)
 

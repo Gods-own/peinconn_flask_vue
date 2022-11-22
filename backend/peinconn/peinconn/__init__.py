@@ -24,10 +24,10 @@ def create_app():
 
     return app
 
-@socketio.on('connect', namespace='/login')
+@socketio.on('connect')
 def test_connect():
     print('connected')
-    emit('my broadcast', {'data': 'Connected'}, namespace='/login')    
+    emit('my broadcast', {'data': 'Connected'})    
    
  
 

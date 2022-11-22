@@ -42,7 +42,10 @@
               </div>
             </li>
             <li class="nav-list messages">
-              <a href=""><i class="fa fa-comment" aria-hidden="true"></i><span class="notification">2</span></a>
+              <router-link :to="{ name: 'ChatRoom' }">
+                <i class="fa fa-comment" aria-hidden="true"></i>
+                <span class="notification">2</span>
+              </router-link>
             </li>
             <li class="nav-list search-icon">
               <a href="search.html"><i class="fa fa-search" aria-hidden="true"></i></a>

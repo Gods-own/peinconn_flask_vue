@@ -2,24 +2,31 @@ import { createRouter, createWebHistory } from "vue-router";
 import RegistrationForm from "../views/authentication/RegisterForm";
 import LoginForm from "../views/authentication/LoginForm";
 import ActivitiesPage from "../views/activity/Activities";
+import DirectInbox from "../views/message/ChatRoom";
 
 const routes = [
   {
     path: "/register",
-    name: "register",
+    name: "Register",
     component: RegistrationForm,
     meta: { requiresAuth: false },
   },
   {
     path: "/login",
-    name: "login",
+    name: "Login",
     component: LoginForm,
     meta: { requiresAuth: false },
   },
   {
     path: "/activities",
-    name: "activities",
+    name: "Activities",
     component: ActivitiesPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/direct/inbox/:room?",
+    name: "ChatRoom",
+    component: DirectInbox,
     meta: { requiresAuth: true },
   },
 ];
