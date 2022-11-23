@@ -17,7 +17,6 @@ export default {
   name: "DirectInbox",
   components: { MessageList, MessageView },
   created() {
-    // socketioService.connect();
     socketioService.on("connect", () => {
       alert("connected");
     });

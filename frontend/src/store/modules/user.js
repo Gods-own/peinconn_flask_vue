@@ -1,4 +1,4 @@
-import { getUserProfile } from "@/api/backend_helper";
+import { getUserProfile, getUserActivities } from "@/api/backend_helper";
 
 const state = {
   userProfile: {},
@@ -42,11 +42,39 @@ const actions = {
         commit("requestError", err);
       });
   },
+  fetchUserActivities({ commit }, user_id) {
+    let isRequestLoading = true;
+    commit("requestLoading", isRequestLoading);
+
+    const callGetUserActivities = async () => {
+      const response = await getUserActivities(user_id);
+      console.log(response);
+      commit("setUserActivities", response.data);
+      console.log(response);
+      return response;
+    };
+
+    callGetUserActivities()
+      .then(() => {
+        let isRequestLoading = false;
+        commit("requestLoading", isRequestLoading);
+        commit("requestSuccess");
+      })
+      .catch((err) => {
+        let isRequestLoading = false;
+        console.log(err);
+        commit("requestLoading", isRequestLoading);
+        commit("requestError", err);
+      });
+  },
 };
 
 const mutations = {
   setUser: (state, user) => {
     state.userProfile = user;
+  },
+  setUserActivities: (state, activities) => {
+    state.userActivities = activities;
   },
   requestError: (state, error) => {
     state.error = error;

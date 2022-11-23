@@ -4,6 +4,8 @@ import auth from "./modules/auth";
 import country from "./modules/country";
 import interest from "./modules/interest";
 import activity from "./modules/activity";
+import user from "./modules/user";
+import chat from "./modules/chat";
 
 export default createStore({
   modules: {
@@ -22,6 +24,14 @@ export default createStore({
     interest: {
       namespaced: true,
       ...interest,
+    },
+    user: {
+      namespaced: true,
+      ...user,
+    },
+    chat: {
+      namespaced: true,
+      ...chat,
     },
   },
 });

@@ -3,6 +3,7 @@ import RegistrationForm from "../views/authentication/RegisterForm";
 import LoginForm from "../views/authentication/LoginForm";
 import ActivitiesPage from "../views/activity/Activities";
 import DirectInbox from "../views/message/ChatRoom";
+import UserProfile from "../views/profile/UserProfile";
 
 const routes = [
   {
@@ -27,6 +28,12 @@ const routes = [
     path: "/direct/inbox/:room?",
     name: "ChatRoom",
     component: DirectInbox,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/profile/:userId",
+    name: "Profile",
+    component: UserProfile,
     meta: { requiresAuth: true },
   },
 ];

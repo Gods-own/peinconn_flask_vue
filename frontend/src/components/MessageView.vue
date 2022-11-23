@@ -178,6 +178,11 @@
 import socketioService from "../services/socketio.service.js";
 export default {
   name: "MessageView",
+  data() {
+    return {
+      roomName: this.$route.params.room,
+    };
+  },
   methods: {
     sendChat(e) {
       e.preventDefault();

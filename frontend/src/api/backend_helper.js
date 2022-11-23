@@ -24,3 +24,6 @@ export const getAllCountries = () => get(url.GET_COUNTRIES);
 //INTEREST
 export const getAllInterests = () => get(url.GET_INTERESTS);
 export const getAllUserInterests = (user_id) => get(`${url.GET_USER_INTERESTS}/${user_id}`);
+
+//Room
+export const getRoomStatus = (user1_id, user2_id) => get(`${url.CHECK_ROOM_EXISTS}/${user1_id}/${user2_id}`);
