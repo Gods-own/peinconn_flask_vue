@@ -1,14 +1,14 @@
 import { getRoomStatus } from "@/api/backend_helper";
 
 const state = {
-  roomStatus: false,
+  roomInfo: false,
   loading: false,
   error: null,
   success: false,
 };
 
 const getters = {
-  roomStatus: (state) => state.roomStatus,
+  roomInfo: (state) => state.roomInfo,
   loading: (state) => state.loading,
   error: (state) => state.error,
   success: (state) => state.success,
@@ -43,8 +43,8 @@ const actions = {
 };
 
 const mutations = {
-  setRoomStatus: (state, status) => {
-    state.roomStatus = status;
+  setRoomStatus: (state, roomInfo) => {
+    state.roomStatus = roomInfo;
   },
   requestError: (state, error) => {
     state.error = error;

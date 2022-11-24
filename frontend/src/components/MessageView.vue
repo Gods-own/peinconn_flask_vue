@@ -165,7 +165,7 @@
 
     <div class="chat-form">
       <form @submit="sendChat" class="form-message" method="POST">
-        <input id="chat-message-input" type="text" />
+        <input id="chat-message-input" v-model="chat_message" type="text" />
         <button id="chat-message-submit" type="submit">
           <i class="fa fa-paper-plane"></i>
         </button>
@@ -176,18 +176,34 @@
 
 <script>
 import socketioService from "../services/socketio.service.js";
+import { currUser } from "../api/jwt-access-token";
 export default {
   name: "MessageView",
   data() {
     return {
+      chat_message: "",
       roomName: this.$route.params.room,
     };
   },
   methods: {
     sendChat(e) {
       e.preventDefault();
-      socketioService.on("");
+      let socketData = {
+        user_id: currUser.id,
+        room: this.roomName,
+        message: this.chat_message,
+        user1_id: currUser.id,
+        user2_id: this.$route.params.userId,
+      };
+      socketioService.emit("join", JSON.stringify(socketData));
     },
+  },
+  created() {
+    let socketData = {
+      username: currUser.username,
+      room: this.$route.params.room,
+    };
+    socketioService.emit("join", JSON.stringify(socketData));
   },
 };
 </script>

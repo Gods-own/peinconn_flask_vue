@@ -111,4 +111,27 @@ class LikedSchema(ma.Schema):
         activity = ma.Nested("ActivitySchema", exclude=("user",)) 
 
 #Init Liked Schema
-liked_schema = LikedSchema()        
+liked_schema = LikedSchema()   
+
+#Room Schema
+class RoomSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'room', 'user1', 'user2', 'created_At', 'updated_At')   
+
+    user1 = ma.Nested(UserSchema)
+    user2 = ma.Nested(UserSchema)    
+
+#Init Room Schema
+room_schema = RoomSchema() 
+
+#Message Schema
+class MessageSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'user', 'room', 'content', 'created_At', 'updated_At')
+
+    user = ma.Nested(UserSchema)
+    room = ma.Nested(RoomSchema(exclude=("user1", "user2",)))        
+
+#Init Message Schema
+message_schema = MessageSchema() 
+messages_schema = MessageSchema(many=True) 

@@ -17,9 +17,10 @@ class CheckChatRoom(Resource):
             result2 = Room.query.filter_by(user1_id = userId2, user2_id = userId1).first()
 
             if result1 is None and result2 is None:
-                return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': False})
+                return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Room Successfully', 'data': {'status': False, 'room_name':None}})
             else:
-                return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': True})    
+                room = Room.query.filter((User.user1_id == userId1, User.user2_id == userId2) | (User.user1_id == userId2, User.user2_id == userId1)).first()
+                return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Room Successfully', 'data': {'status': True, 'room_name':room.room}})    
 
         except Exception as e:
            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)

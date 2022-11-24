@@ -13,12 +13,24 @@
 import socketioService from "../../services/socketio.service.js";
 import MessageList from "@/components/MessageList";
 import MessageView from "@/components/MessageView";
+import { currUser } from "../../api/jwt-access-token.js";
 export default {
   name: "DirectInbox",
   components: { MessageList, MessageView },
+  data() {
+    return {
+      roomName: this.$route.params.room,
+    };
+  },
   created() {
+    socketioService.connect();
     socketioService.on("connect", () => {
-      alert("connected");
+      console.log(currUser);
+      let socketData = {
+        username: currUser.username,
+        room: this.$route.params.room,
+      };
+      socketioService.emit("join", JSON.stringify(socketData));
     });
   },
   beforeUnmount() {

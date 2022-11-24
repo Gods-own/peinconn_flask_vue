@@ -15,7 +15,7 @@
           <div class="action-btns">
             <button v-if="isAuthenticatedUserProfile">Edit Profile</button>
             <button @click="onMessage" v-else>
-              <router-link :to="{ name: 'ChatRoom', params: { room: getRoomName } }">Message</router-link>
+              <router-link :to="{ name: 'ChatRoom', params: { userId: userId, room: getRoomName } }">Message</router-link>
             </button>
           </div>
         </div>
@@ -37,6 +37,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import generateName from "../services/generateRoomName.service.js";
+// import socketioService from "../services/socketio.service.js";
+// import { currUser } from "../api/jwt-access-token";
 export default {
   name: "ProfileInfoSection",
   data() {
@@ -47,13 +49,14 @@ export default {
   },
   computed: {
     ...mapGetters("user", ["userProfile"]),
-    ...mapGetters("chat", ["roomStatus"]),
+    ...mapGetters("chat", ["roomInfo"]),
     isAuthenticatedUserProfile() {
       let checkifmatch = this.authUser.user.id == this.userId ? true : false;
       return checkifmatch;
     },
     getRoomName() {
-      let roomName = generateName(this.authUser.user, this.userProfile);
+      let roomName = this.roomInfo.status ? this.roomInfo.room_name : generateName(this.authUser.user, this.userProfile);
+      console.log(roomName);
       return roomName;
     },
   },
@@ -61,7 +64,11 @@ export default {
     ...mapActions("user", ["fetchUserProfile"]),
     ...mapActions("chat", ["fetchRoomStatus"]),
     // onMessage() {
-    //     if(this)
+    //   let socketData = {
+    //     username: currUser.username,
+    //     room: this.roomName,
+    //   };
+    //   socketioService.emit("join", JSON.stringify(socketData));
     // },
   },
   created() {
