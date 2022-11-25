@@ -15,7 +15,7 @@
           <div class="action-btns">
             <button v-if="isAuthenticatedUserProfile">Edit Profile</button>
             <button @click="onMessage" v-else>
-              <router-link :to="{ name: 'ChatRoom', params: { userId: userId, room: getRoomName } }">Message</router-link>
+              <router-link :to="{ name: 'ChatRoom', params: { userId: userProfile.id, room: getRoomName } }">Message</router-link>
             </button>
           </div>
         </div>
@@ -38,31 +38,30 @@
 import { mapGetters, mapActions } from "vuex";
 import generateName from "../services/generateRoomName.service.js";
 // import socketioService from "../services/socketio.service.js";
-// import { currUser } from "../api/jwt-access-token";
+import { currUser } from "../api/jwt-access-token";
 export default {
   name: "ProfileInfoSection",
   data() {
     return {
-      userId: this.$route.params.userId,
-      authUser: JSON.parse(localStorage.getItem("authenticatedUser")),
+      authUser: currUser,
     };
   },
   computed: {
     ...mapGetters("user", ["userProfile"]),
     ...mapGetters("chat", ["roomInfo"]),
     isAuthenticatedUserProfile() {
-      let checkifmatch = this.authUser.user.id == this.userId ? true : false;
+      let checkifmatch = this.authUser.id == this.userProfile.id ? true : false;
       return checkifmatch;
     },
     getRoomName() {
-      let roomName = this.roomInfo.status ? this.roomInfo.room_name : generateName(this.authUser.user, this.userProfile);
-      console.log(roomName);
+      let roomName = this.roomInfo.status ? this.roomInfo.room_name : generateName(this.authUser, this.userProfile);
+      console.log(roomName, this.roomInfo);
       return roomName;
     },
   },
   methods: {
     ...mapActions("user", ["fetchUserProfile"]),
-    ...mapActions("chat", ["fetchRoomStatus"]),
+    ...mapActions("chat", ["fetchRoomInfo"]),
     // onMessage() {
     //   let socketData = {
     //     username: currUser.username,
@@ -73,13 +72,14 @@ export default {
   },
   created() {
     let authUser = JSON.parse(localStorage.getItem("authenticatedUser"));
-    this.fetchUserProfile(this.userId);
-    if (authUser.user.id != this.userId) {
+    console.log(this.$route.params);
+    this.fetchUserProfile(this.$route.params.userId);
+    if (authUser.user.id != this.$route.params.userId) {
       const payload = {
         user1_id: authUser.user.id,
-        user2_id: this.userId,
+        user2_id: this.$route.params.userId,
       };
-      this.fetchRoomStatus(payload);
+      this.fetchRoomInfo(payload);
     }
   },
 };

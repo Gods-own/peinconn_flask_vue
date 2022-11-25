@@ -1,7 +1,7 @@
 import { getRoomStatus } from "@/api/backend_helper";
 
 const state = {
-  roomInfo: false,
+  roomInfo: {},
   loading: false,
   error: null,
   success: false,
@@ -15,19 +15,19 @@ const getters = {
 };
 
 const actions = {
-  fetchRoomStatus({ commit }, { user1_id, user2_id }) {
+  fetchRoomInfo({ commit }, { user1_id, user2_id }) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
 
-    const callGetRoomStatus = async () => {
+    const callGetRoomInfo = async () => {
       const response = await getRoomStatus(user1_id, user2_id);
       console.log(response);
-      commit("setRoomStatus", response.data);
+      commit("setRoomInfo", response.data);
       console.log(response);
       return response;
     };
 
-    callGetRoomStatus()
+    callGetRoomInfo()
       .then(() => {
         let isRequestLoading = false;
         commit("requestLoading", isRequestLoading);
@@ -43,8 +43,8 @@ const actions = {
 };
 
 const mutations = {
-  setRoomStatus: (state, roomInfo) => {
-    state.roomStatus = roomInfo;
+  setRoomInfo: (state, roomdata) => {
+    state.roomInfo = roomdata;
   },
   requestError: (state, error) => {
     state.error = error;

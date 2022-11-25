@@ -198,12 +198,5 @@ export default {
       socketioService.emit("join", JSON.stringify(socketData));
     },
   },
-  created() {
-    let socketData = {
-      username: currUser.username,
-      room: this.$route.params.room,
-    };
-    socketioService.emit("join", JSON.stringify(socketData));
-  },
 };
 </script>

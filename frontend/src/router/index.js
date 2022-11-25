@@ -25,7 +25,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/direct/inbox/:userId/:room?",
+    path: "/direct/inbox/:userId?/:room?",
     name: "ChatRoom",
     component: DirectInbox,
     meta: { requiresAuth: true },
