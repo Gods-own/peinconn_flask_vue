@@ -28,3 +28,7 @@ export const GET_USER_INTERESTS = `user_interests`;
 
 //Room
 export const CHECK_ROOM_EXISTS = `room`;
+export const GET_USER_ROOMS = `rooms`;
+
+//Message
+export const GET_USER_MESSAGES = `messages`;

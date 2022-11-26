@@ -118,11 +118,12 @@ class RoomSchema(ma.Schema):
     class Meta:
         fields = ('id', 'room', 'user1', 'user2', 'created_At', 'updated_At')   
 
-    user1 = ma.Nested(UserSchema)
-    user2 = ma.Nested(UserSchema)    
+    user1 = ma.Nested(UserSchema(exclude=("interests",)))
+    user2 = ma.Nested(UserSchema(exclude=("interests",)))    
 
 #Init Room Schema
-room_schema = RoomSchema() 
+room_schema = RoomSchema()
+rooms_schema = RoomSchema(many=True) 
 
 #Message Schema
 class MessageSchema(ma.Schema):

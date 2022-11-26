@@ -6,6 +6,7 @@ import interest from "./modules/interest";
 import activity from "./modules/activity";
 import user from "./modules/user";
 import chat from "./modules/chat";
+import message from "./modules/message";
 
 export default createStore({
   modules: {
@@ -32,6 +33,10 @@ export default createStore({
     chat: {
       namespaced: true,
       ...chat,
+    },
+    message: {
+      namespaced: true,
+      ...message,
     },
   },
 });

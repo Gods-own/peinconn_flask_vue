@@ -16,149 +16,22 @@
 
     <div class="msg-div-last-child" id="chat-messages">
       <div>
-        <div class="msg-box chat-left">
+        <div
+          v-for="message in messages"
+          :key="message.id"
+          class="msg-box"
+          :class="{ 'chat-left': message.user.id != authUser.id, 'chat-right': message.user.id == authUser.id }"
+        >
           <!-- <img
                     class="msg-box-img"
                     src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
                   /> -->
           <div class="msg-box-div">
             <!-- <h4>Mary</h4> -->
-            <pre>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcae vvvv vvvv vvvvb bbvvbb</pre>
+            <pre>{{ message.content }}</pre>
             <!-- <small>09/08/2022</small> -->
           </div>
         </div>
-        <div class="msg-box chat-right">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>{{message.username.username}}</h4> -->
-            <pre>lorem dddd dsjns</pre>
-            <!-- <small>{{message.date_added}}</small> -->
-          </div>
-        </div>
-
-        <div class="clear"></div>
-        <div class="msg-box chat-left">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>Mary</h4> -->
-            <pre>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcae vvvv vvvv vvvvb bbvvbb</pre>
-            <!-- <small>09/08/2022</small> -->
-          </div>
-        </div>
-        <div class="msg-box chat-right">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>{{message.username.username}}</h4> -->
-            <pre>lorem dddd dsjns</pre>
-            <!-- <small>{{message.date_added}}</small> -->
-          </div>
-        </div>
-
-        <div class="clear"></div>
-        <div class="msg-box chat-left">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>Mary</h4> -->
-            <pre>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcae vvvv vvvv vvvvb bbvvbb</pre>
-            <!-- <small>09/08/2022</small> -->
-          </div>
-        </div>
-        <div class="msg-box chat-right">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>{{message.username.username}}</h4> -->
-            <pre>lorem dddd dsjns</pre>
-            <!-- <small>{{message.date_added}}</small> -->
-          </div>
-        </div>
-
-        <div class="clear"></div>
-        <div class="msg-box chat-left">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>Mary</h4> -->
-            <pre>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcae vvvv vvvv vvvvb bbvvbb</pre>
-            <!-- <small>09/08/2022</small> -->
-          </div>
-        </div>
-        <div class="msg-box chat-right">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>{{message.username.username}}</h4> -->
-            <pre>lorem dddd dsjns</pre>
-            <!-- <small>{{message.date_added}}</small> -->
-          </div>
-        </div>
-
-        <div class="clear"></div>
-        <div class="msg-box chat-left">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>Mary</h4> -->
-            <pre>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcae vvvv vvvv vvvvb bbvvbb</pre>
-            <!-- <small>09/08/2022</small> -->
-          </div>
-        </div>
-        <div class="msg-box chat-right">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>{{message.username.username}}</h4> -->
-            <pre>lorem dddd dsjns</pre>
-            <!-- <small>{{message.date_added}}</small> -->
-          </div>
-        </div>
-
-        <div class="clear"></div>
-        <div class="msg-box chat-left">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>Mary</h4> -->
-            <pre>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcae vvvv vvvv vvvvb bbvvbb</pre>
-            <!-- <small>09/08/2022</small> -->
-          </div>
-        </div>
-        <div class="msg-box chat-right">
-          <!-- <img
-                    class="msg-box-img"
-                    src="{% if message.username.userImage %}{{ message.username.userImage.url}}{% else %}#{% endif %}"
-                  /> -->
-          <div class="msg-box-div">
-            <!-- <h4>{{message.username.username}}</h4> -->
-            <pre>lorem dddd dsjns</pre>
-            <!-- <small>{{message.date_added}}</small> -->
-          </div>
-        </div>
-
         <div class="clear"></div>
       </div>
     </div>
@@ -176,16 +49,23 @@
 
 <script>
 import socketioService from "../services/socketio.service.js";
+import { mapGetters, mapActions } from "vuex";
 import { currUser } from "../api/jwt-access-token";
 export default {
   name: "MessageView",
   data() {
     return {
       chat_message: "",
+      authUser: currUser,
       roomName: this.$route.params.room,
+      cvv: 0,
     };
   },
+  computed: {
+    ...mapGetters("message", ["messages"]),
+  },
   methods: {
+    ...mapActions("message", ["fetchMessages"]),
     sendChat(e) {
       e.preventDefault();
       let socketData = {
@@ -198,5 +78,19 @@ export default {
       socketioService.emit("join", JSON.stringify(socketData));
     },
   },
+  created() {
+    socketioService.on("new_message", (data) => {
+      let new_messages = this.messages.unshift(data);
+      // this.$store.commit("setMessages", new_messages);
+      console.log(data);
+      console.log(new_messages);
+      console.log(this.messages);
+    });
+    this.fetchMessages(this.$route.params.room);
+  },
+  // mounted() {
+  //   this.fetchMessages(this.$route.params.room);
+  //   console.log("jjjj");
+  // },
 };
 </script>

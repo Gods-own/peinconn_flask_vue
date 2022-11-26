@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_socketio import emit
 from .extensions import db, ma, migrate, api, seeder, socketio, cors
-# from .transformers import ActivitySchema, activity_schema, activities_schema
+from .transformers import message_schema
 from .models import Room, Message
 from .views.web import web
 from .views.api import api_bp
@@ -40,7 +40,9 @@ def on_join(data):
     room = data['room']
     join_room(room)
     print(data)
-    save_message(data)
+    new_message = save_message(data)
+    messageTransformer = message_schema.dump(new_message)
+    emit('new_message', messageTransformer, to=room)  
 
 
         

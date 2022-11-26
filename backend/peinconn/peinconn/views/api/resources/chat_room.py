@@ -1,11 +1,9 @@
 from flask import request, jsonify, make_response, current_app, url_for
 from flask_restful import Resource
 from peinconn.peinconn.extensions import db
-from peinconn.peinconn.transformers import ActivitySchema, activity_schema, activities_schema
-from peinconn.peinconn.models import Activity as UserActivity, Interest, User, Liked, Room
-from peinconn.peinconn.helpers.utils import save_file, remove_file, get_file_url
+from peinconn.peinconn.transformers import rooms_schema
+from peinconn.peinconn.models import Room
 from peinconn.peinconn.helpers.pagination import get_pagination
-from peinconn.peinconn.request.activity import activity_request
 from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
 
 
@@ -25,5 +23,22 @@ class CheckChatRoom(Resource):
 
         except Exception as e:
            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later {e}'}), 500)
+
+class ChatRoomList(Resource):
+    @token_required
+    def get(self):
+        try:
+            print('chat')
+            auth_user = get_current_user()
+            rooms = Room.query.filter((Room.user1_id == auth_user['id']) | (Room.user2_id == auth_user['id'])).all()
+
+            roomTransformer = rooms_schema.dump(rooms)
+
+            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Rooms Successfully', 'data': roomTransformer})
+
+        except Exception as e:
+           return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later {e}'}), 500)
+
+
 
     

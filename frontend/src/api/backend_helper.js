@@ -27,3 +27,7 @@ export const getAllUserInterests = (user_id) => get(`${url.GET_USER_INTERESTS}/$
 
 //Room
 export const getRoomStatus = (user1_id, user2_id) => get(`${url.CHECK_ROOM_EXISTS}/${user1_id}/${user2_id}`);
+export const getUserRooms = () => get(url.GET_USER_ROOMS);
+
+//Message
+export const getUserMessages = (room_name) => get(`${url.GET_USER_MESSAGES}/${room_name}`);

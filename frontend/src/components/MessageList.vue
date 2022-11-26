@@ -11,14 +11,14 @@
         <input class="message-search-input" type="search" placeholder="Search" />
       </form>
 
-      <div class="messages-list">
+      <div v-for="room in rooms" :key="room.id" class="messages-list">
         <div>
-          <img src="images/06ca4c9b8ac857b2def6518f8f2ef96e.jpg" />
+          <img :src="room.user1.id == authUser.id ? room.user2.userImage : room.user1.userImage" />
         </div>
         <div class="messages-list-last">
           <div class="msg">
             <h4>
-              <a href="#">John</a>
+              <a href="#">{{ room.user1.id == authUser.id ? room.user2.username : room.user1.username }}</a>
             </h4>
             <small>07/09/22</small>
           </div>
@@ -33,7 +33,23 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { currUser } from "../api/jwt-access-token";
 export default {
   name: "MessageList",
+  data() {
+    return {
+      authUser: currUser,
+    };
+  },
+  computed: {
+    ...mapGetters("chat", ["rooms"]),
+  },
+  methods: {
+    ...mapActions("chat", ["fetchRooms"]),
+  },
+  created() {
+    this.fetchRooms();
+  },
 };
 </script>

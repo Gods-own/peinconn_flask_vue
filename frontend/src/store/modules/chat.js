@@ -1,7 +1,8 @@
-import { getRoomStatus } from "@/api/backend_helper";
+import { getRoomStatus, getUserRooms } from "@/api/backend_helper";
 
 const state = {
   roomInfo: {},
+  rooms: [],
   loading: false,
   error: null,
   success: false,
@@ -9,6 +10,7 @@ const state = {
 
 const getters = {
   roomInfo: (state) => state.roomInfo,
+  rooms: (state) => state.rooms,
   loading: (state) => state.loading,
   error: (state) => state.error,
   success: (state) => state.success,
@@ -40,11 +42,39 @@ const actions = {
         commit("requestError", err);
       });
   },
+  fetchRooms({ commit }, room_id) {
+    let isRequestLoading = true;
+    commit("requestLoading", isRequestLoading);
+
+    const callGetRooms = async () => {
+      const response = await getUserRooms(room_id);
+      console.log(response);
+      commit("setRooms", response.data);
+      console.log(response);
+      return response;
+    };
+
+    callGetRooms()
+      .then(() => {
+        let isRequestLoading = false;
+        commit("requestLoading", isRequestLoading);
+        commit("requestSuccess");
+      })
+      .catch((err) => {
+        let isRequestLoading = false;
+        console.log(err);
+        commit("requestLoading", isRequestLoading);
+        commit("requestError", err);
+      });
+  },
 };
 
 const mutations = {
   setRoomInfo: (state, roomdata) => {
     state.roomInfo = roomdata;
+  },
+  setRooms: (state, roomList) => {
+    state.rooms = roomList;
   },
   requestError: (state, error) => {
     state.error = error;
