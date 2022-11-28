@@ -1,15 +1,26 @@
-import router from ".";
+// import router from ".";
+import { currUser } from "../api/jwt-access-token.js";
 
-router.beforeEach((to, from) => {
-  // instead of having to check every route record with
-  // to.matched.some(record => record.meta.requiresAuth)
-  if (to.meta.requiresAuth && !auth.isLoggedIn()) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    return {
-      path: '/register',
-      // save the location we were at to come back later
-      query: { redirect: to.fullPath },
+const router_functions = (router) => {
+  router.beforeEach((to, from, next) => {
+    // instead of having to check every route record with
+    // to.matched.some(record => record.meta.requiresAuth)
+    if (to.meta.requiresAuth && !currUser) {
+      // this route requires auth, check if logged in
+      // if not, redirect to login page.
+      next({
+        path: "/login",
+        replace: true,
+      });
+    } else if (to.meta.requiresAuth == false && currUser) {
+      next({
+        path: "/activities",
+        replace: true,
+      });
+    } else {
+      next();
     }
-  }
-})
+  });
+};
+
+export default router_functions;

@@ -47,7 +47,7 @@ const mutations = {
     state.messages = messageList;
   },
   requestError: (state, error) => {
-    state.error = error;
+    state.error = error.response.data.message;
     state.success = false;
   },
   requestSuccess: (state) => {

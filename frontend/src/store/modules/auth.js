@@ -93,6 +93,7 @@ const actions = {
 
     callLoginUser()
       .then(() => {
+        console.log("here");
         let isFormLoading = false;
         commit("formLoading", isFormLoading);
         commit("authSuccess");
@@ -109,6 +110,17 @@ const actions = {
     //   commit("registrationError", error);
     // }
   },
+  logoutUser({ commit }) {
+    if (localStorage.getItem("authenticatedUser")) {
+      localStorage.removeItem("authenticatedUser");
+    }
+    commit("logoutAuthUser");
+    // try {
+    //   commit("setAuthUser", response.data);
+    // } catch (error) {
+    //   commit("registrationError", error);
+    // }
+  },
 };
 
 const mutations = {
@@ -119,8 +131,13 @@ const mutations = {
     }
     localStorage.setItem("authenticatedUser", parsed);
   },
+  logoutAuthUser: () => {
+    if (localStorage.getItem("authenticatedUser")) {
+      localStorage.removeItem("authenticatedUser");
+    }
+  },
   authError: (state, error) => {
-    state.error = error;
+    state.error = error.response.data.message;
     state.success = false;
   },
   authSuccess: (state) => {

@@ -77,7 +77,7 @@ const mutations = {
     state.rooms = roomList;
   },
   requestError: (state, error) => {
-    state.error = error;
+    state.error = error.response.data.message;
     state.success = false;
   },
   requestSuccess: (state) => {

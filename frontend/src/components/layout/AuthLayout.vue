@@ -10,7 +10,7 @@
           </div>
           <ul class="nav-link-text">
             <li class="nav-list home">
-              <a href="index.html">Home</a>
+              <router-link :to="{ name: 'ChatRoom' }">Home</router-link>
             </li>
             <li class="nav-list addPost">
               <a @click="showAddModal">Create Post</a>
@@ -101,6 +101,9 @@ export default {
     showAddModal() {
       this.$emit("showAddModalFunc");
     },
+  },
+  created() {
+    console.log(this.authUser);
   },
   emits: ["showAddModalFunc"],
 };

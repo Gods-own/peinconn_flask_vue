@@ -3,7 +3,7 @@
     <form class="login-register-form" @submit="onSubmit">
       <LoadingCover v-show="loading" />
       <div class="form-header">
-        <ErrorMessage v-show="error" errorMessage="bad" />
+        <ErrorMessage v-show="error" :errorMessage="error" />
         <div>
           <h2>LOGIN</h2>
           <p>Fill the form to login</p>
@@ -26,6 +26,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+// import { checkAuthUser } from "../../api/jwt-access-token.js";
 import AuthForm from "@/components/AuthForm.vue";
 import LoadingCover from "@/components/LoadingCover.vue";
 import ErrorMessage from "@/components/requestResponse/ErrorMessage.vue";
@@ -36,10 +37,19 @@ export default {
     return {
       username: "",
       password: "",
+      // authUser: currUser,
     };
   },
   computed: {
     ...mapGetters("auth", ["loading", "error", "success"]),
+  },
+  watch: {
+    "$store.state.auth.success": function () {
+      if (this.$store.state.auth.success) {
+        window.location.href = "/activities";
+        // this.$router.push({ path: "/register/interest" });
+      }
+    },
   },
   methods: {
     ...mapActions("auth", ["authenticateUser"]),
@@ -51,11 +61,21 @@ export default {
       };
       const searchParams = new URLSearchParams(payload);
       this.authenticateUser(searchParams);
-
-      this.username = "";
-      this.password = "";
+      // this.$router.push({ path: "/activities" });
+      // setTimeout(function () {
+      //   console.log(this.isSuccess, this.error, this.loading);
+      // }, 3000);
+      // console.log(this.success, this.error, this.loading);
+      // this.username = "";
+      // this.password = "";
     },
   },
+  // updated() {
+  //   console.log(this.success);
+  // },
+  // created() {
+  //   this.isSuccess = this.success;
+  // },
 };
 </script>
 

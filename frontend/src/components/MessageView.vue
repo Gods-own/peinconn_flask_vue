@@ -76,6 +76,7 @@ export default {
         user2_id: this.$route.params.userId,
       };
       socketioService.emit("join", JSON.stringify(socketData));
+      this.chat_message = "";
     },
   },
   created() {
@@ -87,6 +88,9 @@ export default {
       console.log(this.messages);
     });
     this.fetchMessages(this.$route.params.room);
+  },
+  Unmounted() {
+    socketioService.emit("leave", JSON.stringify({ msg: "has left" }));
   },
   // mounted() {
   //   this.fetchMessages(this.$route.params.room);

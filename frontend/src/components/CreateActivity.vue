@@ -31,6 +31,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import ModalComponent from "@/components/Modal.vue";
+import { currUser } from "../api/jwt-access-token.js";
 export default {
   name: "CreateActivity",
   components: { ModalComponent },
@@ -69,7 +70,7 @@ export default {
   },
   emits: ["hideModalFunc"],
   created() {
-    this.fetchUserInterests();
+    this.fetchUserInterests(currUser.id);
   },
 };
 </script>

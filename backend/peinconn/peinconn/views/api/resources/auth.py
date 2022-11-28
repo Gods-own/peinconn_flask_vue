@@ -30,6 +30,14 @@ class Login(Resource):
                         'exp' : datetime.datetime.utcnow() + datetime.timedelta(days=1)
                     }, secret, algorithm="HS256")
 
+                    tokenExpiryDate = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+
+                    userTransformer['token_expiry'] = f'{tokenExpiryDate}'
+
+                    # print(userTransformer)
+
+                    # print(datetime.datetime.utcnow() + datetime.timedelta(days=1))
+
                     token_decoded = token.decode('UTF-8')
 
                     return jsonify({'success': True, 'code': 200, 'message': 'Login Successful', 'data': {'bearer_token': token_decoded, 'user': userTransformer}})
@@ -67,6 +75,10 @@ class Register(Resource):
                     'email': user.email,
                     'exp' : datetime.datetime.utcnow() + datetime.timedelta(days=1)
                 }, secret, algorithm="HS256")
+
+                tokenExpiryDate = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+
+                userTransformer['token_expiry'] = f'{tokenExpiryDate}'
 
                 token_decoded = token.decode('UTF-8')
 

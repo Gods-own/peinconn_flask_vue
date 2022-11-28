@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AuthLayout v-if="route.meta.requiresAuth" @show-add-modal-func="toggleAddModal">
+    <AuthLayout v-if="route.meta.requiresAuth && route.meta.requiresNav" @show-add-modal-func="toggleAddModal">
       <main class="body-padding">
         <router-view :showCreateModal="showAddModal" @hide-modal-func="hideModal" />
       </main>

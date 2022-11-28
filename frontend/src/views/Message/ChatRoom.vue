@@ -23,15 +23,17 @@ export default {
     };
   },
   created() {
-    socketioService.connect();
-    socketioService.on("connect", () => {
-      console.log(currUser);
-      let socketData = {
-        username: currUser.username,
-        room: this.$route.params.room,
-      };
-      socketioService.emit("join", JSON.stringify(socketData));
-    });
+    if (this.$route.params.room) {
+      socketioService.connect();
+      socketioService.on("connect", () => {
+        console.log(currUser);
+        let socketData = {
+          username: currUser.username,
+          room: this.$route.params.room,
+        };
+        socketioService.emit("join", JSON.stringify(socketData));
+      });
+    }
   },
   beforeUnmount() {
     socketioService.disconnect();

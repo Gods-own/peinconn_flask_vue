@@ -44,6 +44,11 @@ def on_join(data):
     messageTransformer = message_schema.dump(new_message)
     emit('new_message', messageTransformer, to=room)  
 
+@socketio.on('leave')
+def on_leave(data):
+    data = json.loads(data)
+    print(data)     
+
 
         
    

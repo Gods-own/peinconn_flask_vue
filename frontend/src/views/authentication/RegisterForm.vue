@@ -3,7 +3,7 @@
     <form class="login-register-form" @submit="onSubmit">
       <LoadingCover v-show="loading" />
       <div class="form-header">
-        <ErrorMessage v-show="error" />
+        <ErrorMessage v-show="error" :errorMessage="error" />
         <div>
           <h2>REGISTRATION</h2>
           <p>Fill the form to register</p>
@@ -83,6 +83,13 @@ export default {
   computed: {
     ...mapGetters("auth", ["loading", "error", "success"]),
     ...mapGetters("country", ["countries"]),
+  },
+  watch: {
+    "$store.state.auth.success": function () {
+      if (this.$store.state.auth.success) {
+        window.location.href = "/register";
+      }
+    },
   },
   methods: {
     ...mapActions("auth", ["addUser"]),

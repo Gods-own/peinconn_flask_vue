@@ -32,27 +32,41 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CreateActivity from "@/components/CreateActivity.vue";
+import { currUser } from "@/api/jwt-access-token";
 
 export default {
   name: "ActivitiesPage",
   components: { CreateActivity },
   computed: {
     ...mapGetters("activity", ["allActivities"]),
+    ...mapGetters("interest", ["userInterests"]),
   },
   methods: {
     ...mapActions("activity", ["fetchActivities"]),
+    ...mapActions("interest", ["fetchUserInterests"]),
   },
   data() {
     return {
       showAddModal: false,
+      kkk: this.userInterests,
     };
   },
   props: {
     showCreateModal: Boolean,
   },
   emits: ["hideModalFunc"],
+  watch: {
+    "$store.state.interest.userInterests": function () {
+      console.log(this.$store.state.interest.userInterests);
+      if (this.$store.state.interest.userInterests == 0) {
+        window.location.href = "/register/interest";
+        // this.$router.push({ path: "/register/interest" });
+      }
+    },
+  },
   created() {
     this.fetchActivities();
+    this.fetchUserInterests(currUser.id);
   },
 };
 </script>

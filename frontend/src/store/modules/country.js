@@ -46,7 +46,7 @@ const actions = {
 const mutations = {
   setCountries: (state, countries) => (state.countries = countries),
   countryRequestError: (state, error) => {
-    state.error = error;
+    state.error = error.response.data.message;
   },
   countryRequestLoading: (state, loading) => {
     state.loading = loading;

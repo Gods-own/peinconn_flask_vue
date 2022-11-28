@@ -79,7 +79,7 @@ const mutations = {
     state.allActivities.unshift(activity);
   },
   requestError: (state, error) => {
-    state.error = error;
+    state.error = error.response.data.message;
     state.success = false;
   },
   requestSuccess: (state) => {

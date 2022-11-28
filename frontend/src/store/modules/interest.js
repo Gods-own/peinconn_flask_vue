@@ -1,4 +1,4 @@
-import { getAllUserInterests, getAllInterests } from "@/api/backend_helper";
+import { getAllUserInterests, getAllInterests, registerUserInterest } from "@/api/backend_helper";
 
 const state = {
   interests: [],
@@ -17,9 +17,36 @@ const getters = {
 };
 
 const actions = {
+  addInterest({ commit }, interestPayload) {
+    let isRequestLoading = true;
+    commit("requestLoading", isRequestLoading);
+    console.log([...interestPayload]);
+
+    const callRegisterUserInterest = async () => {
+      console.log(interestPayload);
+      const response = await registerUserInterest(interestPayload);
+      console.log(response);
+      commit("newInterest", response.data);
+      console.log(response);
+      return response;
+    };
+
+    callRegisterUserInterest()
+      .then(() => {
+        let isRequestLoading = false;
+        commit("requestLoading", isRequestLoading);
+        commit("requestSuccess");
+      })
+      .catch((err) => {
+        let isRequestLoading = false;
+        console.log(err);
+        commit("requestLoading", isRequestLoading);
+        commit("requestError", err);
+      });
+  },
   fetchInterests({ commit }) {
     let isInterestRequestLoading = true;
-    commit("interestRequestLoading", isInterestRequestLoading);
+    commit("requestLoading", isInterestRequestLoading);
 
     const callGetInterests = async () => {
       const response = await getAllInterests();
@@ -30,21 +57,21 @@ const actions = {
     callGetInterests()
       .then(() => {
         let isInterestRequestLoading = false;
-        commit("interestRequestLoading", isInterestRequestLoading);
+        commit("requestLoading", isInterestRequestLoading);
       })
       .catch((err) => {
         let isInterestRequestLoading = false;
-        commit("interestRequestLoading", isInterestRequestLoading);
-        commit("interestRequestError", err);
+        commit("requestLoading", isInterestRequestLoading);
+        commit("requestError", err);
       });
   },
 
-  fetchUserInterests({ commit }) {
+  fetchUserInterests({ commit }, user_id) {
     let isInterestRequestLoading = true;
-    commit("interestRequestLoading", isInterestRequestLoading);
+    commit("requestLoading", isInterestRequestLoading);
 
     const callGetUserInterests = async () => {
-      const response = await getAllUserInterests();
+      const response = await getAllUserInterests(user_id);
       commit("setUserInterests", response.data);
       return response;
     };
@@ -52,23 +79,32 @@ const actions = {
     callGetUserInterests()
       .then(() => {
         let isInterestRequestLoading = false;
-        commit("interestRequestLoading", isInterestRequestLoading);
+        commit("requestLoading", isInterestRequestLoading);
       })
       .catch((err) => {
         let isInterestRequestLoading = false;
-        commit("interestRequestLoading", isInterestRequestLoading);
-        commit("interestRequestError", err);
+        commit("requestLoading", isInterestRequestLoading);
+        commit("requestError", err);
       });
   },
 };
 
 const mutations = {
+  newInterest: (state, interest) => {
+    // photo.liked = false
+    state.userInterests.unshift(interest);
+  },
   setInterests: (state, interests) => (state.interests = interests),
   setUserInterests: (state, user_interests) => (state.userInterests = user_interests),
-  interestRequestError: (state, error) => {
-    state.error = error;
+  requestError: (state, error) => {
+    state.error = error.response.data.message;
+    state.success = false;
   },
-  interestRequestLoading: (state, loading) => {
+  requestSuccess: (state) => {
+    state.error = null;
+    state.success = true;
+  },
+  requestLoading: (state, loading) => {
     state.loading = loading;
   },
 };
