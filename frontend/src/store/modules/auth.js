@@ -48,7 +48,7 @@ const actions = {
   addUser({ commit }, registration_payload) {
     let isFormLoading = true;
     commit("formLoading", isFormLoading);
-    console.log(registration_payload);
+    console.log([...registration_payload]);
 
     const callRegisterUser = async () => {
       console.log(registration_payload);

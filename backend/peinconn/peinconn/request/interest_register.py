@@ -4,6 +4,7 @@ from peinconn.peinconn.helpers.jwt_auth import get_current_user
 
 def interest_register_request():
     interests = request.form.getlist('interests')
+    print(interests)
 
     user = get_current_user()
 

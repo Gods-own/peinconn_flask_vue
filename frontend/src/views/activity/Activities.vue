@@ -65,6 +65,7 @@ export default {
     },
   },
   created() {
+    console.log("good");
     this.fetchActivities();
     this.fetchUserInterests(currUser.id);
   },

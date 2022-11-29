@@ -10,7 +10,7 @@
     </div>
     <div>
       <div v-for="(interest, index) in interests" :key="interest.id">
-        <input :id="'hobby' + index" :value="interest.hobby" v-model="hobbies" type="checkbox" />
+        <input :id="'hobby' + index" :value="interest.id" v-model="hobbies" type="checkbox" />
         <div>
           <label :for="'hobby' + index">{{ interest.hobby }}</label>
         </div>
@@ -38,8 +38,7 @@ export default {
   watch: {
     "$store.state.interest.success": function () {
       if (this.$store.state.interest.success) {
-        // window.location.href = "/activities";
-        this.$router.push({ path: "/activities" });
+        window.location.href = "/activities";
       }
     },
   },
@@ -50,11 +49,10 @@ export default {
     ...mapActions("interest", ["fetchInterests", "addInterest", "fetchUserInterests"]),
     onSubmit(e) {
       e.preventDefault();
-      const payload = {
-        interests: this.hobbies,
-      };
-      console.log("here");
-      const searchParams = new URLSearchParams(payload);
+      const searchParams = new URLSearchParams();
+      for (let hobby of this.hobbies) {
+        searchParams.append("interests", hobby);
+      }
       this.addInterest(searchParams);
 
       this.hobbies = [];

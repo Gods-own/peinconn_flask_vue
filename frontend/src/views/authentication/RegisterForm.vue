@@ -105,7 +105,9 @@ export default {
         gender: this.gender,
         password: this.password,
       };
+      console.log(payload);
       const searchParams = new URLSearchParams(payload);
+      console.log(searchParams);
       if (this.password == this.confirmation) {
         this.addUser(searchParams);
 

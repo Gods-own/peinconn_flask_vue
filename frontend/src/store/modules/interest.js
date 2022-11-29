@@ -20,6 +20,7 @@ const actions = {
   addInterest({ commit }, interestPayload) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
+    console.log(interestPayload);
     console.log([...interestPayload]);
 
     const callRegisterUserInterest = async () => {
