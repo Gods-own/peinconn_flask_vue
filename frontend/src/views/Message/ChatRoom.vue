@@ -29,6 +29,7 @@ export default {
         console.log(currUser);
         let socketData = {
           username: currUser.username,
+          user_id: currUser.user_id,
           room: this.$route.params.room,
         };
         socketioService.emit("join", JSON.stringify(socketData));
