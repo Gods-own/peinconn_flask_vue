@@ -30,9 +30,18 @@ def create_app():
     return app
 
 @socketio.on('connect')
-def test_connect():
+def test_connect(data):
     print('connected')
- 
+
+@socketio.on('userConnected')
+def on_connected(data):
+    data = json.loads(data)
+    room = data['room']
+    # join_room(room)
+    # new_message = save_message(data)
+    # messageTransformer = message_schema.dump(new_message)
+    # emit('new_message', messageTransformer, to=room)  
+    connect_user(data) 
 
 @socketio.on('join')
 def on_join(data):
@@ -46,8 +55,18 @@ def on_join(data):
 
 @socketio.on('leave')
 def on_leave(data):
+    data = json.loads(data) 
+
+@socketio.on('userDisconnected')
+def on_disconnected(data):
     data = json.loads(data)
-    print(data)     
+    room = data['room']
+    # join_room(room)
+    # new_message = save_message(data)
+    # messageTransformer = message_schema.dump(new_message)
+    # emit('new_message', messageTransformer, to=room)  
+    print('disconnect')
+    disconnect_user(data)       
 
 
         

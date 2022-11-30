@@ -6,6 +6,7 @@ from peinconn.peinconn.models import User as AuthUser
 from peinconn.peinconn.helpers.utils import save_file, remove_file
 from peinconn.peinconn.request.profile import profile_update_request
 from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
+from peinconn.peinconn.event import get_notifications
 
 
 class User(Resource):
@@ -21,7 +22,11 @@ class User(Resource):
 
             userTransformer = user_schema.dump(user_model)
 
-            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': userTransformer}) 
+            no_notifications = get_notifications()
+
+            userTransformer['no_notifications'] = no_notifications
+
+            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved User Successfully', 'data': userTransformer}) 
         except Exception as e:
             return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)
 
@@ -75,6 +80,10 @@ class AllUserDetails(Resource):
             user_model = AuthUser.query.filter_by(id=user_id).one()
 
             userTransformer = user_details_schema.dump(user_model)
+
+            no_notifications = get_notifications()
+
+            userTransformer['no_notifications'] = no_notifications
 
             return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': userTransformer}) 
         except Exception as e:

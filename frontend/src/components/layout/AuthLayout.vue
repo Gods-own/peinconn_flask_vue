@@ -44,7 +44,7 @@
             <li class="nav-list messages">
               <router-link :to="{ name: 'ChatRoom' }">
                 <i class="fa fa-comment" aria-hidden="true"></i>
-                <span class="notification">2</span>
+                <span class="notification">{{ authUser.no_notifications }}</span>
               </router-link>
             </li>
             <li class="nav-list search-icon">
@@ -103,7 +103,7 @@ export default {
     },
   },
   created() {
-    console.log(this.authUser);
+    console.log(this.authUser.no_notifications);
   },
   emits: ["showAddModalFunc"],
 };

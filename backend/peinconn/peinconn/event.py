@@ -27,23 +27,29 @@ def connect_user(data):
     # connectedUser = User.objects.get(username=self.scope['user'])
     room = Room.query.filter(Room.room == data['room']).first()
     if Connected.query.filter((Connected.connected_user_id == data['user_id']) & (Connected.connection_room_id == room.id)).first() is None:
-        Connected(connected_user_id=data['user_id'], connection_room_id=room.id, channel_name=request.sid)
+        new_connection = Connected(connected_user_id=data['user_id'], connection_room_id=room.id, channel_name=request.sid)
+        db.session.add(new_connection)
+        db.session.commit()
     if Message.query.filter(Message.room_id==room.id).first() is not None:    
-        messagess = Message.query.filter(Message.room_id==room.id).all()
+        messagess = Message.query.filter((Message.room_id==room.id) & (Message.user_id!=data['user_id'])).all()
         message_ids = []
         for message in messagess:
             message_ids.append(message.id)
         notification = Notifications.query.filter(Notifications.notification_message_id.in_(message_ids))
+        print(str(notification.order_by(Notifications.id.desc()).first().notification_user_id) == str(data['user_id']))
         if str(notification.order_by(Notifications.id.desc()).first().notification_user_id) == str(data['user_id']):
-            notification.notification_read = True 
+            # notification = Notifications.query.filter(Notifications.notification_message_id.in_(message_ids)).all()
+            # print(notification)
+            Notifications.query.filter(Notifications.notification_message_id.in_(message_ids)).update({Notifications.notification_read: True})
             db.session.commit()
 
 def disconnect_user(data):
     auth_user = get_current_user()
-    room = Room.query.filter(Room.room == data['room'])
+    room = Room.query.filter(Room.room == data['room']).first()
     if Connected.query.filter((Connected.connected_user_id == data['user_id']) & (Connected.connection_room_id == room.id)).first() is not None:
         connected = Connected.query.filter((Connected.connected_user_id == data['user_id']) & (Connected.connection_room_id == room.id)).first()
         db.session.delete(connected)
+        db.session.commit()
 
 def get_connected_users(data):
     room = Room.query.filter(Room.room == data['room'])

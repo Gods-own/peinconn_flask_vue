@@ -29,14 +29,23 @@ export default {
         console.log(currUser);
         let socketData = {
           username: currUser.username,
-          user_id: currUser.user_id,
+          user_id: currUser.id,
           room: this.$route.params.room,
         };
-        socketioService.emit("join", JSON.stringify(socketData));
+        console.log(socketData);
+        socketioService.emit("userConnected", JSON.stringify(socketData));
       });
     }
   },
   beforeUnmount() {
+    console.log(currUser);
+    let socketData = {
+      username: currUser.username,
+      user_id: currUser.id,
+      room: this.roomName,
+    };
+    console.log(socketData);
+    socketioService.emit("userDisconnected", JSON.stringify(socketData));
     socketioService.disconnect();
   },
 };
