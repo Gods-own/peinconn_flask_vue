@@ -44,7 +44,7 @@
             <li class="nav-list messages">
               <router-link :to="{ name: 'ChatRoom' }">
                 <i class="fa fa-comment" aria-hidden="true"></i>
-                <span class="notification">{{ authUser.no_notifications }}</span>
+                <span class="notification">{{ userProfile.no_notifications }}</span>
               </router-link>
             </li>
             <li class="nav-list search-icon">
@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import socketioService from "../../services/socketio.service.js";
+import { mapGetters, mapActions } from "vuex";
 import { currUser } from "../../api/jwt-access-token";
 export default {
   name: "AuthLayout",
@@ -97,13 +99,20 @@ export default {
       authUser: currUser,
     };
   },
+  computed: {
+    ...mapGetters("user", ["userProfile"]),
+  },
   methods: {
+    ...mapActions("user", ['fetchUserProfile']),
     showAddModal() {
       this.$emit("showAddModalFunc");
     },
   },
   created() {
-    console.log(this.authUser.no_notifications);
+    this.fetchUserProfile(this.authUser.id)
+    socketioService.on("connect", ()=> {
+      console.log('goodlldlf')
+    })
   },
   emits: ["showAddModalFunc"],
 };

@@ -8,6 +8,8 @@ from peinconn.peinconn.transformers import user_schema
 from peinconn.peinconn.models import User, Country
 from peinconn.peinconn.request.login import login_request
 from peinconn.peinconn.request.register import registration_request
+from peinconn.peinconn.event import get_notifications
+
 
 class Login(Resource):
     def post(self):
@@ -33,6 +35,10 @@ class Login(Resource):
                     tokenExpiryDate = datetime.datetime.utcnow() + datetime.timedelta(days=1)
 
                     userTransformer['token_expiry'] = f'{tokenExpiryDate}'
+
+                    # no_notifications = get_notifications()
+
+                    # userTransformer['no_notifications'] = no_notifications
 
                     # print(userTransformer)
 
@@ -79,6 +85,8 @@ class Register(Resource):
                 tokenExpiryDate = datetime.datetime.utcnow() + datetime.timedelta(days=1)
 
                 userTransformer['token_expiry'] = f'{tokenExpiryDate}'
+
+                # userTransformer['no_notifications'] = 0
 
                 token_decoded = token.decode('UTF-8')
 
