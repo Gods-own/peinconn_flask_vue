@@ -41,3 +41,5 @@ class DevelopmentConfig(Config):
     UPLOAD_FOLDER = 'peinconn/static/images/uploads'
 
     ACTIVITY_IMAGE_PATH = 'images/uploads'
+
+    PROFILE_IMAGE_PATH = 'images/profile'
