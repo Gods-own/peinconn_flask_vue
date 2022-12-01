@@ -31,3 +31,6 @@ export const getUserRooms = () => get(url.GET_USER_ROOMS);
 
 //Message
 export const getUserMessages = (room_name) => get(`${url.GET_USER_MESSAGES}/${room_name}`);
+
+//Search
+export const searchUser = (username, country, age, gender) => get(url.SEARCH_USER, { params: { username, country, age, gender } });

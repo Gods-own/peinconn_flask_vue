@@ -32,3 +32,6 @@ export const GET_USER_ROOMS = `rooms`;
 
 //Message
 export const GET_USER_MESSAGES = `messages`;
+
+//Serach
+export const SEARCH_USER = `search`;

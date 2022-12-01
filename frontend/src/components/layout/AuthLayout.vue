@@ -103,16 +103,19 @@ export default {
     ...mapGetters("user", ["userProfile"]),
   },
   methods: {
-    ...mapActions("user", ['fetchUserProfile']),
+    ...mapActions("user", ["fetchUserProfile"]),
     showAddModal() {
       this.$emit("showAddModalFunc");
     },
   },
+  props: {
+    noNotifications: Number,
+  },
   created() {
-    this.fetchUserProfile(this.authUser.id)
-    socketioService.on("connect", ()=> {
-      console.log('goodlldlf')
-    })
+    this.fetchUserProfile(this.authUser.id);
+    socketioService.on("connect", () => {
+      console.log("goodlldlf");
+    });
   },
   emits: ["showAddModalFunc"],
 };

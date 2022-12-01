@@ -4,6 +4,7 @@ from peinconn.peinconn.extensions import db
 from peinconn.peinconn.models import User, Interest
 from werkzeug.utils import secure_filename
 import os
+from datetime import date
 # from peinconn.peinconn import app
 
 def login_required(f):
@@ -116,4 +117,30 @@ def get_file_url(filename, transformer, transformer_field):
 
     return transformer
 
-    
+
+
+def user_age(d_o_b):
+    today = date.today()
+
+    try: 
+        birthday = d_o_b.replace(year = today.year)
+    except ValueError:
+        birthday = d_o_b.replace(year = today.year, month=d_o_b.month+1, day=1)
+
+    if birthday > today:
+        return today.year - d_o_b.year - 1
+    else:
+        return today.year - d_o_b.year  
+
+
+def approximate_DOB(age):
+    today = date.today()
+
+    year = today.year
+    # except:
+    #     year = 
+    d_o_b_year = year - age
+
+    d_o_b = date(d_o_b_year, 1, 1)
+
+    return d_o_b
