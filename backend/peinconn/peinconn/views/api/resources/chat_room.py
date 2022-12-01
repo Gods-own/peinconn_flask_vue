@@ -30,11 +30,33 @@ class ChatRoomList(Resource):
         try:
             print('chat')
             auth_user = get_current_user()
-            rooms = Room.query.filter((Room.user1_id == auth_user['id']) | (Room.user2_id == auth_user['id'])).all()
+
+            page = request.args.get('page')
+
+            per_page = request.args.get('per_page')
+
+            max_per_page =  12
+
+            if page is not None:
+                page = int(page)
+
+            if per_page is None:
+                per_page = 10
+            else:
+                if per_page > max_per_page:
+                    per_page = 10   
+                else:
+                    per_page = int(per_page) 
+
+            rooms = Room.query.filter((Room.user1_id == auth_user['id']) | (Room.user2_id == auth_user['id'])).order_by(Room.id.desc())
+
+            rooms = rooms.paginate(page=page, per_page=per_page, max_per_page=max_per_page)        
 
             roomTransformer = rooms_schema.dump(rooms)
 
-            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Rooms Successfully', 'data': roomTransformer})
+            links = get_pagination('api.chatroomlist', rooms)
+
+            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Rooms Successfully', 'data': roomTransformer, 'links': links})
 
         except Exception as e:
            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later {e}'}), 500)

@@ -8,26 +8,70 @@ from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
 
 class Search(Resource):
     @token_required
-    def get(request):
+    def get(self):
         try:
             authUser = get_current_user()
 
+            page = request.args.get('page')
+
+            per_page = request.args.get('per_page')
+
+            max_per_page =  12
+
+            if page is not None:
+                page = int(page)
+
+            if per_page is None:
+                per_page = 10
+            else:
+                if per_page > max_per_page:
+                    per_page = 10   
+                else:
+                    per_page = int(per_page) 
+
+            allArgs = request.args.to_dict()
+
             username = request.args.get('username')
+            search_username = "%{}%".format(username)
             country = request.args.get('country')
             age_range = request.args.get('age_range')
             gender = request.args.get('gender')
 
             if age_range is not None:
                 age_list = age_range.split("-")
-                user_model = User.query.filter((User.username==username) & (User.country_id==country) & (User.gender==gender) & (User.date_of_birth<=approximate_DOB(age_list[0])) &(User.date_of_birth>=approximate_DOB(age_list[1]))).all()
-            else:
-                user_model = User.query.filter((User.username==username) & (User.country_id==country) & (User.gender==gender)).all()
+
+            if all(key in allArgs for key in ('age_range', 'country', 'gender')):
+                user_model = User.query.filter(((User.username==username) | (User.name==username)) & (User.country_id==country) & (User.gender==gender) & (User.date_of_birth<=approximate_DOB(int(age_list[0]))) & (User.date_of_birth>=approximate_DOB(int(age_list[1])))).order_by(User.id.desc())
+            elif len(allArgs) == 3 and all(key in allArgs for key in ('age_range', 'country')):  
+                user_model = User.query.filter(((User.username==username) | (User.name==username)) & (User.country_id==country) & (User.date_of_birth<=approximate_DOB(int(age_list[0]))) & (User.date_of_birth>=approximate_DOB(int(age_list[1])))).order_by(User.id.desc())
+            elif len(allArgs) == 3 and all(key in allArgs for key in ('age_range', 'gender')):  
+                user_model = User.query.filter(((User.username==username) | (User.name==username)) & (User.gender==gender) & (User.date_of_birth<=approximate_DOB(int(age_list[0]))) & (User.date_of_birth>=approximate_DOB(int(age_list[1])))).order_by(User.id.desc())   
+            elif len(allArgs) == 3 and all(key in allArgs for key in ('country', 'gender')):  
+                user_model = User.query.filter(((User.username==username) | (User.name==username)) & (User.country_id==country) & (User.gender==gender)).order_by(User.id.desc())       
+            elif len(allArgs) == 2 and all(key in allArgs for key in ('age_range')):  
+                user_model = User.query.filter(((User.username==username) | (User.name==username)) & (User.date_of_birth<=approximate_DOB(int(age_list[0]))) & (User.date_of_birth>=approximate_DOB(int(age_list[1])))).order_by(User.id.desc())
+            elif len(allArgs) == 2 and all(key in allArgs for key in ('gender')):  
+                user_model = User.query.filter(((User.username==username) | (User.name==username)) & (User.gender==gender)).order_by(User.id.desc())  
+            elif len(allArgs) == 2 and all(key in allArgs for key in ('country')):  
+                user_model = User.query.filter(((User.username==username) | (User.name==username)) & (User.country_id==country)).order_by(User.id.desc())
+            else:               
+                user_model = User.query.filter(User.username.ilike(search_username)).order_by(User.id.desc())
+
+            # if age_range is not None:
+            #     age_list = age_range.split("-")
+            #     user_model = User.query.filter((User.username==username) | (User.name==username) | (User.country_id==country) | (User.gender==gender) | (User.date_of_birth<=approximate_DOB(int(age_list[0]))) | (User.date_of_birth>=approximate_DOB(int(age_list[1])))).all()
+            # else:
+            #     user_model = User.query.filter((User.username==username) | (User.name==username) | (User.country_id==country) | (User.gender==gender)).all()
+
+            users = user_model.paginate(page=page, per_page=per_page, max_per_page=max_per_page)        
 
             userTransformer = users_schema.dump(user_model)
 
-            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved User Successfully', 'data': userTransformer}) 
+            links = get_pagination('api.search', users)
+
+            return jsonify({'success': True, 'code': 200, 'message': 'Retrieved User Successfully', 'data': userTransformer, 'links': links}) 
         except Exception as e:
-            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)    
+            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later {e}'}), 500)    
 
         # value = request.GET.get('q', None)
         # searcher = User.objects.get(username=request.user)
@@ -153,3 +197,29 @@ class Search(Resource):
         #     else:
         #         print(name_search)
         #         return JsonResponse(name_search, safe=False) 
+
+
+    # value = request.GET['q']
+    # entry_items = util.list_entries()
+    # results = []
+    # entries = []
+    # for entry_item in entry_items:
+    #     case_insestive = entry_item.lower()
+    #     entries.append(case_insestive)
+
+    # if value.lower() in entries:
+    #     return HttpResponseRedirect(reverse("display", kwargs={'title': value }))
+
+    # else:
+    #     for entry in entries:
+    #         if value.lower() in entry:
+    #             results.append(entry)
+    #     if len(results) == 0:
+    #         message = "Sorry! Page doesn't exist"
+    #         code = 400
+    #         return util.errorMessage(request, code, message)
+    #     else:
+    #         return render(request, "encyclopedia/searchResult.html", {
+    #         "results": results,
+    #         "navlink1": "activate"
+    #     })

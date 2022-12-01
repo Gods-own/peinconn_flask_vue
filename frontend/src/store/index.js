@@ -7,6 +7,7 @@ import activity from "./modules/activity";
 import user from "./modules/user";
 import chat from "./modules/chat";
 import message from "./modules/message";
+import search from "./modules/search";
 
 export default createStore({
   modules: {
@@ -37,6 +38,10 @@ export default createStore({
     message: {
       namespaced: true,
       ...message,
+    },
+    search: {
+      namespaced: true,
+      ...search,
     },
   },
 });

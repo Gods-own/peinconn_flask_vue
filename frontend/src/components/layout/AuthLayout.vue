@@ -60,8 +60,8 @@
       <div class="search-query-container">
         <form class="home-filter-form">
           <div class="search-buttons">
-            <button name="country" class="btn search-items" type="submit">Filter By Your Country</button>
-            <select name="age" class="form-control search-items" id="exampleFormControlSelect1">
+            <button name="country" @click="countryFilter" class="btn search-items" type="submit">Filter By Your Country</button>
+            <select name="age" @change="AgeFilter" class="form-control search-items" id="exampleFormControlSelect1">
               <option selected value="">Filter By Age</option>
               <option value="16-24">16-24</option>
               <option value="25-34">25-34</option>
@@ -70,7 +70,7 @@
               <option value="55-64">55-64</option>
               <option value="65-74">65-74</option>
             </select>
-            <select name="gender" class="form-control search-items" id="exampleFormControlSelect1">
+            <select name="gender" @change="genderFilter" class="form-control search-items" id="exampleFormControlSelect1">
               <option selected value="">Filter By Gender</option>
               <option value="Female">Female</option>
               <option value="Male">Male</option>
@@ -78,8 +78,8 @@
           </div>
         </form>
         <div class="search-container">
-          <form>
-            <input type="search" placeholder="Search" />
+          <form @submit="searchForUsers">
+            <input name="user" type="search" placeholder="Search" />
           </form>
         </div>
       </div>
@@ -97,19 +97,63 @@ export default {
   data() {
     return {
       authUser: currUser,
+      // age_range: null,
+      // country: null,
+      // username: null,
+      // gender: null,
+      searchData: {},
+      filterByCountry: false
     };
   },
   computed: {
     ...mapGetters("user", ["userProfile"]),
+    ...mapGetters("search", ["searchResult"]),
   },
   methods: {
     ...mapActions("user", ["fetchUserProfile"]),
+    ...mapActions("search", ["searchUsers"]),
     showAddModal() {
       this.$emit("showAddModalFunc");
     },
-  },
-  props: {
-    noNotifications: Number,
+    countryFilter(e) {
+      e.preventDefault();
+      this.filterByCountry = !this.filterByCountry
+
+      if(this.filterByCountry == true) {
+        this.searchData['country'] = this.authUser.country.id
+      }
+      else{
+        delete this.searchData.country
+      }
+    },
+    ageFilter(e) {
+      e.preventDefault();
+      if(e.target.value != '') {
+        this.searchData['age_range'] = e.target.value
+      } else {
+        delete this.searchData.age_range
+      }
+    },
+    genderFilter(e) {
+      e.preventDefault();
+
+      if(e.target.value != '') {
+        this.searchData['gender'] = e.target.value
+      } else {
+        delete this.searchData.gender
+      }
+    },
+    searchForUsers(e){
+      e.preventDefault();
+      let formData = new FormData(e.target);
+      let searchValue = formData.get('user');
+      if(searchValue != '') {
+        this.searchData['username'] = searchValue
+        console.log(this.searchData);
+        this.searchUsers(this.searchData)
+      }
+      console.log(this.searchResult);
+    }
   },
   created() {
     this.fetchUserProfile(this.authUser.id);

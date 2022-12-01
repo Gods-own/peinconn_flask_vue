@@ -135,9 +135,14 @@ class UserActivities(Resource):
 
         try:
 
-            user_activities = UserActivity.query.filter_by(user_id=user_id).order_by(UserActivity.id.asc())
+            interest_filter = request.args.get('filter')
 
-            page = request.args.get('per_page')
+            if interest_filter is not None:
+                user_activities = UserActivity.query.filter_by(user_id=user_id, interest_id=int(interest_filter)).order_by(UserActivity.id.asc())
+            else:
+                user_activities = UserActivity.query.filter_by(user_id=user_id).order_by(UserActivity.id.asc())
+
+            page = request.args.get('page')
 
             per_page = request.args.get('per_page')
 
@@ -179,17 +184,22 @@ class ActivityListForUserInterests(Resource):
         try:
             auth_user = get_current_user()
 
-            user_model = User.query.filter(User.interests.any(User.id==auth_user['id'])).all()
+            interest_filter = request.args.get('filter')
 
-            if len(user_model) == 0:
-                return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': []}) 
+            if interest_filter is not None:
+                user_interests_id = [int(interest_filter)]
+            else:
+                user_model = User.query.filter(User.interests.any(User.id==auth_user['id'])).all()
 
-            user_interests = user_model[0].interests
+                if len(user_model) == 0:
+                    return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Activity Successfully', 'data': []}) 
 
-            user_interests_id = []
+                user_interests = user_model[0].interests
 
-            for user_interest in user_interests:
-                user_interests_id.append(user_interest.id)
+                user_interests_id = []
+
+                for user_interest in user_interests:
+                    user_interests_id.append(user_interest.id)
 
             activities = UserActivity.query.filter(UserActivity.interest_id.in_(user_interests_id)).order_by(UserActivity.id.desc())
 

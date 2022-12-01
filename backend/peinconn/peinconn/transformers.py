@@ -108,10 +108,11 @@ class LikedSchema(ma.Schema):
         fields = ('id', 'user_id', 'user', 'activity_id', 'activity', 'created_At', 'updated_At')
 
         user = ma.Nested("UserSchema")
-        activity = ma.Nested("ActivitySchema", exclude=("user",)) 
+        # activity = ma.Nested("ActivitySchema", exclude=("user",)) 
 
 #Init Liked Schema
 liked_schema = LikedSchema()   
+likedlist_schema = LikedSchema(many=True) 
 
 #Room Schema
 class RoomSchema(ma.Schema):
