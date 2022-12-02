@@ -3,8 +3,8 @@ from flask_restful import Resource
 from peinconn.peinconn.extensions import db
 from peinconn.peinconn.transformers import ActivitySchema, activity_schema, activities_schema
 from peinconn.peinconn.models import Activity as UserActivity, Interest, User, Liked
-from peinconn.peinconn.helpers.utils import save_file, remove_file, get_file_url
-from peinconn.peinconn.helpers.pagination import get_pagination
+from peinconn.peinconn.helpers.utils import save_file, remove_file
+from peinconn.peinconn.helpers.pagination import get_pagination, get_pagination_info
 from peinconn.peinconn.request.activity import activity_request
 from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
 
@@ -64,24 +64,26 @@ class ActivityList(Resource):
 
             activities = UserActivity.query.order_by(UserActivity.id.desc())
 
-            page = request.args.get('page')
+            # page = request.args.get('page')
 
-            per_page = request.args.get('per_page')
+            # per_page = request.args.get('per_page')
 
-            max_per_page =  12
+            # max_per_page =  12
 
-            if page is not None:
-                page = int(page)
+            # if page is not None:
+            #     page = int(page)
 
-            if per_page is None:
-                per_page = 10
-            else:
-                if int(per_page) > max_per_page:
-                    per_page = 10   
-                else:
-                    per_page = int(per_page)     
+            # if per_page is None:
+            #     per_page = 10
+            # else:
+            #     if int(per_page) > max_per_page:
+            #         per_page = 10   
+            #     else:
+            #         per_page = int(per_page)     
 
-            activities = activities.paginate(page=page, per_page=per_page, max_per_page=max_per_page)
+            pagination_info = get_pagination_info(request)
+
+            activities = activities.paginate(page=pagination_info['page'], per_page=pagination_info['per_page'], max_per_page=pagination_info['max_per_page'])
 
             activityTransformer = activities_schema.dump(activities)
 
@@ -137,31 +139,35 @@ class UserActivities(Resource):
 
             interest_filter = request.args.get('filter')
 
+            print(interest_filter)
+
             if interest_filter is not None:
                 user_activities = UserActivity.query.filter_by(user_id=user_id, interest_id=int(interest_filter)).order_by(UserActivity.id.asc())
             else:
                 user_activities = UserActivity.query.filter_by(user_id=user_id).order_by(UserActivity.id.asc())
 
-            page = request.args.get('page')
+            # page = request.args.get('page')
 
-            per_page = request.args.get('per_page')
+            # per_page = request.args.get('per_page')
 
-            max_per_page =  12
+            # max_per_page =  12
 
-            if page is not None:
-                page = int(page)
+            # if page is not None:
+            #     page = int(page)
 
-            if per_page is None:
-                per_page = 10
-            else:
-                if per_page > max_per_page:
-                    per_page = 10   
-                else:
-                    per_page = int(per_page) 
+            # if per_page is None:
+            #     per_page = 10
+            # else:
+            #     if per_page > max_per_page:
+            #         per_page = 10   
+            #     else:
+            #         per_page = int(per_page) 
 
             # user_activities = UserActivity.query.order_by(UserActivity.id.asc())
 
-            user_activities = user_activities.paginate(page=page, per_page=per_page, max_per_page=max_per_page)
+            pagination_info = get_pagination_info(request)
+
+            user_activities = user_activities.paginate(page=pagination_info['page'], per_page=pagination_info['per_page'], max_per_page=pagination_info['max_per_page'])
 
             print(user_activities)
 
@@ -169,7 +175,13 @@ class UserActivities(Resource):
 
             activityTransformer = new_activities_schema.dump(user_activities)
 
-            links = get_pagination('api.useractivities', user_activities)
+            print(activityTransformer)
+
+            print(pagination_info)
+
+            links = get_pagination('api.useractivities', user_activities, user_id=user_id)
+
+            print(links)
 
             return jsonify({'success': True, 'code': 200, 'message': 'Activity retrieved Successfully', 'data': activityTransformer, 'links': links})
   
@@ -203,24 +215,26 @@ class ActivityListForUserInterests(Resource):
 
             activities = UserActivity.query.filter(UserActivity.interest_id.in_(user_interests_id)).order_by(UserActivity.id.desc())
 
-            page = request.args.get('page')
+            # page = request.args.get('page')
 
-            per_page = request.args.get('per_page')
+            # per_page = request.args.get('per_page')
 
-            max_per_page =  12
+            # max_per_page =  12
 
-            if page is not None:
-                page = int(page)
+            # if page is not None:
+            #     page = int(page)
 
-            if per_page is None:
-                per_page = 10
-            else:
-                if int(per_page) > max_per_page:
-                    per_page = 10   
-                else:
-                    per_page = int(per_page)     
+            # if per_page is None:
+            #     per_page = 10
+            # else:
+            #     if int(per_page) > max_per_page:
+            #         per_page = 10   
+            #     else:
+            #         per_page = int(per_page)     
 
-            activities = activities.paginate(page=page, per_page=per_page, max_per_page=max_per_page)
+            pagination_info = get_pagination_info(request)        
+
+            activities = activities.paginate(page=pagination_info['page'], per_page=pagination_info['per_page'], max_per_page=pagination_info['max_per_page'])
 
             activityTransformer = activities_schema.dump(activities)
 

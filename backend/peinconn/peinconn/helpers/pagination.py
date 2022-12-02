@@ -1,5 +1,27 @@
 from flask import url_for
 
+def get_pagination_info(request):
+    page = request.args.get('page')
+
+    per_page = request.args.get('per_page')
+
+    max_per_page =  12
+
+    if page is not None:
+        page = int(page)
+    else:
+        page = 1    
+
+    if per_page is None:
+        per_page = 10
+    else:
+        if per_page > max_per_page:
+            per_page = 10   
+        else:
+            per_page = int(per_page) 
+
+    return {'max_per_page': max_per_page, 'page': page, 'per_page': per_page}   
+
 def get_pagination(endpoint, dbquery, **kwargs):
     try:
         links = {

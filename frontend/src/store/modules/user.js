@@ -42,13 +42,13 @@ const actions = {
         commit("requestError", err);
       });
   },
-  fetchUserActivities({ commit }, user_id) {
+  fetchUserActivities({ commit }, { user_id, searchData }) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
 
     const callGetUserActivities = async () => {
-      const response = await getUserActivities(user_id);
-      console.log(response);
+      const response = await getUserActivities(user_id, searchData);
+      console.log(searchData);
       commit("setUserActivities", response.data);
       console.log(response);
       return response;

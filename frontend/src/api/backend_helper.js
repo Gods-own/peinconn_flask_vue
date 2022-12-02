@@ -8,10 +8,10 @@ export const registerUserInterest = (interest_payload) => post(url.REGISTER_INTE
 
 //ACTIVITY
 export const createActivity = (activity_data) => post(url.CREATE_ACTIVITY, activity_data);
-export const getAllActivities = () => get(url.GET_ACTIVITIES);
+export const getAllActivities = (filter) => get(url.GET_ACTIVITIES, { params: filter });
 export const getSingleActivity = (activity_id) => get(`${url.GET_SINGLE_ACTIVITY}/${activity_id}`);
 export const updateSingleActivity = (activity_id) => put(`${url.UPDATE_SINGLE_ACTIVITY}/${activity_id}`);
-export const getUserActivities = (user_id) => get(`${url.GET_USER_ACTIVITIES}/${user_id}`);
+export const getUserActivities = (user_id, filter) => get(`${url.GET_USER_ACTIVITIES}/${user_id}`, { params: filter });
 
 //LIKE
 

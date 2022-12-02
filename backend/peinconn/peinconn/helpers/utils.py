@@ -115,9 +115,7 @@ def get_file_url(filename, transformer, transformer_field):
 
     transformer[transformer_field] = "/".join(url_tupple)
 
-    return transformer
-
-
+    return transformer     
 
 def user_age(d_o_b):
     today = date.today()

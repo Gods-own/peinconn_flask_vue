@@ -43,7 +43,11 @@ export default {
     ...mapActions("user", ["fetchUserActivities"]),
   },
   created() {
-    this.fetchUserActivities(this.userId);
+    const payload = {
+      user_id: this.userId,
+      searchData: undefined,
+    };
+    this.fetchUserActivities(payload);
   },
 };
 </script>

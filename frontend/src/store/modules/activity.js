@@ -15,12 +15,12 @@ const getters = {
 };
 
 const actions = {
-  fetchActivities({ commit }) {
+  fetchActivities({ commit }, searchParams) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
 
     const callGetAllActivities = async () => {
-      const response = await getAllActivities();
+      const response = await getAllActivities(searchParams);
       console.log(response);
       commit("setActivities", response.data);
       console.log(response);

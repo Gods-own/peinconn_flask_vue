@@ -63,9 +63,11 @@ export default {
   },
   computed: {
     ...mapGetters("message", ["messages"]),
+    ...mapGetters("user", ["userProfile"]),
   },
   methods: {
     ...mapActions("message", ["fetchMessages"]),
+    ...mapActions("user", ["fetchUserProfile"]),
     sendChat(e) {
       e.preventDefault();
       let socketData = {
@@ -81,12 +83,14 @@ export default {
   },
   created() {
     socketioService.on("new_message", (data) => {
-      let new_messages = this.messages.unshift(data);
+      this.messages.unshift(data);
+      alert("reciebed");
       // this.$store.commit("setMessages", new_messages);
-      console.log(data);
-      console.log(new_messages);
-      console.log(this.messages);
     });
+    // socketioService.on("received", () => {
+    //   alert("reciebed");
+    //   this.fetchUserProfile(this.authUser.id);
+    // });
     this.fetchMessages(this.$route.params.room);
   },
   Unmounted() {

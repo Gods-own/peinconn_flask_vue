@@ -3,7 +3,7 @@ from flask_restful import Resource
 from peinconn.peinconn.extensions import db
 from peinconn.peinconn.transformers import rooms_schema
 from peinconn.peinconn.models import Room
-from peinconn.peinconn.helpers.pagination import get_pagination
+from peinconn.peinconn.helpers.pagination import get_pagination, get_pagination_info
 from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
 
 
@@ -31,26 +31,11 @@ class ChatRoomList(Resource):
             print('chat')
             auth_user = get_current_user()
 
-            page = request.args.get('page')
-
-            per_page = request.args.get('per_page')
-
-            max_per_page =  12
-
-            if page is not None:
-                page = int(page)
-
-            if per_page is None:
-                per_page = 10
-            else:
-                if per_page > max_per_page:
-                    per_page = 10   
-                else:
-                    per_page = int(per_page) 
+            pagination_info = get_pagination_info(request)
 
             rooms = Room.query.filter((Room.user1_id == auth_user['id']) | (Room.user2_id == auth_user['id'])).order_by(Room.id.desc())
 
-            rooms = rooms.paginate(page=page, per_page=per_page, max_per_page=max_per_page)        
+            rooms = rooms.paginate(page=pagination_info['page'], per_page=pagination_info['per_page'], max_per_page=pagination_info['max_per_page'])        
 
             roomTransformer = rooms_schema.dump(rooms)
 

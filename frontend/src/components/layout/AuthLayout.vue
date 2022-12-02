@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import socketioService from "../../services/socketio.service.js";
+// import socketioService from "../../services/socketio.service.js";
 import { mapGetters, mapActions } from "vuex";
 import { currUser } from "../../api/jwt-access-token";
 export default {
@@ -102,7 +102,7 @@ export default {
       // username: null,
       // gender: null,
       searchData: {},
-      filterByCountry: false
+      filterByCountry: false,
     };
   },
   computed: {
@@ -117,49 +117,48 @@ export default {
     },
     countryFilter(e) {
       e.preventDefault();
-      this.filterByCountry = !this.filterByCountry
+      this.filterByCountry = !this.filterByCountry;
 
-      if(this.filterByCountry == true) {
-        this.searchData['country'] = this.authUser.country.id
-      }
-      else{
-        delete this.searchData.country
+      if (this.filterByCountry == true) {
+        this.searchData["country"] = this.authUser.country.id;
+      } else {
+        delete this.searchData.country;
       }
     },
     ageFilter(e) {
       e.preventDefault();
-      if(e.target.value != '') {
-        this.searchData['age_range'] = e.target.value
+      if (e.target.value != "") {
+        this.searchData["age_range"] = e.target.value;
       } else {
-        delete this.searchData.age_range
+        delete this.searchData.age_range;
       }
     },
     genderFilter(e) {
       e.preventDefault();
 
-      if(e.target.value != '') {
-        this.searchData['gender'] = e.target.value
+      if (e.target.value != "") {
+        this.searchData["gender"] = e.target.value;
       } else {
-        delete this.searchData.gender
+        delete this.searchData.gender;
       }
     },
-    searchForUsers(e){
+    searchForUsers(e) {
       e.preventDefault();
       let formData = new FormData(e.target);
-      let searchValue = formData.get('user');
-      if(searchValue != '') {
-        this.searchData['username'] = searchValue
+      let searchValue = formData.get("user");
+      if (searchValue != "") {
+        this.searchData["username"] = searchValue;
         console.log(this.searchData);
-        this.searchUsers(this.searchData)
+        this.searchUsers(this.searchData);
       }
       console.log(this.searchResult);
-    }
+    },
   },
   created() {
     this.fetchUserProfile(this.authUser.id);
-    socketioService.on("connect", () => {
-      console.log("goodlldlf");
-    });
+    // socketioService.on("connect", () => {
+    //   console.log("goodlldlf");
+    // });
   },
   emits: ["showAddModalFunc"],
 };

@@ -51,6 +51,7 @@ def on_join(data):
     new_message = save_message(data)
     messageTransformer = message_schema.dump(new_message)
     emit('new_message', messageTransformer, to=room)  
+    emit('received')  
     connect_user(data)
 
 @socketio.on('leave')

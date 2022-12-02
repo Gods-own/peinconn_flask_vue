@@ -3,6 +3,7 @@ from flask_restful import Resource
 from peinconn.peinconn.extensions import db
 from peinconn.peinconn.transformers import users_schema
 from peinconn.peinconn.models import User
+from peinconn.peinconn.helpers.pagination import get_pagination, get_pagination_info
 from peinconn.peinconn.helpers.utils import approximate_DOB
 from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
 
@@ -12,22 +13,7 @@ class Search(Resource):
         try:
             authUser = get_current_user()
 
-            page = request.args.get('page')
-
-            per_page = request.args.get('per_page')
-
-            max_per_page =  12
-
-            if page is not None:
-                page = int(page)
-
-            if per_page is None:
-                per_page = 10
-            else:
-                if per_page > max_per_page:
-                    per_page = 10   
-                else:
-                    per_page = int(per_page) 
+            pagination_info = get_pagination_info(request)
 
             allArgs = request.args.to_dict()
 
@@ -63,7 +49,7 @@ class Search(Resource):
             # else:
             #     user_model = User.query.filter((User.username==username) | (User.name==username) | (User.country_id==country) | (User.gender==gender)).all()
 
-            users = user_model.paginate(page=page, per_page=per_page, max_per_page=max_per_page)        
+            users = user_model.paginate(page=pagination_info['page'], per_page=pagination_info['per_page'], max_per_page=pagination_info['max_per_page'])        
 
             userTransformer = users_schema.dump(user_model)
 

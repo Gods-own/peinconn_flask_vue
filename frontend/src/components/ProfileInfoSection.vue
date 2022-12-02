@@ -24,12 +24,12 @@
         <h1>{{ userProfile.username }}</h1>
         <p class="profile-bio">{{ userProfile.introduction }}</p>
         <div class="profile-interests">
-          <p v-for="interest in userProfile.interests" :key="interest.id"><i class="fa fa-tag"></i>{{ interest.hobby }}</p>
+          <p v-for="interest in userProfile.interests" @click="onFilter(interest.id)" :key="interest.id"><i class="fa fa-tag"></i>{{ interest.hobby }}</p>
         </div>
       </div>
     </div>
     <div class="profile-filter">
-      <button v-for="interest in userProfile.interests" :key="interest.id">{{ interest.hobby }}</button>
+      <button v-for="interest in userProfile.interests" @click="onFilter(interest.id)" :key="interest.id">{{ interest.hobby }}</button>
     </div>
   </div>
 </template>
@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       authUser: currUser,
+      userId: this.$route.params.userId,
     };
   },
   computed: {
@@ -60,8 +61,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions("user", ["fetchUserProfile"]),
+    ...mapActions("user", ["fetchUserProfile", "fetchUserActivities"]),
     ...mapActions("chat", ["fetchRoomInfo"]),
+    onFilter(interest) {
+      console.log(interest);
+      const payload = {
+        user_id: this.userId,
+        searchData: { filter: interest },
+      };
+      console.log(payload);
+      this.fetchUserActivities(payload);
+    },
     // onMessage() {
     //   let socketData = {
     //     username: currUser.username,
