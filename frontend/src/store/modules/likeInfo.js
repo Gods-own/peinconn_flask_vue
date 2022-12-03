@@ -1,59 +1,35 @@
-import { getAllActivities, createActivity, getSingleActivity } from "@/api/backend_helper";
+import { getLikers, toggleLike, likeStatus } from "@/api/backend_helper";
 
 const state = {
-  allActivities: [],
-  activity: {},
+  likers: [],
+  likeStatus: {},
   loading: false,
   error: null,
   success: false,
 };
 
 const getters = {
-  allActivities: (state) => state.allActivities,
-  activity: (state) => state.activity,
+  likers: (state) => state.likers,
+  likeStatus: (state) => state.likeStatus,
   loading: (state) => state.loading,
   error: (state) => state.error,
   success: (state) => state.success,
 };
 
 const actions = {
-  fetchSingleActivity({ commit }, activity_id) {
+  fetchLikers({ commit }, activity_id) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
 
-    const callGetSingleActivity = async () => {
-      const response = await getSingleActivity(activity_id);
-      console.log(response.data.user.userImage);
-      commit("setSingleActivity", response.data);
-      return response;
-    };
-
-    callGetSingleActivity()
-      .then(() => {
-        let isRequestLoading = false;
-        commit("requestLoading", isRequestLoading);
-        commit("requestSuccess");
-      })
-      .catch((err) => {
-        let isRequestLoading = false;
-        console.log(err);
-        commit("requestLoading", isRequestLoading);
-        commit("requestError", err);
-      });
-  },
-  fetchActivities({ commit }, searchParams) {
-    let isRequestLoading = true;
-    commit("requestLoading", isRequestLoading);
-
-    const callGetAllActivities = async () => {
-      const response = await getAllActivities(searchParams);
+    const callGetLikers = async () => {
+      const response = await getLikers(activity_id);
       console.log(response);
-      commit("setActivities", response.data);
+      commit("setLikers", response.data);
       console.log(response);
       return response;
     };
 
-    callGetAllActivities()
+    callGetLikers()
       .then(() => {
         let isRequestLoading = false;
         commit("requestLoading", isRequestLoading);
@@ -67,21 +43,43 @@ const actions = {
       });
   },
 
-  addActivity({ commit }, activity_data) {
+  setToggleLike({ commit }, activity_id) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
-    console.log([...activity_data]);
 
-    const callCreateActivity = async () => {
-      console.log(activity_data);
-      const response = await createActivity(activity_data);
-      console.log(response);
-      commit("newActivity", response.data);
+    const callToggleLike = async () => {
+      const response = await toggleLike(activity_id);
       console.log(response);
       return response;
     };
 
-    callCreateActivity()
+    callToggleLike()
+      .then(() => {
+        let isRequestLoading = false;
+        commit("requestLoading", isRequestLoading);
+        commit("requestSuccess");
+      })
+      .catch((err) => {
+        let isRequestLoading = false;
+        console.log(err);
+        commit("requestLoading", isRequestLoading);
+        commit("requestError", err);
+      });
+  },
+
+  fetchLikeStatus({ commit }, activity_id) {
+    let isRequestLoading = true;
+    commit("requestLoading", isRequestLoading);
+
+    const callGetLikeStatus = async () => {
+      const response = await likeStatus(activity_id);
+      console.log(response);
+      commit("setLikeStatus", response.data);
+      console.log(response);
+      return response;
+    };
+
+    callGetLikeStatus()
       .then(() => {
         let isRequestLoading = false;
         commit("requestLoading", isRequestLoading);
@@ -97,15 +95,11 @@ const actions = {
 };
 
 const mutations = {
-  setActivities: (state, activities) => {
-    state.allActivities = activities;
+  setLikers: (state, likersInfo) => {
+    state.likers = likersInfo;
   },
-  setSingleActivity: (state, activity) => {
-    state.activity = activity;
-  },
-  newActivity: (state, activity) => {
-    // photo.liked = false
-    state.allActivities.unshift(activity);
+  setLikeStatus: (state, status) => {
+    state.likeStatus = status;
   },
   requestError: (state, error) => {
     state.error = error.response.data.message;

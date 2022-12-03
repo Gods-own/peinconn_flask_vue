@@ -4,7 +4,7 @@ from peinconn.peinconn.extensions import db
 from peinconn.peinconn.transformers import activity_schema, activities_schema, likedlist_schema
 from peinconn.peinconn.models import Activity as UserActivity, Interest, User, Liked
 from peinconn.peinconn.helpers.utils import save_file, remove_file, get_file_url
-from peinconn.peinconn.helpers.pagination import get_pagination
+from peinconn.peinconn.helpers.pagination import get_pagination, get_pagination_info
 from peinconn.peinconn.request.activity import activity_request
 from peinconn.peinconn.helpers.jwt_auth import token_required, get_current_user
 
@@ -82,26 +82,11 @@ class LikeActivityUser(Resource):
     def get(self, activity_id):
         try:
             
-            page = request.args.get('page')
-
-            per_page = request.args.get('per_page')
-
-            max_per_page =  12
-
-            if page is not None:
-                page = int(page)
-
-            if per_page is None:
-                per_page = 10
-            else:
-                if per_page > max_per_page:
-                    per_page = 10   
-                else:
-                    per_page = int(per_page) 
+            pagination_info = get_pagination_info(request)
 
             liked_model = Liked.query.filter_by( activity_id = activity_id, is_liked = True).order_by(Liked.id.desc())
 
-            likers = liked_model.paginate(page=page, per_page=per_page, max_per_page=max_per_page)        
+            likers = liked_model.paginate(page=pagination_info['page'], per_page=pagination_info['per_page'], max_per_page=pagination_info['max_per_page'])        
 
             likedTransformer = likedlist_schema.dump(likers)
 
@@ -109,7 +94,7 @@ class LikeActivityUser(Resource):
 
             return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Likers Successfully', 'data': likedTransformer, 'links': links})
         except Exception as e:
-            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)
+            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later {e}'}), 500)
        
 
 

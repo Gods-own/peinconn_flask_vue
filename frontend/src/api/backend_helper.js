@@ -14,6 +14,9 @@ export const updateSingleActivity = (activity_id) => put(`${url.UPDATE_SINGLE_AC
 export const getUserActivities = (user_id, filter) => get(`${url.GET_USER_ACTIVITIES}/${user_id}`, { params: filter });
 
 //LIKE
+export const toggleLike = (activity_id) => put(`${url.TOGGLE_LIKE}/${activity_id}`);
+export const likeStatus = (activity_id) => get(`${url.TOGGLE_LIKE}/${activity_id}`);
+export const getLikers = (activity_id) => get(`${url.GET_LIKERS}/${activity_id}`);
 
 //USER
 export const getUserProfile = (user_id) => get(`${url.GET_USER_PROFILE}/${user_id}`);

@@ -1,6 +1,6 @@
 <template>
   <div class="modal" @click="hideModal($event)">
-    <div class="modal-content form-modal">
+    <div class="modal-content">
       <slot></slot>
     </div>
   </div>

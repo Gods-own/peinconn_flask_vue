@@ -2,7 +2,7 @@
   <div>
     <AuthLayout v-if="route.meta.requiresAuth && route.meta.requiresNav" @show-add-modal-func="toggleAddModal">
       <main class="body-padding">
-        <router-view :showCreateModal="showAddModal" @hide-modal-func="hideModal" />
+        <router-view :showCreateModal="showAddModal" :viewActivity="viewActivity" @show-activity-modal-func="toggleActivityModal" @hide-modal-func="hideModal" />
       </main>
     </AuthLayout>
     <NonAuthLayout v-else>
@@ -23,14 +23,19 @@ export default {
     return {
       isAuthenticatedRoute: false,
       showAddModal: false,
+      viewActivity: false,
     };
   },
   methods: {
     toggleAddModal() {
       this.showAddModal = true;
     },
+    toggleActivityModal() {
+      this.viewActivity = true;
+    },
     hideModal() {
       this.showAddModal = false;
+      this.viewActivity = false;
     },
   },
   setup() {

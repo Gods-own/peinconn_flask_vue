@@ -8,6 +8,7 @@ import user from "./modules/user";
 import chat from "./modules/chat";
 import message from "./modules/message";
 import search from "./modules/search";
+import likeInfo from "./modules/likeInfo";
 
 export default createStore({
   modules: {
@@ -42,6 +43,10 @@ export default createStore({
     search: {
       namespaced: true,
       ...search,
+    },
+    likeInfo: {
+      namespaced: true,
+      ...likeInfo,
     },
   },
 });

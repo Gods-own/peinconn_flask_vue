@@ -1,11 +1,12 @@
 <template>
   <div>
-    <CreateActivity v-show="showCreateModal" @hide-modal-func="$emit('hideModalFunc')" />
+    <CreateActivity v-if="showCreateModal" @hide-modal-func="$emit('hideModalFunc')" />
+    <ViewActivity v-if="viewActivity" @hide-modal-func="$emit('hideModalFunc')" />
     <section class="main-section">
       <div class="activity-section">
         <article v-for="singleActivity in allActivities" :key="singleActivity.id" class="card">
           <a class="listing-link">
-            <img :src="singleActivity.picture" width="100" height="100" />
+            <img :src="singleActivity.picture" @click="showActivityModal(singleActivity.id)" width="100" height="100" />
           </a>
           <div class="info-container">
             <div class="info-category">
@@ -19,7 +20,7 @@
               </div>
               <div class="info-container-item">
                 <small>{{ singleActivity.like_no }}</small>
-                <i class="fa fa-heart"></i>
+                <i @click="likeImage" class="fa fa-heart"></i>
               </div>
             </div>
           </div>
@@ -32,29 +33,31 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CreateActivity from "@/components/CreateActivity.vue";
+import ViewActivity from "@/components/ViewActivity.vue";
 import { currUser } from "@/api/jwt-access-token";
 
 export default {
   name: "ActivitiesPage",
-  components: { CreateActivity },
+  components: { CreateActivity, ViewActivity },
   computed: {
     ...mapGetters("activity", ["allActivities"]),
     ...mapGetters("interest", ["userInterests"]),
+    ...mapGetters("likeInfo", ["likeStatus"]),
   },
   methods: {
-    ...mapActions("activity", ["fetchActivities"]),
+    ...mapActions("activity", ["fetchActivities", "fetchSingleActivity"]),
     ...mapActions("interest", ["fetchUserInterests"]),
-  },
-  data() {
-    return {
-      showAddModal: false,
-      kkk: this.userInterests,
-    };
+    ...mapActions("likeInfo", ["setToggleLike", "fetchLikeStatus"]),
+    showActivityModal(id) {
+      this.fetchSingleActivity(id);
+      this.$emit("showActivityModalFunc");
+    },
   },
   props: {
     showCreateModal: Boolean,
+    viewActivity: Boolean,
   },
-  emits: ["hideModalFunc"],
+  emits: ["hideModalFunc", "showActivityModalFunc"],
   watch: {
     "$store.state.interest.userInterests": function () {
       console.log(this.$store.state.interest.userInterests);

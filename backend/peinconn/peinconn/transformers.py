@@ -42,14 +42,27 @@ class UserSchema(ma.Schema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True) 
 
+#Liked Schema
+class LikedSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'user_id', 'user', 'activity_id', 'is_liked', 'created_At', 'updated_At')
+
+    user = ma.Nested(UserSchema)
+        # activity = ma.Nested("ActivitySchema", exclude=("user",)) 
+
+#Init Liked Schema
+liked_schema = LikedSchema()   
+likedlist_schema = LikedSchema(many=True) 
+
 #Activity Schema
 class ActivitySchema(ma.Schema):
     class Meta:
-        fields = ('id', 'user', 'activity', 'picture', 'interest', 'like_no', 'created_At', 'updated_At')    
+        fields = ('id', 'user', 'activity', 'picture', 'interest', 'liked_activities', 'like_no', 'created_At', 'updated_At')    
 
     user = ma.Nested(UserSchema)
     interest = ma.Nested(InterestSchema)  
     picture = ma.Method("get_file_url")
+    liked_activities = ma.List(ma.Nested(LikedSchema(exclude=("user",))))
 
     # links = ma.Hyperlinks({
     #         'firstPage':
@@ -101,18 +114,6 @@ class UserDetailsSchema(ma.Schema):
 #Init User Schema
 user_details_schema = UserDetailsSchema()
 users_details_schema = UserDetailsSchema(many=True)       
-
-#Liked Schema
-class LikedSchema(ma.Schema):
-    class Meta:
-        fields = ('id', 'user_id', 'user', 'activity_id', 'activity', 'created_At', 'updated_At')
-
-        user = ma.Nested("UserSchema")
-        # activity = ma.Nested("ActivitySchema", exclude=("user",)) 
-
-#Init Liked Schema
-liked_schema = LikedSchema()   
-likedlist_schema = LikedSchema(many=True) 
 
 #Room Schema
 class RoomSchema(ma.Schema):
