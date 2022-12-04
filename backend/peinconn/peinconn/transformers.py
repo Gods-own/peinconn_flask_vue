@@ -1,6 +1,8 @@
 from flask import current_app
-from .extensions import ma
+from .extensions import ma, db
 import os
+from peinconn.peinconn.models import Liked
+from peinconn.peinconn.helpers.jwt_auth import get_current_user
 
 #Country Schema
 class CountrySchema(ma.Schema):
@@ -57,12 +59,12 @@ likedlist_schema = LikedSchema(many=True)
 #Activity Schema
 class ActivitySchema(ma.Schema):
     class Meta:
-        fields = ('id', 'user', 'activity', 'picture', 'interest', 'liked_activities', 'like_no', 'created_At', 'updated_At')    
+        fields = ('id', 'user', 'activity', 'picture', 'interest', 'is_liked', 'like_no', 'created_At', 'updated_At')    
 
     user = ma.Nested(UserSchema)
     interest = ma.Nested(InterestSchema)  
     picture = ma.Method("get_file_url")
-    liked_activities = ma.List(ma.Nested(LikedSchema(exclude=("user",))))
+    is_liked = ma.Method("is_liked_by_user")
 
     # links = ma.Hyperlinks({
     #         'firstPage':
@@ -88,6 +90,14 @@ class ActivitySchema(ma.Schema):
         file_url = "/".join(url_tupple)
 
         return file_url
+        
+    def is_liked_by_user(self, obj):
+        auth_user = get_current_user()
+        liked_model = Liked.query.filter_by( user_id = auth_user['id'], activity_id = obj.id, is_liked=True).first()
+        if liked_model is None:
+            return False
+        else:
+            return True    
 
 #Init Activity Schema
 activity_schema = ActivitySchema()

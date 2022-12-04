@@ -2,7 +2,8 @@ import { getLikers, toggleLike, likeStatus } from "@/api/backend_helper";
 
 const state = {
   likers: [],
-  likeStatus: {},
+  likeStatus: false,
+  likeNo: 0,
   loading: false,
   error: null,
   success: false,
@@ -11,6 +12,7 @@ const state = {
 const getters = {
   likers: (state) => state.likers,
   likeStatus: (state) => state.likeStatus,
+  likeNo: (state) => state.likeNo,
   loading: (state) => state.loading,
   error: (state) => state.error,
   success: (state) => state.success,
@@ -49,6 +51,8 @@ const actions = {
 
     const callToggleLike = async () => {
       const response = await toggleLike(activity_id);
+      commit("setLikeStatus", response.data.is_liked);
+      commit("setLikeNo", response.data.like_no);
       console.log(response);
       return response;
     };
@@ -74,7 +78,7 @@ const actions = {
     const callGetLikeStatus = async () => {
       const response = await likeStatus(activity_id);
       console.log(response);
-      commit("setLikeStatus", response.data);
+      commit("setLikeStatus", response.data.is_liked);
       console.log(response);
       return response;
     };
@@ -100,6 +104,9 @@ const mutations = {
   },
   setLikeStatus: (state, status) => {
     state.likeStatus = status;
+  },
+  setLikeNo: (state, like_no) => {
+    state.likeNo = like_no;
   },
   requestError: (state, error) => {
     state.error = error.response.data.message;

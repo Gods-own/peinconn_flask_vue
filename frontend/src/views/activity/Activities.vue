@@ -20,7 +20,7 @@
               </div>
               <div class="info-container-item">
                 <small>{{ singleActivity.like_no }}</small>
-                <i @click="likeImage" class="fa fa-heart"></i>
+                <i @click="toggleLike($event, singleActivity.id)" class="fa fa-heart" :class="{ 'liked-color': singleActivity.is_liked == true }"></i>
               </div>
             </div>
           </div>
@@ -51,6 +51,11 @@ export default {
     showActivityModal(id) {
       this.fetchSingleActivity(id);
       this.$emit("showActivityModalFunc");
+    },
+    toggleLike(e, activity_id) {
+      this.setToggleLike(activity_id);
+      e.target.previousElementSibling.innerText = parseInt(e.target.previousElementSibling.innerText) + 1;
+      e.target.classList.toggle("liked-color");
     },
   },
   props: {

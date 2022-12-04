@@ -20,7 +20,7 @@
         </div>
         <div class="profile-info-container-item">
           <small>{{ userActivity.like_no }}</small>
-          <i class="fa fa-heart"></i>
+          <i class="fa fa-heart" :class="{ 'liked-color': userActivity.is_liked == true }"></i>
         </div>
       </div>
     </article>

@@ -15,7 +15,7 @@
               </div>
             </div>
             <div class="post-user-info-icons">
-              <span>{{ activity.like_no }}<i class="fa fa-heart"></i></span>
+              <span>{{ activity.like_no }} <i class="fa fa-heart" :class="{ 'liked-color': activity.is_liked == true }"></i></span>
             </div>
           </div>
           <p>{{ activity.activity }}</p>
@@ -45,7 +45,7 @@ export default {
     ...mapGetters("activity", ["activity"]),
   },
   methods: {
-    ...mapActions("likeInfo", ["fetchLikers"]),
+    ...mapActions("likeInfo", ["fetchLikers", "fetchLikeStatus"]),
   },
   emits: ["hideModalFunc"],
   created() {

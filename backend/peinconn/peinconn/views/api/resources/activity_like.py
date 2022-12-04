@@ -50,7 +50,7 @@ class LikeActivity(Resource):
                 db.session.add(new_liked)
                 db.session.commit()
 
-                return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Liked Successfully'}), 200)
+                return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Liked Successfully', 'data': {'is_liked': True, 'like_no': activity_model.like_no}}), 200)
 
             else:
 
@@ -61,7 +61,7 @@ class LikeActivity(Resource):
 
                     db.session.commit()   
 
-                    return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Liked Successfully'}), 200) 
+                    return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Liked Successfully', 'data': {'is_liked': True, 'like_no': activity_model.like_no}}), 200) 
 
                 elif liked_model.is_liked == True:  
                     activity_model.like_no = activity_model.like_no - 1
@@ -69,9 +69,8 @@ class LikeActivity(Resource):
 
                     db.session.commit()   
 
-                    return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Unliked Successfully'}), 200)   
+                    return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Unliked Successfully', 'data': {'is_liked': False, 'like_no': activity_model.like_no}}), 200)   
 
-                return make_response(jsonify({'success': True, 'code': 200, 'message': 'Activity Updated Successfully'}), 201)
 
         except Exception as e:
             return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)
