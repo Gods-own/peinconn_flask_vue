@@ -23,7 +23,7 @@ const actions = {
 
     const callGetSingleActivity = async () => {
       const response = await getSingleActivity(activity_id);
-      console.log(response.data.user.userImage);
+      console.log(response.data.picture);
       commit("setSingleActivity", response.data);
       return response;
     };

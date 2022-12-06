@@ -15,7 +15,9 @@
               </div>
             </div>
             <div class="post-user-info-icons">
-              <span>{{ activity.like_no }} <i class="fa fa-heart" :class="{ 'liked-color': activity.is_liked == true }"></i></span>
+              <span
+                >{{ activity.like_no }} <i class="fa fa-heart" @click="toggleLike($event, activity.id)" :class="{ 'liked-color': activity.is_liked == true }"></i
+              ></span>
             </div>
           </div>
           <p>{{ activity.activity }}</p>
@@ -45,7 +47,19 @@ export default {
     ...mapGetters("activity", ["activity"]),
   },
   methods: {
-    ...mapActions("likeInfo", ["fetchLikers", "fetchLikeStatus"]),
+    ...mapActions("likeInfo", ["fetchLikers", "setToggleLike", "fetchLikeStatus"]),
+    toggleLike(e, activity_id) {
+      this.setToggleLike(activity_id);
+      let gff = e.target.previousSibling.innerText;
+      console.log(gff.trim());
+      // if (e.target.classList.contains("liked-color")) {
+      //   console.log(e.target.previousSibling.innerText.trim());
+      //   e.target.previousSibling.innerText = parseInt(e.target.previousSibling.innerText.trim()) - 1;
+      // } else {
+      //   e.target.previousSibling.innerText = parseInt(e.target.previousSibling.innerText.trim()) + 1;
+      // }
+      e.target.classList.toggle("liked-color");
+    },
   },
   emits: ["hideModalFunc"],
   created() {

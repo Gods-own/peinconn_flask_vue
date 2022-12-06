@@ -42,7 +42,7 @@ export default {
   computed: {
     ...mapGetters("activity", ["allActivities"]),
     ...mapGetters("interest", ["userInterests"]),
-    ...mapGetters("likeInfo", ["likeStatus"]),
+    ...mapGetters("likeInfo", ["likeStatus", "likeNo"]),
   },
   methods: {
     ...mapActions("activity", ["fetchActivities", "fetchSingleActivity"]),
@@ -54,7 +54,11 @@ export default {
     },
     toggleLike(e, activity_id) {
       this.setToggleLike(activity_id);
-      e.target.previousElementSibling.innerText = parseInt(e.target.previousElementSibling.innerText) + 1;
+      if (e.target.classList.contains("liked-color")) {
+        e.target.previousElementSibling.innerText = parseInt(e.target.previousElementSibling.innerText) - 1;
+      } else {
+        e.target.previousElementSibling.innerText = parseInt(e.target.previousElementSibling.innerText) + 1;
+      }
       e.target.classList.toggle("liked-color");
     },
   },
@@ -71,6 +75,13 @@ export default {
         // this.$router.push({ path: "/register/interest" });
       }
     },
+    // "$store.state.interest.likeNo": function () {
+    //   console.log(this.$store.state.interest.userInterests);
+    //   if (this.$store.state.interest.userInterests == 0) {
+    //     window.location.href = "/register/interest";
+    //     // this.$router.push({ path: "/register/interest" });
+    //   }
+    // },
   },
   created() {
     console.log("good");
