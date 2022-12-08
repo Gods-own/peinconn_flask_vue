@@ -84,7 +84,7 @@ export default {
   created() {
     socketioService.on("new_message", (data) => {
       this.messages.unshift(data);
-      alert("reciebed");
+      alert("recieved");
       // this.$store.commit("setMessages", new_messages);
     });
     // socketioService.on("received", () => {

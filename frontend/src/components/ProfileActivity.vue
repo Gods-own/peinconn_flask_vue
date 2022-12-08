@@ -1,6 +1,6 @@
 <template>
   <div class="activity-section">
-    <ViewActivity v-if="viewActivity" @hide-modal-func="$emit('hideModalFunc')" />
+    <!-- <ViewActivity v-if="viewActivity" @hide-modal-func="$emit('hideModalFunc')" /> -->
     <!-- <article class="card">
         <a class="listing-link" href="{% url 'viewPost' activity.id %}">
         <img
@@ -30,18 +30,18 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import ViewActivity from "@/components/ViewActivity.vue";
+// import ViewActivity from "@/components/ViewActivity.vue";
 export default {
   name: "ProfileActivity",
-  components: { ViewActivity },
+  // components: { ViewActivity },
   data() {
     return {
       userId: this.$route.params.userId,
     };
   },
-  props: {
-    viewActivity: Boolean,
-  },
+  // props: {
+  //   viewActivity: Boolean,
+  // },
   computed: {
     ...mapGetters("user", ["userActivities"]),
   },
@@ -63,7 +63,7 @@ export default {
       this.$emit("showActivityModalFunc");
     },
   },
-  emits: ["hideModalFunc", "showActivityModalFunc"],
+  emits: ["showActivityModalFunc"],
   created() {
     const payload = {
       user_id: this.userId,

@@ -1,8 +1,10 @@
 <template>
   <div>
     <AuthLayout v-if="route.meta.requiresAuth && route.meta.requiresNav" @show-add-modal-func="toggleAddModal">
+      <CreateActivity v-if="showAddModal" @hide-modal-func="hideModal" />
+      <ViewActivity v-if="viewActivity" @hide-modal-func="hideModal" />
       <main class="body-padding">
-        <router-view :showCreateModal="showAddModal" :viewActivity="viewActivity" @show-activity-modal-func="toggleActivityModal" @hide-modal-func="hideModal" />
+        <router-view @show-activity-modal-func="toggleActivityModal" />
       </main>
     </AuthLayout>
     <NonAuthLayout v-else>
@@ -12,13 +14,16 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted } from "vue";
+import CreateActivity from "@/components/CreateActivity.vue";
+import ViewActivity from "@/components/ViewActivity.vue";
 import AuthLayout from "@/components/layout/AuthLayout.vue";
 import NonAuthLayout from "@/components/layout/NonAuthLayout.vue";
 export default {
   name: "App",
-  components: { AuthLayout, NonAuthLayout },
+  components: { AuthLayout, NonAuthLayout, CreateActivity, ViewActivity },
   data() {
     return {
       isAuthenticatedRoute: false,
@@ -27,6 +32,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("activity", ["fetchActivities", "fetchSingleActivity"]),
     toggleAddModal() {
       this.showAddModal = true;
     },

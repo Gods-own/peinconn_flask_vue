@@ -63,6 +63,7 @@ export default {
   },
   emits: ["hideModalFunc"],
   created() {
+    console.log('dds')
     this.fetchLikers(this.activity.id);
   },
 };

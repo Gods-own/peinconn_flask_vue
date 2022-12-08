@@ -1,7 +1,7 @@
 <template>
   <div>
-    <CreateActivity v-if="showCreateModal" @hide-modal-func="$emit('hideModalFunc')" />
-    <ViewActivity v-if="viewActivity" @hide-modal-func="$emit('hideModalFunc')" />
+    <!-- <CreateActivity v-if="showCreateModal" @hide-modal-func="$emit('hideModalFunc')" /> -->
+    <!-- <ViewActivity v-if="viewActivity" @hide-modal-func="$emit('hideModalFunc')" /> -->
     <section class="main-section">
       <div class="activity-section">
         <article v-for="singleActivity in allActivities" :key="singleActivity.id" class="card">
@@ -32,13 +32,13 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import CreateActivity from "@/components/CreateActivity.vue";
-import ViewActivity from "@/components/ViewActivity.vue";
+// import CreateActivity from "@/components/CreateActivity.vue";
+// import ViewActivity from "@/components/ViewActivity.vue";
 import { currUser } from "@/api/jwt-access-token";
 
 export default {
   name: "ActivitiesPage",
-  components: { CreateActivity, ViewActivity },
+  // components: { ViewActivity },
   computed: {
     ...mapGetters("activity", ["allActivities"]),
     ...mapGetters("interest", ["userInterests"]),
@@ -62,11 +62,11 @@ export default {
       e.target.classList.toggle("liked-color");
     },
   },
-  props: {
-    showCreateModal: Boolean,
-    viewActivity: Boolean,
-  },
-  emits: ["hideModalFunc", "showActivityModalFunc"],
+  // props: {
+  //   // showCreateModal: Boolean,
+  //   viewActivity: Boolean,
+  // },
+  emits: ["showActivityModalFunc"],
   watch: {
     "$store.state.interest.userInterests": function () {
       console.log(this.$store.state.interest.userInterests);

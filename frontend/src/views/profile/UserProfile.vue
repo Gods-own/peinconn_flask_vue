@@ -4,8 +4,6 @@
       <ProfileInfoSection></ProfileInfoSection>
       <div class="divider"></div>
       <ProfileActivity
-        :viewActivity="viewActivity"
-        @hide-modal-func="$emit('hideModalFunc')"
         @show-activity-modal-func="$emit('showActivityModalFunc')"
       ></ProfileActivity>
     </section>
@@ -18,10 +16,10 @@ import ProfileActivity from "@/components/ProfileActivity.vue";
 export default {
   name: "UserProfile",
   components: { ProfileInfoSection, ProfileActivity },
-  emits: ["hideModalFunc", "showActivityModalFunc"],
-  props: {
-    viewActivity: Boolean,
-  },
+  emits: ["showActivityModalFunc"],
+  // props: {
+  //   viewActivity: Boolean,
+  // },
 };
 </script>
 
