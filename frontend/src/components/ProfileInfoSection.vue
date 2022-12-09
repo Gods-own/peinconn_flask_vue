@@ -67,7 +67,9 @@ export default {
       console.log(interest);
       const payload = {
         user_id: this.userId,
-        searchData: { filter: interest },
+        searchData: { 
+          filter: interest, 
+        },
       };
       console.log(payload);
       this.fetchUserActivities(payload);

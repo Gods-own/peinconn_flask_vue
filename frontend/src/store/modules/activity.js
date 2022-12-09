@@ -6,10 +6,12 @@ const state = {
   loading: false,
   error: null,
   success: false,
+  activitiesPagination: {}
 };
 
 const getters = {
   allActivities: (state) => state.allActivities,
+  activitiesPagination: (state) => state.activitiesPagination,
   activity: (state) => state.activity,
   loading: (state) => state.loading,
   error: (state) => state.error,
@@ -44,11 +46,13 @@ const actions = {
   fetchActivities({ commit }, searchParams) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
+    console.log(searchParams);
 
     const callGetAllActivities = async () => {
       const response = await getAllActivities(searchParams);
       console.log(response);
       commit("setActivities", response.data);
+      commit("setPaginationLinks", response.links);
       console.log(response);
       return response;
     };
@@ -98,7 +102,7 @@ const actions = {
 
 const mutations = {
   setActivities: (state, activities) => {
-    state.allActivities = activities;
+    state.allActivities = [...state.allActivities, ...activities];
   },
   setSingleActivity: (state, activity) => {
     state.activity = activity;
@@ -106,6 +110,9 @@ const mutations = {
   newActivity: (state, activity) => {
     // photo.liked = false
     state.allActivities.unshift(activity);
+  },
+  setPaginationLinks: (state, links) => {
+    state.activitiesPagination = links
   },
   requestError: (state, error) => {
     state.error = error.response.data.message;

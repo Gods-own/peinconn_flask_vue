@@ -25,6 +25,7 @@
             </div>
           </div>
         </article>
+        <button v-if="activitiesPagination?.meta?.paging?.hasNextPage" @click="pagination">Show More</button>
       </div>
     </section>
   </div>
@@ -40,7 +41,7 @@ export default {
   name: "ActivitiesPage",
   // components: { ViewActivity },
   computed: {
-    ...mapGetters("activity", ["allActivities"]),
+    ...mapGetters("activity", ["allActivities", "activitiesPagination"]),
     ...mapGetters("interest", ["userInterests"]),
     ...mapGetters("likeInfo", ["likeStatus", "likeNo"]),
   },
@@ -61,6 +62,17 @@ export default {
       }
       e.target.classList.toggle("liked-color");
     },
+    pagination() {
+      const payload = {
+        params: {
+          filter: undefined,
+          page: this.activitiesPagination.meta.paging.next_page_num,
+          per_page: this.activitiesPagination.meta.paging.pageCount,
+          max_per_page: this.activitiesPagination.meta.paging.pageCount
+          }
+      }
+      this.fetchActivities(payload);
+    }
   },
   // props: {
   //   // showCreateModal: Boolean,

@@ -8,10 +8,10 @@ export const registerUserInterest = (interest_payload) => post(url.REGISTER_INTE
 
 //ACTIVITY
 export const createActivity = (activity_data) => post(url.CREATE_ACTIVITY, activity_data);
-export const getAllActivities = (filter) => get(url.GET_ACTIVITIES, { params: filter });
+export const getAllActivities = (params) => get(url.GET_ACTIVITIES, { params: params });
 export const getSingleActivity = (activity_id) => get(`${url.GET_SINGLE_ACTIVITY}/${activity_id}`);
 export const updateSingleActivity = (activity_id) => put(`${url.UPDATE_SINGLE_ACTIVITY}/${activity_id}`);
-export const getUserActivities = (user_id, filter) => get(`${url.GET_USER_ACTIVITIES}/${user_id}`, { params: filter });
+export const getUserActivities = (user_id, params) => get(`${url.GET_USER_ACTIVITIES}/${user_id}`, { params: params });
 
 //LIKE
 export const toggleLike = (activity_id) => put(`${url.TOGGLE_LIKE}/${activity_id}`);
@@ -30,7 +30,7 @@ export const getAllUserInterests = (user_id) => get(`${url.GET_USER_INTERESTS}/$
 
 //Room
 export const getRoomStatus = (user1_id, user2_id) => get(`${url.CHECK_ROOM_EXISTS}/${user1_id}/${user2_id}`);
-export const getUserRooms = () => get(url.GET_USER_ROOMS);
+export const getUserRooms = (params) => get(url.GET_USER_ROOMS, { params: params });
 
 //Message
 export const getUserMessages = (room_name) => get(`${url.GET_USER_MESSAGES}/${room_name}`);

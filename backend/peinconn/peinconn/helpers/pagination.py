@@ -15,7 +15,7 @@ def get_pagination_info(request):
     if per_page is None:
         per_page = 10
     else:
-        if per_page > max_per_page:
+        if int(per_page) > max_per_page:
             per_page = 10   
         else:
             per_page = int(per_page) 

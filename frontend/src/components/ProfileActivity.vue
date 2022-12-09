@@ -25,6 +25,7 @@
         </div>
       </div>
     </article>
+    <button v-if="activitiesPagination?.meta?.paging?.hasNextPage" @click="pagination">Show more</button>
   </div>
 </template>
 
@@ -36,14 +37,14 @@ export default {
   // components: { ViewActivity },
   data() {
     return {
-      userId: this.$route.params.userId,
+      userId: this.$route.params.userId
     };
   },
   // props: {
   //   viewActivity: Boolean,
   // },
   computed: {
-    ...mapGetters("user", ["userActivities"]),
+    ...mapGetters("user", ["userActivities", "activitiesPagination"]),
   },
   methods: {
     ...mapActions("activity", ["fetchSingleActivity"]),
@@ -62,12 +63,29 @@ export default {
       this.fetchSingleActivity(id);
       this.$emit("showActivityModalFunc");
     },
+    pagination() {
+      const payload = {
+        user_id: this.userId,
+        searchData: {
+          filter: undefined,
+          page: this.activitiesPagination.meta.paging.next_page_num,
+          per_page: this.activitiesPagination.meta.paging.pageCount,
+          max_per_page: this.activitiesPagination.meta.paging.pageCount
+          }
+      }
+      this.fetchUserActivities(payload);
+    }
   },
   emits: ["showActivityModalFunc"],
   created() {
     const payload = {
       user_id: this.userId,
-      searchData: undefined,
+      searchData: {
+        filter: undefined,
+        // page: this.activitiesPagination.meta.paging.next_page_num,
+        // per_page: ,
+        // max_per_page:
+        },
     };
     this.fetchUserActivities(payload);
   },

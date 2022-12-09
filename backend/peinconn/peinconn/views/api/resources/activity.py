@@ -139,7 +139,7 @@ class UserActivities(Resource):
 
             interest_filter = request.args.get('filter')
 
-            print(interest_filter)
+            print(request.args)
 
             if interest_filter is not None:
                 user_activities = UserActivity.query.filter_by(user_id=user_id, interest_id=int(interest_filter)).order_by(UserActivity.id.asc())
@@ -186,7 +186,8 @@ class UserActivities(Resource):
             return jsonify({'success': True, 'code': 200, 'message': 'Activity retrieved Successfully', 'data': activityTransformer, 'links': links})
   
         except Exception as e:
-            return make_response(jsonify({'success': False, 'code': 500, 'message': 'Something went wrong, try again later'}), 500)   
+            print(e)
+            return make_response(jsonify({'success': False, 'code': 500, 'message': f'Something went wrong, try again later'}), 500)   
 
 class ActivityListForUserInterests(Resource):
 

@@ -6,10 +6,12 @@ const state = {
   loading: false,
   error: null,
   success: false,
+  activitiesPagination: {}
 };
 
 const getters = {
   userActivities: (state) => state.userActivities,
+  activitiesPagination: (state) => state.activitiesPagination,
   userProfile: (state) => state.userProfile,
   loading: (state) => state.loading,
   error: (state) => state.error,
@@ -48,8 +50,9 @@ const actions = {
 
     const callGetUserActivities = async () => {
       const response = await getUserActivities(user_id, searchData);
-      console.log(searchData);
+      console.log(searchData, response.links);
       commit("setUserActivities", response.data);
+      commit("setPaginationLinks", response.links);
       console.log(response);
       return response;
     };
@@ -74,7 +77,10 @@ const mutations = {
     state.userProfile = user;
   },
   setUserActivities: (state, activities) => {
-    state.userActivities = activities;
+    state.userActivities = [...state.userActivities, ...activities];
+  },
+  setPaginationLinks: (state, links) => {
+    state.activitiesPagination = links
   },
   requestError: (state, error) => {
     state.error = error.response.data.message;

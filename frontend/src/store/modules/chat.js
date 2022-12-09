@@ -6,10 +6,12 @@ const state = {
   loading: false,
   error: null,
   success: false,
+  roomsPagination: {}
 };
 
 const getters = {
   roomInfo: (state) => state.roomInfo,
+  roomsPagination: (state) => state.roomsPagination,
   rooms: (state) => state.rooms,
   loading: (state) => state.loading,
   error: (state) => state.error,
@@ -42,14 +44,15 @@ const actions = {
         commit("requestError", err);
       });
   },
-  fetchRooms({ commit }, room_id) {
+  fetchRooms({ commit }, params) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
 
     const callGetRooms = async () => {
-      const response = await getUserRooms(room_id);
+      const response = await getUserRooms(params);
       console.log(response);
       commit("setRooms", response.data);
+      commit("setPaginationLinks", response.links);
       console.log(response);
       return response;
     };
@@ -75,6 +78,9 @@ const mutations = {
   },
   setRooms: (state, roomList) => {
     state.rooms = roomList;
+  },
+  setPaginationLinks: (state, links) => {
+    state.activitiesPagination = links
   },
   requestError: (state, error) => {
     state.error = error.response.data.message;

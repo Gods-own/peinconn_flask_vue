@@ -28,6 +28,7 @@
           </div>
         </div>
       </div>
+      <button v-if="roomsPagination?.meta?.paging?.hasNextPage" @click="pagination">Show More</button>
     </div>
   </div>
 </template>
@@ -43,10 +44,21 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("chat", ["rooms"]),
+    ...mapGetters("chat", ["rooms", "roomsPagination"]),
   },
   methods: {
     ...mapActions("chat", ["fetchRooms"]),
+    pagination() {
+      const payload = {
+        searchData: {
+          filter: undefined,
+          page: this.roomsPagination.meta.paging.next_page_num,
+          per_page: this.roomsPagination.meta.paging.pageCount,
+          max_per_page: this.roomsPagination.meta.paging.pageCount
+          }
+      }
+      this.fetchRooms(payload);
+    }
   },
   created() {
     this.fetchRooms();
