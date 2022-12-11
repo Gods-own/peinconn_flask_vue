@@ -24,17 +24,17 @@ export default {
   },
   created() {
     if (this.$route.params.room) {
-      socketioService.connect();
-      socketioService.on("connect", () => {
-        console.log(currUser);
-        let socketData = {
-          username: currUser.username,
-          user_id: currUser.id,
-          room: this.$route.params.room,
-        };
-        console.log(socketData);
-        socketioService.emit("userConnected", JSON.stringify(socketData));
-      });
+      // socketioService.connect();
+      // socketioService.on("connect", () => {
+      //   console.log(currUser);
+      let socketData = {
+        username: currUser.username,
+        user_id: currUser.id,
+        room: this.$route.params.room,
+      };
+      // console.log(socketData);
+      socketioService.emit("userConnected", JSON.stringify(socketData));
+      // });
     }
   },
   beforeUnmount() {
@@ -46,7 +46,7 @@ export default {
     };
     console.log(socketData);
     socketioService.emit("userDisconnected", JSON.stringify(socketData));
-    socketioService.disconnect();
+    // socketioService.disconnect();
   },
 };
 </script>

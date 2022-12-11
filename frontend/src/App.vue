@@ -17,6 +17,7 @@
 import { mapActions } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted } from "vue";
+import socketioService from "./services/socketio.service.js";
 import CreateActivity from "@/components/CreateActivity.vue";
 import ViewActivity from "@/components/ViewActivity.vue";
 import AuthLayout from "@/components/layout/AuthLayout.vue";
@@ -52,6 +53,16 @@ export default {
       await router.isReady();
     });
     return { route };
+  },
+  created() {
+    socketioService.connect();
+    socketioService.on("ping", () => {
+      // ...c
+      console.log("ping");
+    });
+  },
+  beforeUnmount() {
+    socketioService.disconnect();
   },
 };
 </script>

@@ -64,15 +64,15 @@ export default {
     },
     pagination() {
       const payload = {
-        params: {
+        searchParams: {
           filter: undefined,
           page: this.activitiesPagination.meta.paging.next_page_num,
           per_page: this.activitiesPagination.meta.paging.pageCount,
-          max_per_page: this.activitiesPagination.meta.paging.pageCount
-          }
-      }
+          max_per_page: this.activitiesPagination.meta.paging.pageCount,
+        },
+      };
       this.fetchActivities(payload);
-    }
+    },
   },
   // props: {
   //   // showCreateModal: Boolean,
@@ -97,7 +97,12 @@ export default {
   },
   created() {
     console.log("good");
-    this.fetchActivities();
+    const payload = {
+      searchParams: {
+        filter: undefined,
+      },
+    };
+    this.fetchActivities(payload);
     this.fetchUserInterests(currUser.id);
   },
 };

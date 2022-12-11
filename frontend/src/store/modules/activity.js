@@ -6,7 +6,7 @@ const state = {
   loading: false,
   error: null,
   success: false,
-  activitiesPagination: {}
+  activitiesPagination: {},
 };
 
 const getters = {
@@ -43,7 +43,7 @@ const actions = {
         commit("requestError", err);
       });
   },
-  fetchActivities({ commit }, searchParams) {
+  fetchActivities({ commit }, { searchParams }) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
     console.log(searchParams);
@@ -112,7 +112,7 @@ const mutations = {
     state.allActivities.unshift(activity);
   },
   setPaginationLinks: (state, links) => {
-    state.activitiesPagination = links
+    state.activitiesPagination = links;
   },
   requestError: (state, error) => {
     state.error = error.response.data.message;
