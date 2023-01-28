@@ -73,6 +73,17 @@ export default {
       };
       this.fetchActivities(payload);
     },
+    getNextSetActivities() {
+      window.onscroll = () => {
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+        if (bottomOfWindow) {
+          // axios.get(`https://randomuser.me/api/`).then(response => {
+          //   this.users.push(response.data.results[0]);
+          // });
+          this.pagination();
+        }
+      }
+    }
   },
   // props: {
   //   // showCreateModal: Boolean,
@@ -105,6 +116,9 @@ export default {
     this.fetchActivities(payload);
     this.fetchUserInterests(currUser.id);
   },
+  mounted() {
+    this.getNextSetActivities();
+  }
 };
 </script>
 

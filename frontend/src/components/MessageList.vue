@@ -11,7 +11,7 @@
         <input class="message-search-input" type="search" placeholder="Search" />
       </form>
 
-      <div v-for="room in rooms" :key="room.id" class="messages-list">
+      <div @click="()=>{joinRoom(room.room, room.user1.id, room.user2.id)}" v-for="room in rooms" :key="room.id" class="messages-list">
         <div>
           <img :src="room.user1.id == authUser.id ? room.user2.userImage : room.user1.userImage" />
         </div>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import socketioService from "../services/socketio.service.js";
 import { mapGetters, mapActions } from "vuex";
 import { currUser } from "../api/jwt-access-token";
 export default {
@@ -58,6 +59,16 @@ export default {
           }
       }
       this.fetchRooms(payload);
+    },
+    joinRoom(roomName, userid1, userid2) {
+      let socketData = {
+        user_id: currUser.id,
+        room: roomName,
+        user1_id: currUser.id,
+        user2_id: userid1 == currUser.id ? userid2 : userid1,
+      };
+      socketioService.emit("join", JSON.stringify(socketData));
+      this.$router.push({ path: `/direct/inbox/${socketData.user2_id}/${socketData.room}` });
     }
   },
   created() {

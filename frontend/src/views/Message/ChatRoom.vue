@@ -28,9 +28,11 @@ export default {
       // socketioService.on("connect", () => {
       //   console.log(currUser);
       let socketData = {
-        username: currUser.username,
+        // username: currUser.username,
         user_id: currUser.id,
         room: this.$route.params.room,
+        user1_id: currUser.id,
+        user2_id: this.$route.params.userId,
       };
       // console.log(socketData);
       socketioService.emit("userConnected", JSON.stringify(socketData));

@@ -6,7 +6,7 @@ from .models import Room, Message
 from .views.web import web
 from .views.api import api_bp
 from peinconn import config
-from .event import save_message, connect_user, disconnect_user, get_connected_users, get_notifications
+from .event import save_message, save_room, connect_user, disconnect_user, get_connected_users, get_notifications
 from flask_socketio import join_room, leave_room, send, emit
 import json
 
@@ -48,11 +48,23 @@ def on_join(data):
     data = json.loads(data)
     room = data['room']
     join_room(room)
+    # new_message = save_message(data)
+    # messageTransformer = message_schema.dump(new_message)
+    # emit('new_message', messageTransformer, to=room)  
+    save_room(data);
+    emit('joined', to=room)   
+    connect_user(data)
+
+@socketio.on('message')
+def on_message(data):
+    data = json.loads(data)
+    room = data['room']
+    join_room(room)
     new_message = save_message(data)
     messageTransformer = message_schema.dump(new_message)
     emit('new_message', messageTransformer, to=room)  
     emit('received')  
-    connect_user(data)
+    connect_user(data)    
 
 @socketio.on('leave')
 def on_leave(data):
@@ -61,7 +73,7 @@ def on_leave(data):
 @socketio.on('userDisconnected')
 def on_disconnected(data):
     data = json.loads(data)
-    room = data['room']
+    # room = data['room']
     # join_room(room)
     # new_message = save_message(data)
     # messageTransformer = message_schema.dump(new_message)

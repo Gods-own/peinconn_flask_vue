@@ -61,6 +61,11 @@ export default {
       cvv: 0,
     };
   },
+  watch:{
+    $route (to){
+        this.fetchMessages(to.params.room);
+    }
+},
   computed: {
     ...mapGetters("message", ["messages"]),
     ...mapGetters("user", ["userProfile"]),
@@ -77,14 +82,14 @@ export default {
         user1_id: currUser.id,
         user2_id: this.$route.params.userId,
       };
-      socketioService.emit("join", JSON.stringify(socketData));
+      socketioService.emit("message", JSON.stringify(socketData));
       this.chat_message = "";
     },
   },
   created() {
     socketioService.on("new_message", (data) => {
+      alert(data);
       this.messages.unshift(data);
-      alert("recieved");
       // this.$store.commit("setMessages", new_messages);
     });
     // socketioService.on("received", () => {

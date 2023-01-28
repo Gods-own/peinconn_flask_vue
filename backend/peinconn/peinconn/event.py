@@ -4,15 +4,35 @@ from .transformers import message_schema
 from peinconn.peinconn.helpers.jwt_auth import get_current_user, token_required
 from flask import request
 
-def save_message(data):
+# def save_message(data):
+#     room = Room.query.filter(((Room.user1_id == data['user1_id']) & (Room.user2_id == data['user2_id'])) | ((Room.user1_id == data['user2_id']) & (Room.user2_id == data['user1_id']))).first()
+#     print(room)
+#     if room is None:
+#         room = Room(room=data['room'], user1_id=data['user1_id'], user2_id=data['user2_id'])
+#         db.session.add(room)
+#         db.session.flush()
+#         db.session.refresh(room)
+#     print(room.id)
+#     new_message = Message(user_id=data['user_id'], room_id=room.id, content=data['message'])
+#     db.session.add(new_message)
+#     db.session.flush()
+#     db.session.refresh(new_message)
+#     notification = Notifications(notification_user_id=data['user2_id'], notification_message_id=new_message.id)
+#     db.session.add(notification)
+#     db.session.commit() 
+#     return new_message
+
+def save_room(data):
     room = Room.query.filter(((Room.user1_id == data['user1_id']) & (Room.user2_id == data['user2_id'])) | ((Room.user1_id == data['user2_id']) & (Room.user2_id == data['user1_id']))).first()
     print(room)
     if room is None:
         room = Room(room=data['room'], user1_id=data['user1_id'], user2_id=data['user2_id'])
         db.session.add(room)
-        db.session.flush()
-        db.session.refresh(room)
+        db.session.commit()
     print(room.id)
+    
+def save_message(data):
+    room = Room.query.filter_by(room=data['room']).one()    
     new_message = Message(user_id=data['user_id'], room_id=room.id, content=data['message'])
     db.session.add(new_message)
     db.session.flush()
