@@ -68,6 +68,7 @@ export default {
         user2_id: userid1 == currUser.id ? userid2 : userid1,
       };
       socketioService.emit("join", JSON.stringify(socketData));
+      // this.$emit("currentRoom", )
       this.$router.push({ path: `/direct/inbox/${socketData.user2_id}/${socketData.room}` });
     }
   },

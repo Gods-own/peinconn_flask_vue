@@ -44,7 +44,7 @@
             <li class="nav-list messages">
               <router-link :to="{ name: 'ChatRoom' }">
                 <i class="fa fa-comment" aria-hidden="true"></i>
-                <span class="notification">{{ userProfile.no_notifications }}</span>
+                <span class="notification">{{ noOfNotifications }}</span>
               </router-link>
             </li>
             <li class="nav-list search-icon">
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-// import socketioService from "../../services/socketio.service.js";
+import socketioService from "../../services/socketio.service.js";
 import { mapGetters, mapActions } from "vuex";
 import { currUser } from "../../api/jwt-access-token";
 export default {
@@ -103,6 +103,7 @@ export default {
       // gender: null,
       searchData: {},
       filterByCountry: false,
+      noOfNotifications: 0,
     };
   },
   computed: {
@@ -156,9 +157,16 @@ export default {
   },
   created() {
     this.fetchUserProfile(this.authUser.id);
+    this.noOfNotifications = this.userProfile.no_notifications;
     // socketioService.on("connect", () => {
     //   console.log("goodlldlf");
     // });
+    socketioService.on("notify", (data) => {
+      let receiver = data.user.id == data.room.user1_id ? data.room.user2_id : data.room.user1_id
+      let notificationNumber = receiver == this.authUser.id ? 1 : 0;
+      this.noOfNotifications = this.noOfNotifications + notificationNumber;
+      console.log('notified')
+    });
   },
   emits: ["showAddModalFunc"],
 };

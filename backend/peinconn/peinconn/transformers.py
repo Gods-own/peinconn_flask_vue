@@ -128,7 +128,7 @@ users_details_schema = UserDetailsSchema(many=True)
 #Room Schema
 class RoomSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'room', 'user1', 'user2', 'created_At', 'updated_At')   
+        fields = ('id', 'room', 'user1_id', 'user2_id', 'user1', 'user2', 'created_At', 'updated_At')   
 
     user1 = ma.Nested(UserSchema(exclude=("interests",)))
     user2 = ma.Nested(UserSchema(exclude=("interests",)))    

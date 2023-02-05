@@ -62,7 +62,8 @@ def on_message(data):
     join_room(room)
     new_message = save_message(data)
     messageTransformer = message_schema.dump(new_message)
-    emit('new_message', messageTransformer, to=room)  
+    emit('new_message', messageTransformer, to=room) 
+    emit('notify', messageTransformer, broadcast=True)  
     emit('received')  
     connect_user(data)    
 

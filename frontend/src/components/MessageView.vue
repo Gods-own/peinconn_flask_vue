@@ -1,15 +1,15 @@
 <template>
-  <div class="msg-div">
+  <div v-if="$route.params.userId" class="msg-div">
     <header class="msg-header">
       <div>
         <div class="message-img-div">
-          <img src="images/08ed9bade4dc70528f9bb5a77c2981e6.jpg" />
-          <p>Tolu</p>
+          <img :src="userProfile.userImage" />
+          <p>{{ userProfile.username }}</p>
         </div>
       </div>
       <ul class="msg-header-ul">
         <li>
-          <a href=""><i class="fa fa-eye"></i></a>
+          <router-link :to="{ name: 'Profile', params:{ userId: $route.params.userId } }"><i class="fa fa-eye"></i></router-link>
         </li>
       </ul>
     </header>
@@ -45,6 +45,7 @@
       </form>
     </div>
   </div>
+  <div v-else class="msg-div"></div>
 </template>
 
 <script>
@@ -64,6 +65,9 @@ export default {
   watch:{
     $route (to){
         this.fetchMessages(to.params.room);
+    },
+    '$route.params.userId': function() {
+            this.fetchUserProfile(this.$route.params.userId)
     }
 },
   computed: {
@@ -86,9 +90,12 @@ export default {
       this.chat_message = "";
     },
   },
+  mounted(){
+    this.fetchUserProfile(this.$route.params.userId)
+    console.log(this.$route.params.userId)
+  },
   created() {
     socketioService.on("new_message", (data) => {
-      alert(data);
       this.messages.unshift(data);
       // this.$store.commit("setMessages", new_messages);
     });

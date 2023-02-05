@@ -56,10 +56,6 @@ export default {
   },
   created() {
     socketioService.connect();
-    socketioService.on("ping", () => {
-      // ...c
-      console.log("ping");
-    });
   },
   beforeUnmount() {
     socketioService.disconnect();
