@@ -155,9 +155,17 @@ export default {
       console.log(this.searchResult);
     },
   },
+  watch: {
+    "$store.state.user.userProfile": function () {
+      this.noOfNotifications = this.userProfile.no_notifications;
+    },
+  },
+  // mounted(){
+  //   console.log(this.userProfile)
+  //   this.noOfNotifications = this.userProfile.no_notifications;
+  // },
   created() {
     this.fetchUserProfile(this.authUser.id);
-    this.noOfNotifications = this.userProfile.no_notifications;
     // socketioService.on("connect", () => {
     //   console.log("goodlldlf");
     // });

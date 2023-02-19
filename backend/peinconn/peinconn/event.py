@@ -3,6 +3,7 @@ from .models import Room, Message, Notifications, Connected
 from .transformers import message_schema
 from peinconn.peinconn.helpers.jwt_auth import get_current_user, token_required
 from flask import request
+from datetime import datetime
 
 # def save_message(data):
 #     room = Room.query.filter(((Room.user1_id == data['user1_id']) & (Room.user2_id == data['user2_id'])) | ((Room.user1_id == data['user2_id']) & (Room.user2_id == data['user1_id']))).first()
@@ -34,6 +35,7 @@ def save_room(data):
 def save_message(data):
     room = Room.query.filter_by(room=data['room']).one()    
     new_message = Message(user_id=data['user_id'], room_id=room.id, content=data['message'])
+    room.updated_At = datetime.utcnow()
     db.session.add(new_message)
     db.session.flush()
     db.session.refresh(new_message)

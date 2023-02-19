@@ -33,7 +33,7 @@ class ChatRoomList(Resource):
 
             pagination_info = get_pagination_info(request)
 
-            rooms = Room.query.filter((Room.user1_id == auth_user['id']) | (Room.user2_id == auth_user['id'])).order_by(Room.id.desc())
+            rooms = Room.query.filter((Room.user1_id == auth_user['id']) | (Room.user2_id == auth_user['id'])).order_by(Room.updated_At.desc())
 
             rooms = rooms.paginate(page=pagination_info['page'], per_page=pagination_info['per_page'], max_per_page=pagination_info['max_per_page'])        
 

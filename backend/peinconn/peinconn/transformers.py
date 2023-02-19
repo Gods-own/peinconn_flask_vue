@@ -123,7 +123,19 @@ class UserDetailsSchema(ma.Schema):
 
 #Init User Schema
 user_details_schema = UserDetailsSchema()
-users_details_schema = UserDetailsSchema(many=True)       
+users_details_schema = UserDetailsSchema(many=True)   
+
+#Message Schema
+class MessageSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'user', 'content', 'created_At', 'updated_At')
+
+    user = ma.Nested(UserSchema)
+    # room = ma.Nested(RoomSchema(exclude=("user1", "user2",)))        
+
+#Init Message Schema
+message_schema = MessageSchema() 
+messages_schema = MessageSchema(many=True) 
 
 #Room Schema
 class RoomSchema(ma.Schema):
@@ -131,20 +143,10 @@ class RoomSchema(ma.Schema):
         fields = ('id', 'room', 'user1_id', 'user2_id', 'user1', 'user2', 'created_At', 'updated_At')   
 
     user1 = ma.Nested(UserSchema(exclude=("interests",)))
-    user2 = ma.Nested(UserSchema(exclude=("interests",)))    
+    user2 = ma.Nested(UserSchema(exclude=("interests",)))  
+    dm_room = ma.List(ma.Nested(MessageSchema(exclude=("user",))))
 
 #Init Room Schema
 room_schema = RoomSchema()
 rooms_schema = RoomSchema(many=True) 
 
-#Message Schema
-class MessageSchema(ma.Schema):
-    class Meta:
-        fields = ('id', 'user', 'room', 'content', 'created_At', 'updated_At')
-
-    user = ma.Nested(UserSchema)
-    room = ma.Nested(RoomSchema(exclude=("user1", "user2",)))        
-
-#Init Message Schema
-message_schema = MessageSchema() 
-messages_schema = MessageSchema(many=True) 
