@@ -1,5 +1,5 @@
 from flask_seeder import Seeder, Faker, generator
-from peinconn.peinconn.models import Activity, User
+from peinconn.peinconn.models import Activity, User, Interest
 from peinconn.peinconn.extensions import db
 import random, os, datetime
 from werkzeug.security import generate_password_hash
@@ -13,10 +13,10 @@ class PaintingSeeder(Seeder):
     # Create a new Faker and tell it how to create User objects
     #activity, interest_id, picture, user_id
         gen = DocumentGenerator()
-        users = User.query.filter(User.interests.any(Interest.id==5)).all()
+        users = User.query.filter(User.interests.any(Interest.id==6)).all()
 
-        path = 'C:/Users/user/OneDrive/Documents/flask-projects/peinconn_flask_vue/backend/peinconn/peinconn/static/fake_activity_images'
-        new_path = 'C:/Users/user/OneDrive/Documents/flask-projects/peinconn_flask_vue/backend/peinconn/peinconn/static/images/uploads'
+        path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/painting'
+        new_path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/images/uploads'
         dir_path = os.listdir(path)
 
         new_dir_path = []
@@ -34,11 +34,12 @@ class PaintingSeeder(Seeder):
             init={}
         )
 
-        for x in dir_path:
-            for singleActivity in faker.create(1):  
-                singleUser = random.choice(users).id
-                singleActivity.interest_id = 5
-                singleActivity.user_id = singleUser
-                singleActivity.picture = random.choice(new_dir_path)
-                singleActivity.activity = gen.sentence()
-                self.db.session.add(singleActivity)       
+        for x in new_dir_path:
+            for singleActivity in faker.create(1): 
+                if len(users) != 0: 
+                    singleUser = random.choice(users).id
+                    singleActivity.interest_id = 6
+                    singleActivity.user_id = singleUser
+                    singleActivity.picture = x
+                    singleActivity.activity = gen.sentence()
+                    self.db.session.add(singleActivity)       

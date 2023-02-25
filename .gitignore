@@ -4,7 +4,7 @@ backend/peinconn/.env
 backend/peinconn/peinconn.db
 # peinconn\static\images\uploads
 backend/peinconn/peinconn/static/images/uploads
-backend/peinconn/peinconn/static/images/profile
+backend/peinconn/peinconn/static/images/profilePic
 frontend/node_modules
 
 .DS_Store

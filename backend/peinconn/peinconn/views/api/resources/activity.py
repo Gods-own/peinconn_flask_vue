@@ -214,7 +214,7 @@ class ActivityListForUserInterests(Resource):
                 for user_interest in user_interests:
                     user_interests_id.append(user_interest.id)
 
-            activities = UserActivity.query.filter(UserActivity.interest_id.in_(user_interests_id)).order_by(UserActivity.id.desc())
+            activities = UserActivity.query.filter((UserActivity.interest_id.in_(user_interests_id)) & (UserActivity.user_id != auth_user['id'])).order_by(UserActivity.id.desc())
 
             # page = request.args.get('page')
 

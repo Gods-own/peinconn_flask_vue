@@ -20,10 +20,10 @@
             <h4>
               <a href="#">{{ room.user1.id == authUser.id ? room.user2.username : room.user1.username }}</a>
             </h4>
-            <small>07/09/22</small>
+            <small>{{ formatDate(room.dm_room[room.dm_room.length - 1].created_At, "YYYY/MM/DD") }}</small>
           </div>
           <div class="msg">
-            <p>Lorem ipsum dolor</p>
+            <p>{{ room.dm_room[room.dm_room.length - 1].content }}</p>
             <small>2</small>
           </div>
         </div>
@@ -37,6 +37,7 @@
 import socketioService from "../services/socketio.service.js";
 import { mapGetters, mapActions } from "vuex";
 import { currUser } from "../api/jwt-access-token";
+import moment from "moment";
 export default {
   name: "MessageList",
   data() {
@@ -70,6 +71,10 @@ export default {
       socketioService.emit("join", JSON.stringify(socketData));
       // this.$emit("currentRoom", )
       this.$router.push({ path: `/direct/inbox/${socketData.user2_id}/${socketData.room}` });
+    },
+    formatDate(date, format){
+      let formattedDate = moment(date).format(format)
+      return formattedDate
     }
   },
   created() {

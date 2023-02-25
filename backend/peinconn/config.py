@@ -42,4 +42,6 @@ class DevelopmentConfig(Config):
 
     ACTIVITY_IMAGE_PATH = 'images/uploads'
 
-    PROFILE_IMAGE_PATH = 'images/profile'
+    PROFILE_IMAGE_PATH = 'images/profilePic'
+
+    DEFAULT_PROFILE_IMAGE_PATH = 'images'

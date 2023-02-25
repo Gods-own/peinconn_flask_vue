@@ -115,7 +115,10 @@ class UserDetailsSchema(ma.Schema):
     userImage = ma.Method("get_file_url")
 
     def get_file_url(self, obj):
-        url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['PROFILE_IMAGE_PATH'], obj.userImage)
+        if obj.userImage == "default-image.png":
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['DEFAULT_PROFILE_IMAGE_PATH'], obj.userImage)
+        else:
+             url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['PROFILE_IMAGE_PATH'], obj.userImage)
 
         file_url = "/".join(url_tupple)
 
@@ -125,13 +128,22 @@ class UserDetailsSchema(ma.Schema):
 user_details_schema = UserDetailsSchema()
 users_details_schema = UserDetailsSchema(many=True)   
 
+#Notification Schema
+class NotificationSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'notification_user_id', 'notification_read', 'created_At', 'updated_At')      
+
+#Init Notification Schema
+notification_schema = NotificationSchema() 
+notifications_schema = NotificationSchema(many=True)
+
 #Message Schema
 class MessageSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'user', 'content', 'created_At', 'updated_At')
+        fields = ('id', 'user', 'new_message', 'content', 'created_At', 'updated_At')
 
     user = ma.Nested(UserSchema)
-    # room = ma.Nested(RoomSchema(exclude=("user1", "user2",)))        
+    new_message = ma.Nested(NotificationSchema)      
 
 #Init Message Schema
 message_schema = MessageSchema() 
@@ -140,7 +152,7 @@ messages_schema = MessageSchema(many=True)
 #Room Schema
 class RoomSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'room', 'user1_id', 'user2_id', 'user1', 'user2', 'created_At', 'updated_At')   
+        fields = ('id', 'room', 'dm_room', 'user1_id', 'user2_id', 'user1', 'user2', 'created_At', 'updated_At')   
 
     user1 = ma.Nested(UserSchema(exclude=("interests",)))
     user2 = ma.Nested(UserSchema(exclude=("interests",)))  
@@ -149,4 +161,5 @@ class RoomSchema(ma.Schema):
 #Init Room Schema
 room_schema = RoomSchema()
 rooms_schema = RoomSchema(many=True) 
+
 

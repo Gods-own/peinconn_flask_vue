@@ -15,8 +15,8 @@ class ActivitySeeder(Seeder):
         gen = DocumentGenerator()
         users = User.query.all();
 
-        path = 'C:/Users/user/OneDrive/Documents/flask-projects/peinconn_flask_vue/backend/peinconn/peinconn/static/fake_activity_images'
-        new_path = 'C:/Users/user/OneDrive/Documents/flask-projects/peinconn_flask_vue/backend/peinconn/peinconn/static/images/uploads'
+        path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/fake_activity_images'
+        new_path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/images/uploads'
         dir_path = os.listdir(path)
 
         new_dir_path = []

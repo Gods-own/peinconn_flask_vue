@@ -14,8 +14,8 @@ class UserSeeder(Seeder):
         genders = ['male', 'female']
         password = generate_password_hash('good')
 
-        path = 'C:/Users/user/OneDrive/Documents/flask-projects/peinconn_flask_vue/backend/peinconn/peinconn/static/fake_profile_pic'
-        new_path = 'C:/Users/user/OneDrive/Documents/flask-projects/peinconn_flask_vue/backend/peinconn/peinconn/static/profile'
+        path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/fake_profile_pic'
+        new_path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/images/profilePic'
         dir_path = os.listdir(path)
 
         new_dir_path = []
