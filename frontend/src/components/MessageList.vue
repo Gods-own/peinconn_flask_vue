@@ -24,7 +24,8 @@
           </div>
           <div class="msg">
             <p>{{ room.dm_room[room.dm_room.length - 1].content }}</p>
-            <small>2</small>
+            <!-- <small class v-if="room.dm_room[room.dm_room.length - 1].new_message[0].notification_read == 0 && room.dm_room[room.dm_room.length - 1].new_message[0].notification_user_id == authUser.id">{{  room.dm_room.filter(notifictationFilter).length }}</small> -->
+            <small class="new-chat" v-if="room.dm_room[room.dm_room.length - 1].new_message[0].notification_read == 0 && room.dm_room[room.dm_room.length - 1].new_message[0].notification_user_id == authUser.id"><i class="fa fa-circle"></i></small>
           </div>
         </div>
       </div>
@@ -75,6 +76,9 @@ export default {
     formatDate(date, format){
       let formattedDate = moment(date).format(format)
       return formattedDate
+    },
+    notifictationFilter(message){
+      return message.new_message[0].notification_read == 0
     }
   },
   created() {

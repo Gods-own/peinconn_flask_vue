@@ -10,7 +10,7 @@
           </div>
           <ul class="nav-link-text">
             <li class="nav-list home">
-              <router-link :to="{ name: 'ChatRoom' }">Home</router-link>
+              <router-link :to="{ name: 'Activities' }">Home</router-link>
             </li>
             <li class="nav-list addPost">
               <a @click="showAddModal">Create Post</a>
@@ -29,14 +29,14 @@
         <div>
           <ul class="nav-link-icon">
             <li class="nav-list profile">
-              <a><img class="nav-profile-img" :src="authUser.userImage" width="40" height="40" /></a>
-              <div class="profile-dropdown">
+              <a><img @click="toggleDropdownOpt" class="nav-profile-img" :src="authUser.userImage" width="40" height="40" /></a>
+              <div v-if="showDropDown" class="profile-dropdown">
                 <ul>
                   <li>
-                    <a href=""><i class="fa fa-user" aria-hidden="true"></i><span>Invite</span></a>
+                    <router-link :to="{name: 'Profile', params: {userId: authUser.id}}" href=""><i class="fa fa-user" aria-hidden="true"></i><span>Profile</span></router-link>
                   </li>
                   <li>
-                    <a href=""><i class="fa fa-sign-out" aria-hidden="true"></i><span>Log out</span></a>
+                    <router-link :to="{name: 'Logout'}" href=""><i class="fa fa-sign-out" aria-hidden="true"></i><span>Log out</span></router-link>
                   </li>
                 </ul>
               </div>
@@ -61,7 +61,7 @@
         <form class="home-filter-form">
           <div class="search-buttons">
             <button name="country" @click="countryFilter" class="btn search-items" type="submit">Filter By Your Country</button>
-            <select name="age" @change="AgeFilter" class="form-control search-items" id="exampleFormControlSelect1">
+            <select name="age" @change="ageFilter" class="form-control search-items" id="exampleFormControlSelect1">
               <option selected value="">Filter By Age</option>
               <option value="16-24">16-24</option>
               <option value="25-34">25-34</option>
@@ -104,6 +104,7 @@ export default {
       searchData: {},
       filterByCountry: false,
       noOfNotifications: 0,
+      showDropDown: false
     };
   },
   computed: {
@@ -154,6 +155,9 @@ export default {
       }
       console.log(this.searchResult);
     },
+    toggleDropdownOpt(){
+      this.showDropDown = !this.showDropDown
+    }
   },
   watch: {
     "$store.state.user.userProfile": function () {

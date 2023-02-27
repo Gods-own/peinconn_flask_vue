@@ -8,14 +8,14 @@
     </div> -->
     <div class="profile-header">
       <div class="profile-cover">
-        <img class="profile-cover-photo" :src="userProfile.userImage" />
+        <img class="profile-cover-photo" :src="userProfile.coverImage" />
         <div class="profile-action-container">
           <img class="profile-page-img" :src="userProfile.userImage" />
           <div></div>
           <div class="action-btns">
             <button v-if="isAuthenticatedUserProfile">Edit Profile</button>
-            <button @click="onMessage" v-else>
-              <router-link :to="{ name: 'ChatRoom', params: { userId: userProfile.id, room: getRoomName } }">Message</router-link>
+            <button @click="()=>{joinRoom(getRoomName, userProfile.id)}" v-else>
+              <a>Message</a>
             </button>
           </div>
         </div>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import socketioService from "../services/socketio.service.js";
 import { mapGetters, mapActions } from "vuex";
 import generateName from "../services/generateRoomName.service.js";
 // import socketioService from "../services/socketio.service.js";
@@ -73,6 +74,17 @@ export default {
       };
       console.log(payload);
       this.fetchUserActivities(payload);
+    },
+    joinRoom(roomName, userid2) {
+      let socketData = {
+        user_id: currUser.id,
+        room: roomName,
+        user1_id: currUser.id,
+        user2_id: userid2,
+      };
+      socketioService.emit("join", JSON.stringify(socketData));
+      // this.$emit("currentRoom", )
+      this.$router.push({ path: `/direct/inbox/${socketData.user2_id}/${socketData.room}` });
     },
     // onMessage() {
     //   let socketData = {

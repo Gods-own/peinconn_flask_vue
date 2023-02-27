@@ -14,7 +14,7 @@ class UserSeeder(Seeder):
         genders = ['male', 'female']
         password = generate_password_hash('good')
 
-        path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/fake_profile_pic'
+        path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/profilepic'
         new_path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/images/profilePic'
         dir_path = os.listdir(path)
 
@@ -44,10 +44,10 @@ class UserSeeder(Seeder):
             }
         )
 
-        for x in dir_path:
+        for x in new_dir_path:
             for singleUser in faker.create(1): 
                 singleUser.date_of_birth = datetime.date(random.randint(1959, 2005), random.randint(1, 12), random.randint(10, 28))
                 singleUser.country_id = random.choice(countries_id)
                 singleUser.gender = random.choice(genders)
-                singleUser.userImage = random.choice(new_dir_path)
+                singleUser.userImage = x
                 self.db.session.add(singleUser)          

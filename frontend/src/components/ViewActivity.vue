@@ -9,7 +9,7 @@
               <img :src="activity.user.userImage" />
               <div>
                 <span
-                  ><h3>{{ activity.user.username }}</h3>
+                  ><h3><router-link :to="{ name: 'Profile', params:{userId: activity.user.id} }">{{ activity.user.username }}</router-link></h3>
                   <i class="fa fa-envelope"></i
                 ></span>
               </div>

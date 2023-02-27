@@ -25,16 +25,29 @@ interests_schema = InterestSchema(many=True)
 #User Schema
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'username', 'email', 'introduction', 'gender', 'date_of_birth', 'userImage', 'is_admin', 'is_active', 
+        fields = ('id', 'username', 'email', 'introduction', 'gender', 'date_of_birth', 'userImage', 'coverImage', 'is_admin', 'is_active', 
         'date_joined', 'last_login', 'interests', 'country', 'created_At', 'updated_At')
 
     interests = ma.List(ma.Nested(InterestSchema))
     country = ma.Nested(CountrySchema)
-    userImage = ma.Method("get_file_url")
+    userImage = ma.Method("get_profile_file_url")
+    coverImage = ma.Method("get_cover_file_url")
 
-    def get_file_url(self, obj):
-        url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['PROFILE_IMAGE_PATH'], obj.userImage )
-        print(url_tupple)
+    def get_profile_file_url(self, obj):
+        if obj.userImage == "default-image.png":
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['DEFAULT_IMAGE_PATH'], obj.userImage)
+        else:
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['PROFILE_IMAGE_PATH'], obj.userImage)
+
+        file_url = "/".join(url_tupple)
+
+        return file_url
+    
+    def get_cover_file_url(self, obj):
+        if obj.coverImage == "default-cover.jpg":
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['DEFAULT_IMAGE_PATH'], obj.coverImage)
+        else:
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['COVER_IMAGE_PATH'], obj.coverImage)
 
         file_url = "/".join(url_tupple)
 
@@ -106,19 +119,30 @@ activities_schema = ActivitySchema(many=True)
 #User Details Schema which includes activities, interests e.t.c
 class UserDetailsSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'username', 'email', 'introduction', 'gender', 'date_of_birth', 'userImage', 'is_admin', 'is_active', 
+        fields = ('id', 'username', 'email', 'introduction', 'gender', 'date_of_birth', 'userImage', 'coverImage', 'is_admin', 'is_active', 
         'date_joined', 'last_login', 'interests', 'country', 'activities', 'created_At', 'updated_At')
 
     interests = ma.List(ma.Nested(InterestSchema))
     country = ma.Nested(CountrySchema) 
     activities = ma.List(ma.Nested(ActivitySchema(exclude=("user",))))
-    userImage = ma.Method("get_file_url")
+    userImage = ma.Method("get_profile_file_url")
+    coverImage = ma.Method("get_cover_file_url")
 
-    def get_file_url(self, obj):
+    def get_profile_file_url(self, obj):
         if obj.userImage == "default-image.png":
-            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['DEFAULT_PROFILE_IMAGE_PATH'], obj.userImage)
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['DEFAULT_IMAGE_PATH'], obj.userImage)
         else:
-             url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['PROFILE_IMAGE_PATH'], obj.userImage)
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['PROFILE_IMAGE_PATH'], obj.userImage)
+
+        file_url = "/".join(url_tupple)
+
+        return file_url
+    
+    def get_cover_file_url(self, obj):
+        if obj.coverImage == "default-cover.jpg":
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['DEFAULT_IMAGE_PATH'], obj.coverImage)
+        else:
+            url_tupple = (current_app.config['APP_URL'], 'static', current_app.config['COVER_IMAGE_PATH'], obj.coverImage)
 
         file_url = "/".join(url_tupple)
 
@@ -143,7 +167,7 @@ class MessageSchema(ma.Schema):
         fields = ('id', 'user', 'new_message', 'content', 'created_At', 'updated_At')
 
     user = ma.Nested(UserSchema)
-    new_message = ma.Nested(NotificationSchema)      
+    new_message = ma.List(ma.Nested(NotificationSchema))      
 
 #Init Message Schema
 message_schema = MessageSchema() 

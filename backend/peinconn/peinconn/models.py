@@ -54,6 +54,7 @@ class User(CommonField):
     gender = db.Column(db.String(10), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
     userImage = db.Column(db.String, default="default-image.png")
+    coverImage = db.Column(db.String, default="default-cover.jpg")
     is_admin = db.Column(db.SmallInteger, default=0)
     is_active = db.Column(db.SmallInteger, default=1, nullable=False)
     date_joined = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

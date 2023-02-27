@@ -44,4 +44,6 @@ class DevelopmentConfig(Config):
 
     PROFILE_IMAGE_PATH = 'images/profilePic'
 
-    DEFAULT_PROFILE_IMAGE_PATH = 'images'
+    COVER_IMAGE_PATH = 'images/covers'
+
+    DEFAULT_IMAGE_PATH = 'images'

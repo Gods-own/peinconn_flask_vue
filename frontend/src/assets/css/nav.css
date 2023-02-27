@@ -5,6 +5,9 @@ nav {
 .top-nav {
   padding-top: 0.5rem;
 }
+.nav-list{
+  cursor:pointer;
+}
 .nav-div {
   display: flex;
   justify-content: space-between;
@@ -149,10 +152,9 @@ nav ul li a {
 }
 
 .profile-dropdown {
-  display: none;
   position: absolute;
   z-index: 2;
-  background-color: red;
+  background-color: #04042A;
   left: -60px;
   width: 140px;
   padding-top: 0.5rem;
@@ -162,12 +164,15 @@ nav ul li a {
 
 .profile-dropdown ul {
   display: block;
-  font-size: 1rem;
   margin-left: 0;
 }
 
 .profile-dropdown li {
   margin-bottom: 0.5em;
+}
+
+.profile-dropdown li a {
+  font-size: 1rem;
 }
 
 .profile-dropdown li a i:first-child {

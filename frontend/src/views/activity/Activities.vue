@@ -16,7 +16,7 @@
             <div class="info-container-item-container">
               <div class="info-container-item">
                 <img :src="singleActivity.user.userImage" />
-                <p>{{ singleActivity.user.username }}</p>
+                <p><router-link :to="{ name: 'Profile', params:{userId: singleActivity.user.id} }">{{ singleActivity.user.username }}</router-link></p>
               </div>
               <div class="info-container-item">
                 <small>{{ singleActivity.like_no }}</small>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 // import CreateActivity from "@/components/CreateActivity.vue";
 // import ViewActivity from "@/components/ViewActivity.vue";
 import { currUser } from "@/api/jwt-access-token";
@@ -49,6 +49,7 @@ export default {
     ...mapActions("activity", ["fetchActivities", "fetchSingleActivity"]),
     ...mapActions("interest", ["fetchUserInterests"]),
     ...mapActions("likeInfo", ["setToggleLike", "fetchLikeStatus"]),
+    ...mapMutations("activity", ["setActivities"]),
     showActivityModal(id) {
       this.fetchSingleActivity(id);
       this.$emit("showActivityModalFunc");
@@ -118,6 +119,13 @@ export default {
   },
   mounted() {
     this.getNextSetActivities();
+  },
+  beforeUnmount(){
+    // const state = {
+    //   allActivities: []
+    // }
+    const activities = []
+    this.setActivities(activities)
   }
 };
 </script>

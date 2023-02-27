@@ -47,6 +47,7 @@ def save_message(data):
 def connect_user(data):
     auth_user = get_current_user()
     # connectedUser = User.objects.get(username=self.scope['user'])
+    print(data)
     room = Room.query.filter(Room.room == data['room']).first()
     if Connected.query.filter((Connected.connected_user_id == data['user_id']) & (Connected.connection_room_id == room.id)).first() is None:
         new_connection = Connected(connected_user_id=data['user_id'], connection_room_id=room.id, channel_name=request.sid)

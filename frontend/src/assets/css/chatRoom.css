@@ -270,3 +270,8 @@ pre {
   background-color: transparent;
   /* border-radius: 10px; */
 }
+
+.new-chat i {
+  color: white;
+  font-size: 0.5rem;
+}
