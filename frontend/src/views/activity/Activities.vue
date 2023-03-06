@@ -4,7 +4,7 @@
     <!-- <ViewActivity v-if="viewActivity" @hide-modal-func="$emit('hideModalFunc')" /> -->
     <section class="main-section">
       <div class="activity-section">
-        <article v-for="singleActivity in allActivities" :key="singleActivity.id" class="card">
+        <article v-for="singleActivity in ndsu" :key="singleActivity.id" class="card">
           <a class="listing-link">
             <img :src="singleActivity.picture" @click="showActivityModal(singleActivity.id)" width="100" height="100" />
           </a>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
 // import CreateActivity from "@/components/CreateActivity.vue";
 // import ViewActivity from "@/components/ViewActivity.vue";
 import { currUser } from "@/api/jwt-access-token";
@@ -40,10 +40,21 @@ import { currUser } from "@/api/jwt-access-token";
 export default {
   name: "ActivitiesPage",
   // components: { ViewActivity },
+  data() {
+    return {
+      jdk: []
+    }
+  },
   computed: {
-    ...mapGetters("activity", ["allActivities", "activitiesPagination"]),
+    ...mapState("activity", ["allActivities", "activitiesPagination"]),
     ...mapGetters("interest", ["userInterests"]),
     ...mapGetters("likeInfo", ["likeStatus", "likeNo"]),
+    ndsu(){
+      const jrdk = this.jdk; 
+      const hjgy = [...jrdk, ...this.allActivities];
+      this.jdk = [...hjgy];
+      return hjgy;
+    }
   },
   methods: {
     ...mapActions("activity", ["fetchActivities", "fetchSingleActivity"]),
@@ -74,17 +85,17 @@ export default {
       };
       this.fetchActivities(payload);
     },
-    getNextSetActivities() {
-      window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        if (bottomOfWindow) {
-          // axios.get(`https://randomuser.me/api/`).then(response => {
-          //   this.users.push(response.data.results[0]);
-          // });
-          this.pagination();
-        }
-      }
-    }
+    // getNextSetActivities() {
+    //   window.onscroll = () => {
+    //     let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+    //     if (bottomOfWindow) {
+    //       // axios.get(`https://randomuser.me/api/`).then(response => {
+    //       //   this.users.push(response.data.results[0]);
+    //       // });
+    //       this.pagination();
+    //     }
+    //   }
+    // }
   },
   // props: {
   //   // showCreateModal: Boolean,
@@ -117,9 +128,9 @@ export default {
     this.fetchActivities(payload);
     this.fetchUserInterests(currUser.id);
   },
-  mounted() {
-    this.getNextSetActivities();
-  },
+  // mounted() {
+  //   this.getNextSetActivities();
+  // },
   beforeUnmount(){
     // const state = {
     //   allActivities: []

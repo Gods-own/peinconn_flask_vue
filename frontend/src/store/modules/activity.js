@@ -104,7 +104,7 @@ const mutations = {
   setActivities: (state, activities) => {
     console.log(state)
     console.log(activities)
-    state.allActivities = [...state.allActivities, ...activities];
+    state.allActivities = activities;
   },
   setSingleActivity: (state, activity) => {
     state.activity = activity;
