@@ -89,6 +89,8 @@ class LikeActivityUser(Resource):
 
             likedTransformer = likedlist_schema.dump(likers)
 
+            print(likers)
+
             links = get_pagination('api.likeactivityuser', likers)
 
             return jsonify({'success': True, 'code': 200, 'message': 'Retrieved Likers Successfully', 'data': likedTransformer, 'links': links})

@@ -4,7 +4,7 @@
     <!-- <ViewActivity v-if="viewActivity" @hide-modal-func="$emit('hideModalFunc')" /> -->
     <section class="main-section">
       <div class="activity-section">
-        <article v-for="singleActivity in ndsu" :key="singleActivity.id" class="card">
+        <article v-for="singleActivity in activities" :key="singleActivity.id" class="card">
           <a class="listing-link">
             <img :src="singleActivity.picture" @click="showActivityModal(singleActivity.id)" width="100" height="100" />
           </a>
@@ -42,19 +42,13 @@ export default {
   // components: { ViewActivity },
   data() {
     return {
-      jdk: []
+      activities: [],
     }
   },
   computed: {
     ...mapState("activity", ["allActivities", "activitiesPagination"]),
     ...mapGetters("interest", ["userInterests"]),
     ...mapGetters("likeInfo", ["likeStatus", "likeNo"]),
-    ndsu(){
-      const jrdk = this.jdk; 
-      const hjgy = [...jrdk, ...this.allActivities];
-      this.jdk = [...hjgy];
-      return hjgy;
-    }
   },
   methods: {
     ...mapActions("activity", ["fetchActivities", "fetchSingleActivity"]),
@@ -110,6 +104,12 @@ export default {
         // this.$router.push({ path: "/register/interest" });
       }
     },
+    allActivities: {
+      handler(newValue){
+        this.activities = [...this.activities, ...newValue];
+      },
+      deep: true
+    }
     // "$store.state.interest.likeNo": function () {
     //   console.log(this.$store.state.interest.userInterests);
     //   if (this.$store.state.interest.userInterests == 0) {
@@ -128,9 +128,6 @@ export default {
     this.fetchActivities(payload);
     this.fetchUserInterests(currUser.id);
   },
-  // mounted() {
-  //   this.getNextSetActivities();
-  // },
   beforeUnmount(){
     // const state = {
     //   allActivities: []

@@ -77,7 +77,8 @@ const mutations = {
     state.userProfile = user;
   },
   setUserActivities: (state, activities) => {
-    state.userActivities = [...state.userActivities, ...activities];
+    // state.userActivities = [...state.userActivities, ...activities];
+      state.userActivities = activities;
   },
   setPaginationLinks: (state, links) => {
     state.activitiesPagination = links

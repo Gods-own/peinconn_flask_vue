@@ -15,12 +15,9 @@
     </header>
 
     <div class="msg-div-last-child" id="chat-messages">
-      <div>
+      <div v-for="message in allMessages" :key="message.id" class="chat-container" :class="{ 'chat-left': message.user.id != authUser.id, 'chat-right': message.user.id == authUser.id }">
         <div
-          v-for="message in messages"
-          :key="message.id"
           class="msg-box"
-          :class="{ 'chat-left': message.user.id != authUser.id, 'chat-right': message.user.id == authUser.id }"
         >
           <!-- <img
                     class="msg-box-img"
@@ -32,8 +29,8 @@
             <!-- <small>09/08/2022</small> -->
           </div>
         </div>
-        <div class="clear"></div>
-      </div>
+        <!-- <div class="clear"></div> -->
+        </div>
     </div>
 
     <div class="chat-form">
@@ -59,7 +56,7 @@ export default {
       chat_message: "",
       authUser: currUser,
       roomName: this.$route.params.room,
-      cvv: 0,
+      allMessages: []
     };
   },
   watch:{
@@ -68,6 +65,12 @@ export default {
     },
     '$route.params.userId': function() {
             this.fetchUserProfile(this.$route.params.userId)
+    },
+    messages: {
+      handler(newValue){
+        this.allMessages = [...this.allMessages, ...newValue];
+      },
+      deep: true
     }
 },
   computed: {

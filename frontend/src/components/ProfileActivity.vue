@@ -10,7 +10,7 @@
         />
         </a>
     </article> -->
-    <article v-for="userActivity in userActivities" :key="userActivity.id" class="card" data-id="1">
+    <article v-for="userActivity in activities" :key="userActivity.id" class="card" data-id="1">
       <a class="listing-link">
         <img :src="userActivity.picture" @click="showActivityModal(userActivity.id)" width="100" height="100" />
       </a>
@@ -37,14 +37,14 @@ export default {
   // components: { ViewActivity },
   data() {
     return {
-      userId: this.$route.params.userId
+      userId: this.$route.params.userId,
+      activities: [],
+      trackHobby: '',
     };
   },
-  // props: {
-  //   viewActivity: Boolean,
-  // },
+  props: ['hobby'],
   computed: {
-    ...mapGetters("user", ["userActivities", "activitiesPagination"]),
+    ...mapGetters("user", ["userActivities", "activitiesPagination", "loading"])
   },
   methods: {
     ...mapActions("activity", ["fetchSingleActivity"]),
@@ -77,6 +77,20 @@ export default {
     }
   },
   emits: ["showActivityModalFunc"],
+  watch: {
+    userActivities: {
+      handler(newValue){
+        if(this.hobby != this.trackHobby){
+          this.activities = [...newValue];
+        }
+        else{
+          this.activities = [...this.activities, ...newValue];
+        }  
+        this.trackHobby = this.hobby;
+      },
+      deep: true
+    }
+  },
   created() {
     const payload = {
       user_id: this.userId,

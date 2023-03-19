@@ -11,7 +11,7 @@
         <input class="message-search-input" type="search" placeholder="Search" />
       </form>
 
-      <div @click="()=>{joinRoom(room.room, room.user1.id, room.user2.id)}" v-for="room in rooms" :key="room.id" class="messages-list">
+      <div @click="()=>{joinRoom(room.room, room.user1.id, room.user2.id)}" v-for="room in allRooms" :key="room.id" class="messages-list">
         <div>
           <img :src="room.user1.id == authUser.id ? room.user2.userImage : room.user1.userImage" />
         </div>
@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       authUser: currUser,
+      allRooms: []
     };
   },
   computed: {
@@ -79,6 +80,14 @@ export default {
     },
     notifictationFilter(message){
       return message.new_message[0].notification_read == 0
+    }
+  },
+  watch: {
+    rooms: {
+      handler(newValue){
+        this.allRooms = [...this.allRooms, ...newValue];
+      },
+      deep: true
     }
   },
   created() {

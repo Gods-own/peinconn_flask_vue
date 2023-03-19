@@ -44,7 +44,7 @@ export default {
   components: { ModalComponent },
   computed: {
     ...mapGetters("likeInfo", ["likers"]),
-    ...mapGetters("activity", ["activity"]),
+    ...mapGetters("activity", ["activity"])
   },
   methods: {
     ...mapActions("likeInfo", ["fetchLikers", "setToggleLike", "fetchLikeStatus"]),
@@ -62,8 +62,12 @@ export default {
     },
   },
   emits: ["hideModalFunc"],
+  mounted(){
+    console.log(this.activity.id)
+  },
   created() {
     console.log('dds')
+    console.log(this.$store.getters.activity)
     this.fetchLikers(this.activity.id);
   },
 };
