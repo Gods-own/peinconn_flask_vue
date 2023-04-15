@@ -44,7 +44,10 @@ export default {
   components: { ModalComponent },
   computed: {
     ...mapGetters("likeInfo", ["likers"]),
-    ...mapGetters("activity", ["activity"])
+    ...mapGetters("activity", ["activity"]),
+    activityId(){
+      return this.activity.id
+    }
   },
   methods: {
     ...mapActions("likeInfo", ["fetchLikers", "setToggleLike", "fetchLikeStatus"]),
@@ -61,15 +64,37 @@ export default {
       e.target.classList.toggle("liked-color");
     },
   },
+  watch: {
+    "$store.state.interest.userInterests": function () {
+      console.log(this.$store.state.interest.userInterests);
+      if (this.$store.state.interest.userInterests == 0) {
+        window.location.href = "/register/interest";
+        // this.$router.push({ path: "/register/interest" });
+      }
+    },
+    activityId: {
+      handler(){
+        this.fetchLikers(this.activity.id);
+      },
+      deep: true
+    }
+    // "$store.state.interest.likeNo": function () {
+    //   console.log(this.$store.state.interest.userInterests);
+    //   if (this.$store.state.interest.userInterests == 0) {
+    //     window.location.href = "/register/interest";
+    //     // this.$router.push({ path: "/register/interest" });
+    //   }
+    // },
+  },
   emits: ["hideModalFunc"],
   mounted(){
     console.log(this.activity.id)
   },
-  created() {
-    console.log('dds')
-    console.log(this.$store.getters.activity)
-    this.fetchLikers(this.activity.id);
-  },
+  // created() {
+  //   console.log('dds')
+  //   console.log(this.$store.getters.activity)
+  //   this.fetchLikers(this.activity.id);
+  // },
 };
 </script>
 
