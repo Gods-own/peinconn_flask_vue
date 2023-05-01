@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: b658ef840f99
+Revision ID: c186e58fb130
 Revises: 
-Create Date: 2023-02-26 06:39:02.680549
+Create Date: 2023-04-24 12:19:42.917605
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b658ef840f99'
+revision = 'c186e58fb130'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -117,11 +117,13 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('created_At', sa.DateTime(), nullable=False),
     sa.Column('updated_At', sa.DateTime(), nullable=True),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('sender', sa.Integer(), nullable=False),
+    sa.Column('receiver', sa.Integer(), nullable=False),
     sa.Column('room_id', sa.Integer(), nullable=False),
     sa.Column('content', sa.Text(), nullable=False),
+    sa.ForeignKeyConstraint(['receiver'], ['user.id'], ),
     sa.ForeignKeyConstraint(['room_id'], ['room.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['sender'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('notifications',

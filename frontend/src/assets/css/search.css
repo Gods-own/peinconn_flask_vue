@@ -1,0 +1,26 @@
+.search-view {
+  position: absolute;
+  margin-top: 1rem;
+  min-height: 2rem;
+  width: 400px;
+  background-color: #070744;
+    /* background-color: #04042a; */
+  right: 7.5rem;
+  z-index: 100;
+  padding: 1rem;
+  box-shadow: 2px 2px 15px 1px black;
+}
+
+.search-view div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.search-view img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}

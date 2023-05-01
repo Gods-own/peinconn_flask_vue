@@ -44,12 +44,13 @@ const actions = {
         commit("requestError", err);
       });
   },
-  fetchRooms({ commit }, params) {
+
+  fetchRooms({ commit }, {searchParams}) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
 
     const callGetRooms = async () => {
-      const response = await getUserRooms(params);
+      const response = await getUserRooms(searchParams);
       console.log(response);
       commit("setRooms", response.data);
       commit("setPaginationLinks", response.links);
@@ -80,7 +81,7 @@ const mutations = {
     state.rooms = roomList;
   },
   setPaginationLinks: (state, links) => {
-    state.activitiesPagination = links
+    state.roomsPagination = links
   },
   requestError: (state, error) => {
     state.error = error.response.data.message;

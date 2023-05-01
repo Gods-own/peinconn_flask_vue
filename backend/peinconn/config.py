@@ -19,6 +19,8 @@ class Config(object):
 
     SECRET_KEY=os.getenv("SECRET_KEY")
 
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
     SESSION_FILE_DIR = mkdtemp()
 
     SESSION_PERMANENT = False

@@ -60,6 +60,7 @@ def on_message(data):
     data = json.loads(data)
     room = data['room']
     join_room(room)
+    print(data)
     new_message = save_message(data)
     messageTransformer = message_schema.dump(new_message)
     emit('new_message', messageTransformer, to=room) 

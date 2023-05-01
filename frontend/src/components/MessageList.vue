@@ -20,12 +20,12 @@
             <h4>
               <a href="#">{{ room.user1.id == authUser.id ? room.user2.username : room.user1.username }}</a>
             </h4>
-            <small>{{ formatDate(room.dm_room[room.dm_room.length - 1].created_At, "YYYY/MM/DD") }}</small>
+            <small>{{ formatDate(room.dm_room[room.dm_room.length - 1]?.created_At, "YYYY/MM/DD") }}</small>
           </div>
           <div class="msg">
-            <p>{{ room.dm_room[room.dm_room.length - 1].content }}</p>
+            <p>{{ room.dm_room[room.dm_room.length - 1]?.content }}</p>
             <!-- <small class v-if="room.dm_room[room.dm_room.length - 1].new_message[0].notification_read == 0 && room.dm_room[room.dm_room.length - 1].new_message[0].notification_user_id == authUser.id">{{  room.dm_room.filter(notifictationFilter).length }}</small> -->
-            <small class="new-chat" v-if="room.dm_room[room.dm_room.length - 1].new_message[0].notification_read == 0 && room.dm_room[room.dm_room.length - 1].new_message[0].notification_user_id == authUser.id"><i class="fa fa-circle"></i></small>
+            <small class="new-chat" v-if="room.dm_room[room.dm_room.length - 1]?.new_message[0].notification_read == 0 && room.dm_room[room.dm_room.length - 1]?.new_message[0].notification_user_id == authUser.id"><i class="fa fa-circle"></i></small>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@ export default {
     ...mapActions("chat", ["fetchRooms"]),
     pagination() {
       const payload = {
-        searchData: {
+        searchParams: {
           filter: undefined,
           page: this.roomsPagination.meta.paging.next_page_num,
           per_page: this.roomsPagination.meta.paging.pageCount,
@@ -91,7 +91,12 @@ export default {
     }
   },
   created() {
-    this.fetchRooms();
+    const payload = {
+      searchParams: {
+        filter: undefined,
+      },
+    };
+    this.fetchRooms(payload);
   },
 };
 </script>

@@ -34,7 +34,7 @@ def save_room(data):
     
 def save_message(data):
     room = Room.query.filter_by(room=data['room']).one()    
-    new_message = Message(user_id=data['user_id'], room_id=room.id, content=data['message'])
+    new_message = Message(sender=data['user_id'], receiver=data['user2_id'], room_id=room.id, content=data['message'])
     room.updated_At = datetime.utcnow()
     db.session.add(new_message)
     db.session.flush()
@@ -54,7 +54,7 @@ def connect_user(data):
         db.session.add(new_connection)
         db.session.commit()
     if Message.query.filter(Message.room_id==room.id).first() is not None:    
-        messagess = Message.query.filter((Message.room_id==room.id) & (Message.user_id!=data['user_id'])).all()
+        messagess = Message.query.filter((Message.room_id==room.id) & (Message.sender!=data['user_id'])).all()
         message_ids = []
         for message in messagess:
             message_ids.append(message.id)

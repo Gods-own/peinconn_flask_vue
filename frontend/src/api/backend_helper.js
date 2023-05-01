@@ -33,7 +33,7 @@ export const getRoomStatus = (user1_id, user2_id) => get(`${url.CHECK_ROOM_EXIST
 export const getUserRooms = (params) => get(url.GET_USER_ROOMS, { params: params });
 
 //Message
-export const getUserMessages = (room_name) => get(`${url.GET_USER_MESSAGES}/${room_name}`);
+export const getUserMessages = (room_name, params) => get(`${url.GET_USER_MESSAGES}/${room_name}`, { params: params });
 
 //Search
 export const searchUser = (searchdata) => get(url.SEARCH_USER, { params: searchdata });

@@ -1,7 +1,9 @@
 from flask_seeder import Seeder, Faker, generator
+from flask import current_app
 from peinconn.peinconn.models import User
 from peinconn.peinconn.extensions import db
 import random, os, datetime
+import shutil
 from werkzeug.security import generate_password_hash
 import hashlib
 from werkzeug.utils import secure_filename
@@ -14,8 +16,8 @@ class UserSeeder(Seeder):
         genders = ['male', 'female']
         password = generate_password_hash('good')
 
-        path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/profilepic'
-        new_path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/images/profilePic'
+        path = f"{current_app.config['BASE_DIR']}\peinconn\static\profilepic"
+        new_path = f"{current_app.config['BASE_DIR']}\peinconn\static\images\profilePic"
         dir_path = os.listdir(path)
 
         new_dir_path = []
@@ -27,7 +29,7 @@ class UserSeeder(Seeder):
             result = hashlib.md5(new_filename.encode())
             new_filename_without_ext = result.hexdigest()
             new_dir_path.append(f'{new_filename_without_ext}.{ext}')
-            os.rename(f'{path}/{singleFile}', f'{new_path}/{new_filename_without_ext}.{ext}')
+            shutil.copy2(f'{path}/{singleFile}', f'{new_path}/{new_filename_without_ext}.{ext}')
         print(new_dir_path)
         faker = Faker(
             cls=User,

@@ -14,8 +14,12 @@
       </ul>
     </header>
 
-    <div class="msg-div-last-child" id="chat-messages">
-      <div v-for="message in allMessages" :key="message.id" class="chat-container" :class="{ 'chat-left': message.user.id != authUser.id, 'chat-right': message.user.id == authUser.id }">
+    <div style="text-align: center;">
+      <button v-if="messagePagination?.meta?.paging?.hasNextPage" @click="pagination">Show More</button>
+    </div>
+
+    <div class="msg-div-last-child" ref="chatMessages">
+      <div v-for="(message, indx) in allMessages" :key="allMessages[allMessages.length - (indx + 1)].id" class="chat-container" :class="{ 'chat-left': allMessages[allMessages.length - (indx + 1)].user1.id != authUser.id, 'chat-right': allMessages[allMessages.length - (indx + 1)].user1.id == authUser.id }">
         <div
           class="msg-box"
         >
@@ -25,7 +29,7 @@
                   /> -->
           <div class="msg-box-div">
             <!-- <h4>Mary</h4> -->
-            <pre>{{ message.content }}</pre>
+            <pre>{{ allMessages[allMessages.length - (indx + 1)].content }}</pre>
             <!-- <small>09/08/2022</small> -->
           </div>
         </div>
@@ -68,13 +72,14 @@ export default {
     },
     messages: {
       handler(newValue){
+        console.log(this.messages)
         this.allMessages = [...this.allMessages, ...newValue];
       },
       deep: true
     }
 },
   computed: {
-    ...mapGetters("message", ["messages"]),
+    ...mapGetters("message", ["messages", "messagePagination"]),
     ...mapGetters("user", ["userProfile"]),
   },
   methods: {
@@ -89,24 +94,46 @@ export default {
         user1_id: currUser.id,
         user2_id: this.$route.params.userId,
       };
+      console.log(socketData)
       socketioService.emit("message", JSON.stringify(socketData));
       this.chat_message = "";
+    },
+    pagination() {
+      const payload = {
+         room_name: this.$route.params.room,
+        searchParams: {
+          filter: undefined,
+          page: this.messagePagination.meta.paging.next_page_num,
+          per_page: this.messagePagination.meta.paging.pageCount,
+          max_per_page: this.messagePagination.meta.paging.pageCount,
+        },
+      };
+      this.fetchMessages(payload);
     },
   },
   mounted(){
     this.fetchUserProfile(this.$route.params.userId)
-    console.log(this.$route.params.userId)
+    var elem = this.$refs.chatMessages
+    console.log(elem.scrollTop, elem.scrollHeight)
+    elem.scrollTop = elem.scrollHeight;
   },
   created() {
     socketioService.on("new_message", (data) => {
-      this.messages.unshift(data);
+      console.log(data, 'pushed')
+      this.allMessages = [data, ...this.allMessages];
       // this.$store.commit("setMessages", new_messages);
     });
     // socketioService.on("received", () => {
     //   alert("reciebed");
     //   this.fetchUserProfile(this.authUser.id);
     // });
-    this.fetchMessages(this.$route.params.room);
+    const payload = {
+      room_name: this.$route.params.room,
+      searchParams: {
+        filter: undefined,
+      },
+    };
+    this.fetchMessages(payload);
   },
   Unmounted() {
     socketioService.emit("leave", JSON.stringify({ msg: "has left" }));

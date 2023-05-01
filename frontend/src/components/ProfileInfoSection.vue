@@ -95,6 +95,21 @@ export default {
     //   socketioService.emit("join", JSON.stringify(socketData));
     // },
   },
+  watch: {
+    $route() {
+      // if anything needs to be done when the route changes
+          let authUser = JSON.parse(localStorage.getItem("authenticatedUser"));
+    console.log(this.$route.params);
+    this.fetchUserProfile(this.$route.params.userId);
+    if (authUser.user.id != this.$route.params.userId) {
+      const payload = {
+        user1_id: authUser.user.id,
+        user2_id: this.$route.params.userId,
+      };
+      this.fetchRoomInfo(payload);
+    }
+    }
+  },
   created() {
     let authUser = JSON.parse(localStorage.getItem("authenticatedUser"));
     console.log(this.$route.params);

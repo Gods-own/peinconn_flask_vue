@@ -164,9 +164,10 @@ notifications_schema = NotificationSchema(many=True)
 #Message Schema
 class MessageSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'user', 'new_message', 'content', 'created_At', 'updated_At')
+        fields = ('id', 'sender', 'receiver', 'user1', 'user2', 'new_message', 'content', 'created_At', 'updated_At')
 
-    user = ma.Nested(UserSchema)
+    user1 = ma.Nested(UserSchema(exclude=("interests",)))
+    user2 = ma.Nested(UserSchema(exclude=("interests",)))
     new_message = ma.List(ma.Nested(NotificationSchema))      
 
 #Init Message Schema
@@ -180,7 +181,7 @@ class RoomSchema(ma.Schema):
 
     user1 = ma.Nested(UserSchema(exclude=("interests",)))
     user2 = ma.Nested(UserSchema(exclude=("interests",)))  
-    dm_room = ma.List(ma.Nested(MessageSchema(exclude=("user",))))
+    dm_room = ma.List(ma.Nested(MessageSchema(exclude=("user1", "user2"))))
 
 #Init Room Schema
 room_schema = RoomSchema()

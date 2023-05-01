@@ -81,6 +81,14 @@
           <form @submit="searchForUsers">
             <input name="user" type="search" placeholder="Search" />
           </form>
+          <div v-if="showSearchResult" class="search-view">
+            <div @click="()=>{visitProfile(result.id)}" v-for="result in searchResult" :key="result.id">
+              <img :src="result.userImage" />
+              <!-- <p><router-link :to="{ name: 'Profile', params:{ userId: result.id } }">{{ result.username }}</router-link></p>
+               -->
+               <p>{{ result.username }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -104,7 +112,8 @@ export default {
       searchData: {},
       filterByCountry: false,
       noOfNotifications: 0,
-      showDropDown: false
+      showDropDown: false,
+      showSearchResult: false
     };
   },
   computed: {
@@ -116,6 +125,16 @@ export default {
     ...mapActions("search", ["searchUsers"]),
     showAddModal() {
       this.$emit("showAddModalFunc");
+    },
+    visitProfile(resultId){
+      // console.log(resultId)
+      // this.$router.push({ path: `/profile/${resultId}` });
+        this.$router.replace({
+    name: "Profile",
+    params: {
+      userId: resultId
+    }
+  })
     },
     countryFilter(e) {
       e.preventDefault();
@@ -174,8 +193,9 @@ export default {
     //   console.log("goodlldlf");
     // });
     socketioService.on("notify", (data) => {
-      let receiver = data.user.id == data.room.user1_id ? data.room.user2_id : data.room.user1_id
-      let notificationNumber = receiver == this.authUser.id ? 1 : 0;
+      console.log(data);
+      // let receiver = data.user.id == data.room.user1_id ? data.room.user2_id : data.room.user1_id
+      let notificationNumber = data.receiver == this.authUser.id ? 1 : 0;
       this.noOfNotifications = this.noOfNotifications + notificationNumber;
       console.log('notified')
     });
@@ -186,4 +206,5 @@ export default {
 
 <style scoped>
 @import "../../assets/css/nav.css";
+@import "../../assets/css/search.css";
 </style>

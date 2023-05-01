@@ -78,6 +78,20 @@ export default {
   },
   emits: ["showActivityModalFunc"],
   watch: {
+    $route() {
+      // if anything needs to be done when the route changes
+      this.activities = [];
+          const payload = {
+      user_id: this.$route.params.userId,
+      searchData: {
+        filter: undefined,
+        // page: this.activitiesPagination.meta.paging.next_page_num,
+        // per_page: ,
+        // max_per_page:
+        },
+    };
+    this.fetchUserActivities(payload);
+    },
     userActivities: {
       handler(newValue){
         if(this.hobby != this.trackHobby){

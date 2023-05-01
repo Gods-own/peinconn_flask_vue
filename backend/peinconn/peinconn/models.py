@@ -65,7 +65,7 @@ class User(CommonField):
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)    
     country = db.relationship('Country', backref=db.backref('country_users', lazy=True), lazy=True)   
     liked_users = db.relationship('Liked', back_populates="user", lazy=True) 
-    sender = db.relationship('Message', back_populates="user", lazy=True) 
+    # sender = db.relationship('Message', back_populates="user", lazy=True) 
     # chat_sender = db.relationship('Room', back_populates="user1", lazy=True) 
     # chat_receiver = db.relationship('Room', back_populates="user2", lazy=True) 
     sent_to = db.relationship('Notifications', back_populates="notification_user", lazy=True) 
@@ -123,13 +123,23 @@ class Room(CommonField):
     dm_room = db.relationship('Message', back_populates='room', lazy=True) 
     connected_room = db.relationship('Connected', back_populates='connection_room', lazy=True) 
 
+# class Message(CommonField):
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#     user = db.relationship('User', back_populates="sender", lazy=True) 
+#     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
+#     room = db.relationship('Room', back_populates="dm_room", lazy=True) 
+#     content = db.Column(db.Text, nullable=False)
+#     new_message = db.relationship('Notifications', back_populates='notification_message', lazy=True)
+
 class Message(CommonField):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', back_populates="sender", lazy=True) 
+    sender = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user1 = db.relationship('User', foreign_keys=[sender], lazy=True) 
+    receiver = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user2 = db.relationship('User', foreign_keys=[receiver], lazy=True) 
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
     room = db.relationship('Room', back_populates="dm_room", lazy=True) 
     content = db.Column(db.Text, nullable=False)
-    new_message = db.relationship('Notifications', back_populates='notification_message', lazy=True)
+    new_message = db.relationship('Notifications', back_populates='notification_message', lazy=True)    
 
 class Notifications(CommonField):
     notification_user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)

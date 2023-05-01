@@ -1,9 +1,11 @@
 from flask_seeder import Seeder, Faker, generator
+from flask import current_app
 from peinconn.peinconn.models import Activity, User, Interest
 from peinconn.peinconn.extensions import db
 import random, os, datetime
 from werkzeug.security import generate_password_hash
 import hashlib
+import shutil
 from werkzeug.utils import secure_filename
 from essential_generators import DocumentGenerator
 
@@ -15,8 +17,8 @@ class FashionSeeder(Seeder):
         gen = DocumentGenerator()
         users = User.query.filter(User.interests.any(Interest.id==3)).all()
 
-        path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/fashion'
-        new_path = 'C:/Users/idumeka oritogun/Documents/flask-projects/Peinconn_Project/backend/peinconn/peinconn/static/images/uploads'
+        path = rf"{current_app.config['BASE_DIR']}\peinconn\static\fashion"
+        new_path = rf"{current_app.config['BASE_DIR']}\peinconn\static\images\uploads"
         dir_path = os.listdir(path)
 
         new_dir_path = []
@@ -28,7 +30,7 @@ class FashionSeeder(Seeder):
             result = hashlib.md5(new_filename.encode())
             new_filename_without_ext = result.hexdigest()
             new_dir_path.append(f'{new_filename_without_ext}.{ext}')
-            os.rename(f'{path}/{singleFile}', f'{new_path}/{new_filename_without_ext}.{ext}')
+            shutil.copy2(f'{path}/{singleFile}', f'{new_path}/{new_filename_without_ext}.{ext}')
         faker = Faker(
             cls=Activity,
             init={}

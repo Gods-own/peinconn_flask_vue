@@ -43,6 +43,7 @@ const actions = {
         commit("requestError", err);
       });
   },
+  
   fetchActivities({ commit }, { searchParams }) {
     let isRequestLoading = true;
     commit("requestLoading", isRequestLoading);
